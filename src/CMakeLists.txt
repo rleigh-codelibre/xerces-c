@@ -1085,7 +1085,7 @@ endif()
 if(XERCES_USE_NETACCESSOR_CURL)
   list(APPEND libxerces_c_SOURCES ${curl_sources})
   list(APPEND libxerces_c_HEADERS ${curl_headers})
-  list(APPEND libxerces_c_DEPS ${CURL_LIBRARIES})
+  list(APPEND libxerces_c_DEPS CURL::libcurl)
 endif()
 
 if(XERCES_USE_NETACCESSOR_SOCKET)
@@ -1272,9 +1272,6 @@ add_library(xerces-c
   ${libxerces_c_SOURCES}
   ${libxerces_c_RESOURCES})
 target_link_libraries(xerces-c ${libxerces_c_DEPS})
-if(XERCES_USE_NETACCESSOR_CURL)
-  target_include_directories(xerces-c SYSTEM PRIVATE ${CURL_INCLUDE_DIRS})
-endif()
 
 if(MSVC)
   # Add configuration-specific library name to resource file.
