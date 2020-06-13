@@ -53,8 +53,6 @@
 #cmakedefine XERCES_HAVE_EMMINTRIN_H 1
 #cmakedefine XERCES_INCLUDE_WCHAR_H 1
 
-#define XERCES_XMLCH_T @XERCES_XMLCH_T@
-
 #cmakedefine XERCES_LSTRSUPPORT 1
 #cmakedefine XERCES_MFC_SUPPORT 1
 

@@ -68,12 +68,12 @@ typedef uint64_t                                XMLSize_t;
 /**
  * Signed integer of at least 64 bits.
  */
-typedef int64_t                                XMLSSize_t;
+typedef int64_t                                 XMLSSize_t;
 
 /**
- * XML Character.  Platform-dependent 16-bit type.
+ * XML Character.
  */
-typedef XERCES_XMLCH_T                          XMLCh;
+typedef char16_t                                XMLCh;
 
 // ---------------------------------------------------------------------------
 //  Integer definitions

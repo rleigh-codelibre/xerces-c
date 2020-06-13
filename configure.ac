@@ -331,8 +331,6 @@ AC_DEFINE_UNQUOTED([XERCES_PLATFORM_EXPORT], [$platform_export], [Define as the 
 AC_DEFINE_UNQUOTED([XERCES_PLATFORM_IMPORT], [$platform_import], [Define as the platform's import attribute])
 AC_DEFINE_UNQUOTED([XERCES_TEMPLATE_EXTERN], [$template_extern], [Define as the platform's template extern attribute])
 
-XERCES_XMLCH_SELECTION
-
 if test "$have_sse2" = "yes"; then
     no_sse2_CXXFLAGS="$CXXFLAGS"
 
@@ -464,4 +462,3 @@ AC_MSG_NOTICE([  Mutex Manager: $mutexmgr])
 AC_MSG_NOTICE([  Transcoder: $transcoder])
 AC_MSG_NOTICE([  NetAccessor: $netaccessor])
 AC_MSG_NOTICE([  Message Loader: $msgloader])
-AC_MSG_NOTICE([  XMLCh Type: $xmlch])

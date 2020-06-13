@@ -155,13 +155,11 @@ add_test_executable(XSValueTest
   src/XSValueTest/XSValueTest.hpp
 )
 
-if(XERCES_XMLCH_T STREQUAL "char16_t")
-  add_test_executable(Char16Test
-    src/Char16Test/Char16Test.cpp
-  )
-  if(MSVC)
-    set_target_properties(Char16Test PROPERTIES COMPILE_FLAGS "/utf-8")
-  endif()
+add_test_executable(Char16Test
+  src/Char16Test/Char16Test.cpp
+)
+if(MSVC)
+  set_target_properties(Char16Test PROPERTIES COMPILE_FLAGS "/utf-8")
 endif()
 
 # Run tests
@@ -209,6 +207,4 @@ add_xerces_test(MemHandlerTest2  COMMAND MemHandlerTest -v=always -n -r=2 -s -f 
 
 add_xerces_test(DOMTypeInfoTest WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/DOM/TypeInfo" COMMAND DOMTypeInfoTest)
 
-if(XERCES_XMLCH_T STREQUAL "char16_t")
-  add_xerces_test(Char16Test       COMMAND Char16Test)
-endif()
+add_xerces_test(Char16Test       COMMAND Char16Test)
