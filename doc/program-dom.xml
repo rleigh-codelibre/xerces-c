@@ -218,7 +218,7 @@
             will be recycled by the implementation.  </p>
 
        <source>
-   XMLCh xfoo[] = {chLatin_f, chLatin_o, chLatin_o, chNull};
+   XMLCh xfoo[] = u"foo";
 
    // pAttr has node value = "foo"
    // fNodeValue has "foo"
@@ -256,8 +256,8 @@
             copy of any previous returned string for safe reference.   For example</p>
 
        <source>
-   XMLCh xfoo[] = {chLatin_f, chLatin_o, chLatin_o, chNull};
-   XMLCh xfee[] = {chLatin_f, chLatin_e, chLatin_e, chNull};
+   XMLCh xfoo[] = u"foo";
+   XMLCh xfee[] = u"fee";
 
    // pAttr has node value = "foo"
    pAttr->setNodeValue(xfoo);
