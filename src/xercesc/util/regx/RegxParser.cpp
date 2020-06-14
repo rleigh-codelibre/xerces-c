@@ -371,13 +371,13 @@ Token* RegxParser::processBackReference() {
     XMLSize_t position = fOffset - 2;
 
     // Handle multi digit back references
-    int refNo = fCharData - chDigit_0;
+    int refNo = fCharData - u'0';
     while(true) {
         processNext();
-        if(fState != REGX_T_CHAR || fCharData < chDigit_0 || fCharData > chDigit_9)
+        if(fState != REGX_T_CHAR || fCharData < u'0' || fCharData > u'9')
             break;
 
-        int nextRefNo = (refNo * 10) + fCharData - chDigit_0;
+        int nextRefNo = (refNo * 10) + fCharData - u'0';
         if(nextRefNo >= fNoGroups)
             break;
 
@@ -415,14 +415,14 @@ Token* RegxParser::parseFactor() {
             int max = -1;
             XMLInt32 ch = fString[fOffset++];
 
-            if (ch >= chDigit_0 && ch <= chDigit_9) {
+            if (ch >= u'0' && ch <= u'9') {
 
-                min = ch - chDigit_0;
+                min = ch - u'0';
                 while (fOffset < fStringLen
-                       && (ch = fString[fOffset++]) >= chDigit_0
-                       && ch <= chDigit_9) {
+                       && (ch = fString[fOffset++]) >= u'0'
+                       && ch <= u'9') {
 
-                    min = min*10 + ch - chDigit_0;
+                    min = min*10 + ch - u'0';
                 }
 
                 if (min < 0)
@@ -439,14 +439,14 @@ Token* RegxParser::parseFactor() {
                 if (fOffset >= fStringLen) {
                     ThrowXMLwithMemMgr1(ParseException, XMLExcepts::Parser_Quantifier3, fString, fMemoryManager);
                 }
-                else if ((ch = fString[fOffset++]) >= chDigit_0 && ch <= chDigit_9) {
+                else if ((ch = fString[fOffset++]) >= u'0' && ch <= u'9') {
 
-                    max = ch - chDigit_0;
+                    max = ch - u'0';
                     while (fOffset < fStringLen
-                           && (ch = fString[fOffset++]) >= chDigit_0
-                           && ch <= chDigit_9) {
+                           && (ch = fString[fOffset++]) >= u'0'
+                           && ch <= u'9') {
 
-                        max = max*10 + ch - chDigit_0;
+                        max = max*10 + ch - u'0';
                     }
 
                     if (max < 0)
@@ -519,16 +519,16 @@ Token* RegxParser::parseAtom() {
             tok = getTokenForShorthand(fCharData);
             processNext();
             return tok;
-        case chDigit_0:
-        case chDigit_1:
-        case chDigit_2:
-        case chDigit_3:
-        case chDigit_4:
-        case chDigit_5:
-        case chDigit_6:
-        case chDigit_7:
-        case chDigit_8:
-        case chDigit_9:
+        case u'0':
+        case u'1':
+        case u'2':
+        case u'3':
+        case u'4':
+        case u'5':
+        case u'6':
+        case u'7':
+        case u'8':
+        case u'9':
             return processBackReference();
         case u'p':
         case u'P':

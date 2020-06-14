@@ -1744,10 +1744,10 @@ bool XMLUri::isWellFormedIPv4Address(const XMLCh* const addr, const XMLSize_t le
             XMLCh first = addr[i-2];
             XMLCh second = addr[i-1];
             XMLCh last = addr[i];
-            if (!(first < chDigit_2 ||
-                 (first == chDigit_2 &&
-                 (second < chDigit_5 ||
-                 (second == chDigit_5 && last <= chDigit_5)))))
+            if (!(first < u'2' ||
+                 (first == u'2' &&
+                 (second < u'5' ||
+                 (second == u'5' && last <= u'5')))))
             {
                 return false;
             }
@@ -2372,7 +2372,7 @@ bool XMLUri::processAuthority( const XMLCh* const authSpec
             port = 0;
             for (XMLSize_t i=0; i<(authLen - start); i++)
             {
-                if (portStr[i] < chDigit_0 || portStr[i] > chDigit_9)
+                if (portStr[i] < u'0' || portStr[i] > u'9')
                 {
                   // Assume this is a registry-based authority.
                   //
@@ -2384,7 +2384,7 @@ bool XMLUri::processAuthority( const XMLCh* const authSpec
                   break;
                 }
 
-                port = (port * 10) + (int) (portStr[i] - chDigit_0);
+                port = (port * 10) + (int) (portStr[i] - u'0');
             }
         }
     }
@@ -2491,8 +2491,8 @@ void XMLUri::normalizeURI(const XMLCh*     const systemURI,
     while (*pszSrc) {
 
         if ((*(pszSrc) == chPercent)
-        &&  (*(pszSrc+1) == chDigit_2)
-        &&  (*(pszSrc+2) == chDigit_0))
+        &&  (*(pszSrc+1) == u'2')
+        &&  (*(pszSrc+2) == u'0'))
         {
             pszSrc += 3;
             normalizedURI.append(chSpace);

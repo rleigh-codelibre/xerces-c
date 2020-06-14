@@ -967,8 +967,8 @@ bool DTDScanner::scanCharRef(XMLCh& first, XMLCh& second)
         //  one.
         //
         unsigned int nextVal;
-        if ((nextCh >= chDigit_0) && (nextCh <= chDigit_9))
-            nextVal = (unsigned int)(nextCh - chDigit_0);
+        if ((nextCh >= u'0') && (nextCh <= u'9'))
+            nextVal = (unsigned int)(nextCh - u'0');
         else if ((nextCh >= u'A') && (nextCh <= u'F'))
             nextVal= (unsigned int)(10 + (nextCh - u'A'));
         else if ((nextCh >= u'a') && (nextCh <= u'f'))

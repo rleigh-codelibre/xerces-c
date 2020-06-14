@@ -37,10 +37,10 @@ my %charMapping = ( ':', 'chColon',
                     '_', 'chUnderscore',
                     ',', 'chComma',
                     '&', 'chAmpersand',
-                    '0', 'chDigit_0', '1', 'chDigit_1', '2', 'chDigit_2',
-                    '3', 'chDigit_3', '4', 'chDigit_4', '5', 'chDigit_5',
-                    '6', 'chDigit_6', '7', 'chDigit_7', '8', 'chDigit_8',
-                    '9', 'chDigit_9');
+                    '0', 'u'0'', '1', 'u'1'', '2', 'u'2'',
+                    '3', 'u'3'', '4', 'u'4'', '5', 'u'5'',
+                    '6', 'u'6'', '7', 'u'7'', '8', 'u'8'',
+                    '9', 'u'9'');
 
 #
 # usage: display usage message

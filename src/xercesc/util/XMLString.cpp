@@ -514,8 +514,8 @@ XMLSize_t XMLString::replaceTokens(          XMLCh* const    errText
         //  Probe this one to see if it matches our pattern of {x}. If not
         //  then copy over those chars and go back to the first loop.
         //
-        if ((*(pszSrc+1) >= chDigit_0)
-        &&  (*(pszSrc+1) <= chDigit_3)
+        if ((*(pszSrc+1) >= u'0')
+        &&  (*(pszSrc+1) <= u'3')
         &&  (*(pszSrc+2) == chCloseCurly))
         {
             //
@@ -528,13 +528,13 @@ XMLSize_t XMLString::replaceTokens(          XMLCh* const    errText
 
             // Now copy over the replacement text
             const XMLCh* repText = 0;
-            if (tokCh == chDigit_0)
+            if (tokCh == u'0')
                 repText = text1;
-            else if (tokCh == chDigit_1)
+            else if (tokCh == u'1')
                 repText = text2;
-            else if (tokCh == chDigit_2)
+            else if (tokCh == u'2')
                 repText = text3;
-            else if (tokCh == chDigit_3)
+            else if (tokCh == u'3')
                 repText = text4;
 
             // If this one is null, copy over a null string
@@ -773,7 +773,7 @@ bool XMLString::isAlpha(XMLCh const theChar)
 
 bool XMLString::isDigit(XMLCh const theChar)
 {
-    if (( theChar >= chDigit_0 ) && ( theChar <= chDigit_9 ))
+    if (( theChar >= u'0' ) && ( theChar <= u'9' ))
         return true;
 
     return false;
@@ -803,8 +803,8 @@ void XMLString::sizeToText(  const  XMLSize_t            toFormat
 {
     static const XMLCh digitList[16] =
     {
-            chDigit_0, chDigit_1, chDigit_2, chDigit_3, chDigit_4, chDigit_5
-        ,   chDigit_6, chDigit_7, chDigit_8, chDigit_9, u'A', u'B'
+            u'0', u'1', u'2', u'3', u'4', u'5'
+        ,   u'6', u'7', u'8', u'9', u'A', u'B'
         ,   u'C', u'D', u'E', u'F'
     };
 
@@ -814,7 +814,7 @@ void XMLString::sizeToText(  const  XMLSize_t            toFormat
     // Handle special case
     if (!toFormat)
     {
-        toFill[0] = chDigit_0;
+        toFill[0] = u'0';
         toFill[1] = u'\0';
         return;
     }
@@ -842,9 +842,9 @@ void XMLString::sizeToText(  const  XMLSize_t            toFormat
         while (tmpVal)
         {
             if (tmpVal & 0x1UL)
-                tmpBuf[tmpIndex++] = chDigit_1;
+                tmpBuf[tmpIndex++] = u'1';
             else
-                tmpBuf[tmpIndex++] = chDigit_0;
+                tmpBuf[tmpIndex++] = u'0';
             tmpVal >>= 1;
         }
     }
@@ -894,8 +894,8 @@ void XMLString::binToText(  const   unsigned long   toFormat
 {
     static const XMLCh digitList[16] =
     {
-            chDigit_0, chDigit_1, chDigit_2, chDigit_3, chDigit_4, chDigit_5
-        ,   chDigit_6, chDigit_7, chDigit_8, chDigit_9, u'A', u'B'
+            u'0', u'1', u'2', u'3', u'4', u'5'
+        ,   u'6', u'7', u'8', u'9', u'A', u'B'
         ,   u'C', u'D', u'E', u'F'
     };
 
@@ -905,7 +905,7 @@ void XMLString::binToText(  const   unsigned long   toFormat
     // Handle special case
     if (!toFormat)
     {
-        toFill[0] = chDigit_0;
+        toFill[0] = u'0';
         toFill[1] = u'\0';
         return;
     }
@@ -933,9 +933,9 @@ void XMLString::binToText(  const   unsigned long   toFormat
         while (tmpVal)
         {
             if (tmpVal & 0x1UL)
-                tmpBuf[tmpIndex++] = chDigit_1;
+                tmpBuf[tmpIndex++] = u'1';
             else
-                tmpBuf[tmpIndex++] = chDigit_0;
+                tmpBuf[tmpIndex++] = u'0';
             tmpVal >>= 1;
         }
     }

@@ -256,11 +256,11 @@ inline bool RegxParser::isSet(const int flag) {
 
 inline int RegxParser::hexChar(const XMLInt32 ch) {
 
-    if (ch < chDigit_0 || ch > u'f')
+    if (ch < u'0' || ch > u'f')
         return -1;
 
-    if (ch <= chDigit_9)
-        return ch - chDigit_0;
+    if (ch <= u'9')
+        return ch - u'0';
 
     if (ch < u'A')
         return -1;

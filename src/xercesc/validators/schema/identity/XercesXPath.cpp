@@ -862,7 +862,7 @@ bool XPathScanner::scanExpression(const XMLCh* const data,
                 addToken(tokens, XercesXPath::EXPRTOKEN_DOUBLE_PERIOD);
                 starIsMultiplyOperator = true;
                 currentOffset += 2;
-            } else if (ch >= chDigit_0 && ch <= chDigit_9) {
+            } else if (ch >= u'0' && ch <= u'9') {
                 addToken(tokens, XercesXPath::EXPRTOKEN_NUMBER);
                 starIsMultiplyOperator = true;
                 currentOffset = scanNumber(data, endOffset, currentOffset, tokens);
@@ -1376,9 +1376,9 @@ XMLSize_t XPathScanner::scanNumber(const XMLCh* const data,
     int   whole = 0;
     int   part = 0;
 
-    while (ch >= chDigit_0 && ch <= chDigit_9) {
+    while (ch >= u'0' && ch <= u'9') {
 
-        whole = (whole * 10) + (ch - chDigit_0);
+        whole = (whole * 10) + (ch - u'0');
 
         if (++currentOffset == endOffset) {
             break;
@@ -1393,9 +1393,9 @@ XMLSize_t XPathScanner::scanNumber(const XMLCh* const data,
 
             ch = data[currentOffset];
 
-            while (ch >= chDigit_0 && ch <= chDigit_9) {
+            while (ch >= u'0' && ch <= u'9') {
 
-                part = (part * 10) + (ch - chDigit_0);
+                part = (part * 10) + (ch - u'0');
 
                 if (++currentOffset == endOffset) {
                     break;

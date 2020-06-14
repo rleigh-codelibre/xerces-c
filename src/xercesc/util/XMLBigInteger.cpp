@@ -47,7 +47,7 @@ XMLCh* XMLBigInteger::getCanonicalRepresentation(const XMLCh*         const rawD
 
         if (sign == 0)
         {
-           retBuf[0] = chDigit_0;
+           retBuf[0] = u'0';
            retBuf[1] = u'\0';
         }
         else if (sign == -1)
@@ -153,7 +153,7 @@ void XMLBigInteger::parseBigInteger(const XMLCh* const toConvert
 
 
     // Scan past any leading zero.
-    while (*startPtr == chDigit_0)
+    while (*startPtr == u'0')
         startPtr++;
 
     if (startPtr >= endPtr)
@@ -167,7 +167,7 @@ void XMLBigInteger::parseBigInteger(const XMLCh* const toConvert
     while (startPtr < endPtr)
     {
         // If not valid decimal digit, then an error
-        if ((*startPtr < chDigit_0) || (*startPtr > chDigit_9))
+        if ((*startPtr < u'0') || (*startPtr > u'9'))
             ThrowXMLwithMemMgr(NumberFormatException, XMLExcepts::XMLNUM_Inv_chars, manager);
 
         // copy over
@@ -359,7 +359,7 @@ void XMLBigInteger::multiply(const unsigned int byteToShift)
 
     unsigned int i = 0;
     for ( ; i < byteToShift; i++)
-        tmp[strLen+i] = chDigit_0;
+        tmp[strLen+i] = u'0';
 
     tmp[strLen+i] = u'\0';
 

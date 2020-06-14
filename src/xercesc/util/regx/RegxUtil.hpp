@@ -92,7 +92,7 @@ inline void RegxUtil::decomposeToSurrogates(XMLInt32 ch, XMLCh& high, XMLCh& low
 inline bool RegxUtil::isWordChar(const XMLCh ch) {
 
     if ((ch == chUnderscore)
-        || (ch >= chDigit_0 && ch <= chDigit_9)
+        || (ch >= u'0' && ch <= u'9')
         || (ch >= u'A' && ch <= u'Z')
         || (ch >= u'a' && ch <= u'z'))
         return true;

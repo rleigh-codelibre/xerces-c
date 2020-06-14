@@ -1516,10 +1516,10 @@ int XMLDateTime::parseInt(const XMLSize_t start, const XMLSize_t end) const
     unsigned int retVal = 0;
     for (XMLSize_t i=start; i < end; i++) {
 
-        if (fBuffer[i] < chDigit_0 || fBuffer[i] > chDigit_9)
+        if (fBuffer[i] < u'0' || fBuffer[i] > u'9')
             ThrowXMLwithMemMgr(NumberFormatException, XMLExcepts::XMLNUM_Inv_chars, fMemoryManager);
 
-        retVal = (retVal * 10) + (unsigned int) (fBuffer[i] - chDigit_0);
+        retVal = (retVal * 10) + (unsigned int) (fBuffer[i] - u'0');
     }
 
     return (int) retVal;
@@ -1538,10 +1538,10 @@ double XMLDateTime::parseMiliSecond(const XMLSize_t start, const XMLSize_t end) 
 
     for (XMLSize_t i=start; i < end; i++) {
 
-        if (fBuffer[i] < chDigit_0 || fBuffer[i] > chDigit_9)
+        if (fBuffer[i] < u'0' || fBuffer[i] > u'9')
             ThrowXMLwithMemMgr(NumberFormatException, XMLExcepts::XMLNUM_Inv_chars, fMemoryManager);
 
-        retval += (fBuffer[i] == chDigit_0) ? 0 : ((double) (fBuffer[i] - chDigit_0)/div);
+        retval += (fBuffer[i] == u'0') ? 0 : ((double) (fBuffer[i] - u'0')/div);
         div *= 10;
     }
 
@@ -1572,7 +1572,7 @@ int XMLDateTime::parseIntYear(const XMLSize_t end) const
         //"Year must have 'CCYY' format");
     }
     else if (length > 4 &&
-             fBuffer[start] == chDigit_0)
+             fBuffer[start] == u'0')
     {
         ThrowXMLwithMemMgr1(SchemaDateTimeException
                 , XMLExcepts::DateTime_year_leadingZero
@@ -1639,8 +1639,8 @@ XMLCh* XMLDateTime::getDateTimeCanonicalRepresentation(MemoryManager* const memM
     fillString(retPtr, fValue[Hour], 2);
     if (fValue[Hour] == 24)
     {
-        *(retPtr - 2) = chDigit_0;
-        *(retPtr - 1) = chDigit_0;
+        *(retPtr - 2) = u'0';
+        *(retPtr - 1) = u'0';
     }
     *retPtr++ = TIME_SEPARATOR;
     fillString(retPtr, fValue[Minute], 2);
@@ -1837,8 +1837,8 @@ XMLCh* XMLDateTime::getTimeCanonicalRepresentation(MemoryManager* const memMgr) 
     fillString(retPtr, fValue[Hour], 2);
     if (fValue[Hour] == 24)
     {
-        *(retPtr - 2) = chDigit_0;
-        *(retPtr - 1) = chDigit_0;
+        *(retPtr - 2) = u'0';
+        *(retPtr - 1) = u'0';
     }
     *retPtr++ = TIME_SEPARATOR;
     fillString(retPtr, fValue[Minute], 2);
@@ -1869,7 +1869,7 @@ void XMLDateTime::fillString(XMLCh*& ptr, int value, XMLSize_t expLen) const
     //append leading zeros
     for (i = 0; i < expLen - actualLen; i++)
     {
-        *ptr++ = chDigit_0;
+        *ptr++ = u'0';
     }
 
     for (i = 0; i < actualLen; i++)
@@ -1896,7 +1896,7 @@ int XMLDateTime::fillYearString(XMLCh*& ptr, int value) const
     //append leading zeros
     if(actualLen+negativeYear < 4)
         for (i = 0; i < 4 - actualLen+negativeYear; i++)
-            *ptr++ = chDigit_0;
+            *ptr++ = u'0';
 
     for (i = negativeYear; i < actualLen; i++)
         *ptr++ = strBuffer[i];
@@ -1924,14 +1924,14 @@ void XMLDateTime::searchMiliSeconds(XMLCh*& miliStartPtr, XMLCh*& miliEndPtr) co
     miliEndPtr   = miliStartPtr;
     while (*miliEndPtr)
     {
-        if ((*miliEndPtr < chDigit_0) || (*miliEndPtr > chDigit_9))
+        if ((*miliEndPtr < u'0') || (*miliEndPtr > u'9'))
             break;
 
         miliEndPtr++;
     }
 
     //remove trailing zeros
-    while( *(miliEndPtr - 1) == chDigit_0)
+    while( *(miliEndPtr - 1) == u'0')
         miliEndPtr--;
 
     return;

@@ -175,7 +175,7 @@ RangeToken* RangeToken::getCaseInsensitiveToken(TokenFactory* const tokFactory) 
             XMLString::binToText(fRanges[i], buffer, 10, 16, fMemoryManager);
             len = XMLString::stringLen(buffer);
             for(j=0;j<(8-len);j++)
-                rangeStr[c++] = chDigit_0;
+                rangeStr[c++] = u'0';
             XMLCh* p=buffer;
             while(*p)
                 rangeStr[c++] = *p++;
@@ -187,7 +187,7 @@ RangeToken* RangeToken::getCaseInsensitiveToken(TokenFactory* const tokFactory) 
                 XMLString::binToText(fRanges[i+1], buffer, 10, 16, fMemoryManager);
                 len = XMLString::stringLen(buffer);
                 for(j=0;j<(8-len);j++)
-                    rangeStr[c++] = chDigit_0;
+                    rangeStr[c++] = u'0';
                 p=buffer;
                 while(*p)
                     rangeStr[c++] = *p++;

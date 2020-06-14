@@ -279,16 +279,16 @@ const XMLCh * DOMNormalizer::integerToXMLCh(unsigned int i) const {
 
 	do {
         switch(i % 10) {
-        case 0 : *--pos = chDigit_0;break;
-        case 1 : *--pos = chDigit_1;break;
-        case 2 : *--pos = chDigit_2;break;
-        case 3 : *--pos = chDigit_3;break;
-        case 4 : *--pos = chDigit_4;break;
-        case 5 : *--pos = chDigit_5;break;
-        case 6 : *--pos = chDigit_6;break;
-        case 7 : *--pos = chDigit_7;break;
-        case 8 : *--pos = chDigit_8;break;
-        case 9 : *--pos = chDigit_9;break;
+        case 0 : *--pos = u'0';break;
+        case 1 : *--pos = u'1';break;
+        case 2 : *--pos = u'2';break;
+        case 3 : *--pos = u'3';break;
+        case 4 : *--pos = u'4';break;
+        case 5 : *--pos = u'5';break;
+        case 6 : *--pos = u'6';break;
+        case 7 : *--pos = u'7';break;
+        case 8 : *--pos = u'8';break;
+        case 9 : *--pos = u'9';break;
         default:;
         }
 		i /= 10;

@@ -884,11 +884,11 @@ void RegularExpression::subInExp(const XMLCh* const repString,
                 ThrowXMLwithMemMgr(RuntimeException, XMLExcepts::Regex_InvalidRepPattern, manager);
             }
 
-            int index = *ptr - chDigit_0;
+            int index = *ptr - u'0';
 
             const XMLCh *dig = ptr + 1;
             while(XMLString::isDigit(*dig)) {
-                int newIndex = index * 10 + (*dig - chDigit_0);
+                int newIndex = index * 10 + (*dig - u'0');
                 if(newIndex > numSubExp) break;
 
                 index = newIndex;

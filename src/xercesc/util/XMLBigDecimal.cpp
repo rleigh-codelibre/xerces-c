@@ -153,9 +153,9 @@ XMLCh* XMLBigDecimal::getCanonicalRepresentation(const XMLCh*         const rawD
 
     if ( (sign == 0) || (totalDigits == 0))
     {
-        retBuffer[0] = chDigit_0;
+        retBuffer[0] = u'0';
         retBuffer[1] = chPeriod;
-        retBuffer[2] = chDigit_0;
+        retBuffer[2] = u'0';
         retBuffer[3] = u'\0';
     }
     else
@@ -169,7 +169,7 @@ XMLCh* XMLBigDecimal::getCanonicalRepresentation(const XMLCh*         const rawD
 
         if (fractDigits == totalDigits)   // no integer
         {           
-            *retPtr++ = chDigit_0;
+            *retPtr++ = u'0';
             *retPtr++ = chPeriod;
             XMLString::copyNString(retPtr, retBuf, strLen);
             retPtr += strLen;
@@ -180,7 +180,7 @@ XMLCh* XMLBigDecimal::getCanonicalRepresentation(const XMLCh*         const rawD
             XMLString::copyNString(retPtr, retBuf, strLen);
             retPtr += strLen;
             *retPtr++ = chPeriod;
-            *retPtr++ = chDigit_0;
+            *retPtr++ = u'0';
             *retPtr   = u'\0';
         }
         else  // normal
@@ -247,7 +247,7 @@ void  XMLBigDecimal::parseDecimal(const XMLCh* const toParse
     }
 
     // Strip leading zeros
-    while (*startPtr == chDigit_0)
+    while (*startPtr == u'0')
         startPtr++;
 
     // containning zero, only zero, nothing but zero
@@ -278,7 +278,7 @@ void  XMLBigDecimal::parseDecimal(const XMLCh* const toParse
         }
 
         // If not valid decimal digit, then an error
-        if ((*startPtr < chDigit_0) || (*startPtr > chDigit_9))
+        if ((*startPtr < u'0') || (*startPtr > u'9'))
             ThrowXMLwithMemMgr(NumberFormatException, XMLExcepts::XMLNUM_Inv_chars, manager);
 
         // copy over
@@ -295,7 +295,7 @@ void  XMLBigDecimal::parseDecimal(const XMLCh* const toParse
         normalization: remove all trailing zero after the '.'
                        and adjust the scaleValue as well.
     ***/
-    while ((fractDigits > 0) && (*(retPtr-1) == chDigit_0))          
+    while ((fractDigits > 0) && (*(retPtr-1) == u'0'))
     {
         retPtr--;
         fractDigits--;
@@ -348,7 +348,7 @@ void  XMLBigDecimal::parseDecimal(const XMLCh*         const toParse
     }
 
     // Strip leading zeros
-    while (*startPtr == chDigit_0)
+    while (*startPtr == u'0')
         startPtr++;
 
     // containning zero, only zero, nothing but zero
@@ -375,7 +375,7 @@ void  XMLBigDecimal::parseDecimal(const XMLCh*         const toParse
         }
 
         // If not valid decimal digit, then an error
-        if ((*startPtr < chDigit_0) || (*startPtr > chDigit_9))
+        if ((*startPtr < u'0') || (*startPtr > u'9'))
             ThrowXMLwithMemMgr(NumberFormatException, XMLExcepts::XMLNUM_Inv_chars, manager);
 
         startPtr++;

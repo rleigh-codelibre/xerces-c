@@ -96,7 +96,7 @@ static const XMLCh gListSix[]    = u"#";
 // ---------------------------------------------------------------------------
 static bool isHexDigit(const XMLCh toCheck)
 {
-    if (((toCheck >= chDigit_0) && (toCheck <= chDigit_9))
+    if (((toCheck >= u'0') && (toCheck <= u'9'))
     ||  ((toCheck >= u'A') && (toCheck <= u'F'))
     ||  ((toCheck >= u'a') && (toCheck <= u'f')))
     {
@@ -107,8 +107,8 @@ static bool isHexDigit(const XMLCh toCheck)
 
 static unsigned int xlatHexDigit(const XMLCh toXlat)
 {
-    if ((toXlat >= chDigit_0) && (toXlat <= chDigit_9))
-        return (unsigned int)(toXlat - chDigit_0);
+    if ((toXlat >= u'0') && (toXlat <= u'9'))
+        return (unsigned int)(toXlat - u'0');
 
     if ((toXlat >= u'A') && (toXlat <= u'F'))
         return (unsigned int)(toXlat - u'A') + 10;

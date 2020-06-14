@@ -114,8 +114,8 @@ void XMLAbstractDoubleFloat::init(const XMLCh* const strValue)
         // allows "infinity" and "+INF"
         XMLCh curChar;
         while ((curChar = tmpStrValue[lenTempStrValue])!=0) {
-            if (!((curChar >= chDigit_0 &&
-                   curChar <= chDigit_9) ||
+            if (!((curChar >= u'0' &&
+                   curChar <= u'9') ||
                   curChar == chPeriod  ||
                   curChar == chDash    ||
                   curChar == chPlus    ||
@@ -396,7 +396,7 @@ void XMLAbstractDoubleFloat::normalizeZero(XMLCh* const inData)
     XMLCh theChar;
 	while ((theChar=*srcStr++)!=0 && isValidStr)
 	{
-		if ( theChar != chPeriod && theChar != chDigit_0 )
+		if ( theChar != chPeriod && theChar != u'0' )
 			isValidStr = false;           		// invalid char
         else if (theChar == chPeriod)           // process dot
 			dotSeen ? isValidStr = false : dotSeen = true;
@@ -571,11 +571,11 @@ XMLCh* XMLAbstractDoubleFloat::getCanonicalRepresentation(const XMLCh*         c
 
         if ( (sign == 0) || (totalDigits == 0) )
         {
-            retBuffer[0] = chDigit_0;
+            retBuffer[0] = u'0';
             retBuffer[1] = chPeriod;
-            retBuffer[2] = chDigit_0;
+            retBuffer[2] = u'0';
             retBuffer[3] = u'E';
-            retBuffer[4] = chDigit_0;
+            retBuffer[4] = u'0';
             retBuffer[5] = u'\0';
         }
         else
@@ -605,7 +605,7 @@ XMLCh* XMLAbstractDoubleFloat::getCanonicalRepresentation(const XMLCh*         c
 
             if (fractDigits == 0)
             {
-                while(*(endPtr - 1) == chDigit_0)
+                while(*(endPtr - 1) == u'0')
                     endPtr--;
             }
 
@@ -618,7 +618,7 @@ XMLCh* XMLAbstractDoubleFloat::getCanonicalRepresentation(const XMLCh*         c
             }
             else
             {
-                *retPtr++ = chDigit_0;
+                *retPtr++ = u'0';
             }
 
             /***

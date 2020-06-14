@@ -77,7 +77,7 @@ void ASCIIRangeFactory::buildRanges(RangeTokenMap *rangeTokMap) {
 
     // Create digits ranges
     tok = tokFactory->createRange();
-    tok->addRange(chDigit_0, chDigit_9);
+    tok->addRange(u'0', u'9');
 
     // Build the internal map.
     tok->createMap();
@@ -93,7 +93,7 @@ void ASCIIRangeFactory::buildRanges(RangeTokenMap *rangeTokMap) {
 
     // Create word ranges
     tok = tokFactory->createRange();
-    tok->addRange(chDigit_0, chDigit_9);
+    tok->addRange(u'0', u'9');
     tok->addRange(u'A', u'Z');
     tok->addRange(chUnderscore, chUnderscore);
     tok->addRange(u'a', u'z');
@@ -108,7 +108,7 @@ void ASCIIRangeFactory::buildRanges(RangeTokenMap *rangeTokMap) {
 
     // Create xdigit ranges
     tok = tokFactory->createRange();
-    tok->addRange(chDigit_0, chDigit_9);
+    tok->addRange(u'0', u'9');
     tok->addRange(u'A', u'F');
     tok->addRange(u'a', u'a');
     // Build the internal map.
