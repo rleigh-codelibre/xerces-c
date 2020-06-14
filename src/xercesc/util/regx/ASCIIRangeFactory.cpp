@@ -110,7 +110,7 @@ void ASCIIRangeFactory::buildRanges(RangeTokenMap *rangeTokMap) {
     tok = tokFactory->createRange();
     tok->addRange(u'0', u'9');
     tok->addRange(u'A', u'F');
-    tok->addRange(u'a', u'a');
+    tok->addRange(u'a', u'f');
     // Build the internal map.
     tok->createMap();
 
