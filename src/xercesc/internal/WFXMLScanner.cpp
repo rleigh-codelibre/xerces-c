@@ -729,11 +729,7 @@ void WFXMLScanner::scanDocTypeDecl()
 {
     // Just skips over it
     // REVISIT: Should we issue a warning
-    static const XMLCh doctypeIE[] =
-    {
-        chOpenSquare, chCloseAngle, chNull
-    };
-    XMLCh nextCh = fReaderMgr.skipUntilIn(doctypeIE);
+    XMLCh nextCh = fReaderMgr.skipUntilIn(u"[>");
 
     if (nextCh == chOpenSquare)
         fReaderMgr.skipPastChar(chCloseSquare);
@@ -837,17 +833,11 @@ bool WFXMLScanner::scanStartTag(bool& gotData)
             // And next must be an equal sign
             if (!scanEq())
             {
-                static const XMLCh tmpList[] =
-                {
-                    chSingleQuote, chDoubleQuote, chCloseAngle
-                    , chOpenAngle, chForwardSlash, chNull
-                };
-
                 emitError(XMLErrs::ExpectedEqSign);
 
                 //  Try to sync back up by skipping forward until we either
                 //  hit something meaningful.
-                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(tmpList);
+                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"'\"></");
 
                 if ((chFound == chCloseAngle) || (chFound == chForwardSlash))
                 {
@@ -908,17 +898,12 @@ bool WFXMLScanner::scanStartTag(bool& gotData)
             fReaderMgr.skipPastSpaces();
             if (!scanAttValue(attNameRawBuf, fAttValueBuf))
             {
-                static const XMLCh tmpList[] =
-                {
-                    chCloseAngle, chOpenAngle, chForwardSlash, chNull
-                };
-
                 emitError(XMLErrs::ExpectedAttrValue);
 
                 //  It failed, so lets try to get synced back up. We skip
                 //  forward until we find some whitespace or one of the
                 //  chars in our list.
-                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(tmpList);
+                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"></");
 
                 if ((chFound == chCloseAngle)
                 ||  (chFound == chForwardSlash)
@@ -1170,17 +1155,11 @@ bool WFXMLScanner::scanStartTagNS(bool& gotData)
             // And next must be an equal sign
             if (!scanEq())
             {
-                static const XMLCh tmpList[] =
-                {
-                    chSingleQuote, chDoubleQuote, chCloseAngle
-                    , chOpenAngle, chForwardSlash, chNull
-                };
-
                 emitError(XMLErrs::ExpectedEqSign);
 
                 //  Try to sync back up by skipping forward until we either
                 //  hit something meaningful.
-                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(tmpList);
+                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"'\"></");
 
                 if ((chFound == chCloseAngle) || (chFound == chForwardSlash))
                 {
@@ -1236,17 +1215,12 @@ bool WFXMLScanner::scanStartTagNS(bool& gotData)
             fReaderMgr.skipPastSpaces();
             if (!scanAttValue(attNameRawBuf, fAttValueBuf))
             {
-                static const XMLCh tmpList[] =
-                {
-                    chCloseAngle, chOpenAngle, chForwardSlash, chNull
-                };
-
                 emitError(XMLErrs::ExpectedAttrValue);
 
                 //  It failed, so lets try to get synced back up. We skip
                 //  forward until we find some whitespace or one of the
                 //  chars in our list.
-                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(tmpList);
+                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"></");
 
                 if ((chFound == chCloseAngle)
                 ||  (chFound == chForwardSlash)
@@ -1649,11 +1623,6 @@ bool WFXMLScanner::scanAttValue(const XMLCh* const attrName
 //  this call.
 void WFXMLScanner::scanCDSection()
 {
-    static const XMLCh CDataClose[] =
-    {
-            chCloseSquare, chCloseAngle, chNull
-    };
-
     //  The next character should be the opening square bracket. If not
     //  issue an error, but then try to recover by skipping any whitespace
     //  and checking again.
@@ -1688,7 +1657,7 @@ void WFXMLScanner::scanCDSection()
 
         //  If this is a close square bracket it could be our closing
         //  sequence.
-        if (nextCh == chCloseSquare && fReaderMgr.skippedString(CDataClose))
+        if (nextCh == chCloseSquare && fReaderMgr.skippedString(u"]>"))
         {
             //  make sure we were not expecting a trailing surrogate.
             if (gotLeadingSurrogate)

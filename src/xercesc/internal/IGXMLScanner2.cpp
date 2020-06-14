@@ -2629,11 +2629,6 @@ bool IGXMLScanner::scanAttValue(  const   XMLAttDef* const    attDef
 //  this call.
 void IGXMLScanner::scanCDSection()
 {
-    static const XMLCh CDataClose[] =
-    {
-            chCloseSquare, chCloseAngle, chNull
-    };
-
     //  The next character should be the opening square bracket. If not
     //  issue an error, but then try to recover by skipping any whitespace
     //  and checking again.
@@ -2712,7 +2707,7 @@ void IGXMLScanner::scanCDSection()
 
         //  If this is a close square bracket it could be our closing
         //  sequence.
-        if (nextCh == chCloseSquare && fReaderMgr.skippedString(CDataClose))
+        if (nextCh == chCloseSquare && fReaderMgr.skippedString(u"]>"))
         {
             //  make sure we were not expecting a trailing surrogate.
             if (gotLeadingSurrogate)

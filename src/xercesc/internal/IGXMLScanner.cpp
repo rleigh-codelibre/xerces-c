@@ -649,17 +649,11 @@ IGXMLScanner::rawAttrScan(const   XMLCh* const                elemName
             // And next must be an equal sign
             if (!scanEq())
             {
-                static const XMLCh tmpList[] =
-                {
-                    chSingleQuote, chDoubleQuote, chCloseAngle
-                    , chOpenAngle, chForwardSlash, chNull
-                };
-
                 emitError(XMLErrs::ExpectedEqSign);
 
                 //  Try to sync back up by skipping forward until we either
                 //  hit something meaningful.
-                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(tmpList);
+                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"'\"></");
 
                 if ((chFound == chCloseAngle) || (chFound == chForwardSlash))
                 {
@@ -690,17 +684,12 @@ IGXMLScanner::rawAttrScan(const   XMLCh* const                elemName
             //  is to expand entity references.
             if (!basicAttrValueScan(curAttNameBuf, fAttValueBuf))
             {
-                static const XMLCh tmpList[] =
-                {
-                    chCloseAngle, chOpenAngle, chForwardSlash, chNull
-                };
-
                 emitError(XMLErrs::ExpectedAttrValue);
 
                 //  It failed, so lets try to get synced back up. We skip
                 //  forward until we find some whitespace or one of the
                 //  chars in our list.
-                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(tmpList);
+                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"></");
 
                 if ((chFound == chCloseAngle)
                 ||  (chFound == chForwardSlash)
@@ -1528,8 +1517,7 @@ void IGXMLScanner::scanDocTypeDecl()
             //  decl and fill it in and push it with the reader, as happens
             //  with an external entity. Put a janitor on it to insure it gets
             //  cleaned up. The reader manager does not adopt them.
-            const XMLCh gDTDStr[] = { chLatin_D, chLatin_T, chLatin_D , chNull };
-            DTDEntityDecl* declDTD = new (fMemoryManager) DTDEntityDecl(gDTDStr, false, fMemoryManager);
+            DTDEntityDecl* declDTD = new (fMemoryManager) DTDEntityDecl(u"DTD", false, fMemoryManager);
             declDTD->setSystemId(sysId);
             declDTD->setIsExternal(true);
             Janitor<DTDEntityDecl> janDecl(declDTD);
@@ -1718,17 +1706,11 @@ bool IGXMLScanner::scanStartTag(bool& gotData)
             // And next must be an equal sign
             if (!scanEq())
             {
-                static const XMLCh tmpList[] =
-                {
-                    chSingleQuote, chDoubleQuote, chCloseAngle
-                    , chOpenAngle, chForwardSlash, chNull
-                };
-
                 emitError(XMLErrs::ExpectedEqSign);
 
                 //  Try to sync back up by skipping forward until we either
                 //  hit something meaningful.
-                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(tmpList);
+                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"'\"></");
 
                 if ((chFound == chCloseAngle) || (chFound == chForwardSlash))
                 {
@@ -1850,17 +1832,12 @@ bool IGXMLScanner::scanStartTag(bool& gotData)
             fReaderMgr.skipPastSpaces();
             if (!scanAttValue(attDef, namePtr, fAttValueBuf))
             {
-                static const XMLCh tmpList[] =
-                {
-                    chCloseAngle, chOpenAngle, chForwardSlash, chNull
-                };
-
                 emitError(XMLErrs::ExpectedAttrValue);
 
                 //  It failed, so lets try to get synced back up. We skip
                 //  forward until we find some whitespace or one of the
                 //  chars in our list.
-                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(tmpList);
+                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"></");
 
                 if ((chFound == chCloseAngle)
                 ||  (chFound == chForwardSlash)
@@ -3091,8 +3068,7 @@ Grammar* IGXMLScanner::loadDTDGrammar(const InputSource& src,
     //  decl and fill it in and push it with the reader, as happens
     //  with an external entity. Put a janitor on it to insure it gets
     //  cleaned up. The reader manager does not adopt them.
-    const XMLCh gDTDStr[] = { chLatin_D, chLatin_T, chLatin_D , chNull };
-    DTDEntityDecl* declDTD = new (fMemoryManager) DTDEntityDecl(gDTDStr, false, fMemoryManager);
+    DTDEntityDecl* declDTD = new (fMemoryManager) DTDEntityDecl(u"DTD", false, fMemoryManager);
     declDTD->setSystemId(src.getSystemId());
     declDTD->setIsExternal(true);
     Janitor<DTDEntityDecl> janDecl(declDTD);
@@ -3110,7 +3086,7 @@ Grammar* IGXMLScanner::loadDTDGrammar(const InputSource& src,
         // Create a dummy root
         DTDElementDecl* rootDecl = new (fGrammarPoolMemoryManager) DTDElementDecl
         (
-            gDTDStr
+            u"DTD"
             , fEmptyNamespaceId
             , DTDElementDecl::Any
             , fGrammarPoolMemoryManager
@@ -3165,7 +3141,7 @@ void IGXMLScanner::processSchemaLocation(XMLCh* const schemaLoc)
             if (!curReader->isWhitespace(*locStr))
                break;
 
-            *locStr = chNull;
+            *locStr = u'\0';
         } while (*++locStr);
 
         if (*locStr) {

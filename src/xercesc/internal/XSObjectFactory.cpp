@@ -54,9 +54,6 @@
 
 namespace XERCES_CPP_NAMESPACE {
 
-static XMLCh regexSeparator[] = {chPipe, chNull};
-
-
 // ---------------------------------------------------------------------------
 //  XSObjectFactory: Constructors and Destructor
 // ---------------------------------------------------------------------------
@@ -921,7 +918,7 @@ void XSObjectFactory::processFacets(DatatypeValidator* const dv,
             }
             else if (XMLString::equals(key, SchemaSymbols::fgELT_PATTERN) && xsMultiFacetList)
             {
-                XMLStringTokenizer tokenizer(dv->getPattern(), regexSeparator, fMemoryManager);
+                XMLStringTokenizer tokenizer(dv->getPattern(), u"|", fMemoryManager);
                 patternList = new (fMemoryManager) RefArrayVectorOf<XMLCh>(
                     tokenizer.countTokens(), true, fMemoryManager
                 );

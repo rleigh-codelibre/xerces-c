@@ -766,7 +766,7 @@ inline bool XMLReader::peekNextChar(XMLCh& chGotten)
         // Try to refresh the buffer
         if (!refreshCharBuffer())
         {
-            chGotten = chNull;
+            chGotten = u'\0';
             return false;
         }
     }

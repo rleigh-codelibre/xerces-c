@@ -1926,21 +1926,10 @@ XMLScanner::XMLTokens XMLScanner::senseNextToken(XMLSize_t& orgReader)
         }
     case chBang:
         {
-            static const XMLCh gCDATAStr[] =
-            {
-                    chBang, chOpenSquare, chLatin_C, chLatin_D, chLatin_A
-                ,   chLatin_T, chLatin_A, chNull
-            };
-
-            static const XMLCh gCommentString[] =
-            {
-                chBang, chDash, chDash, chNull
-            };
-
-            if (fReaderMgr.skippedString(gCDATAStr))
+            if (fReaderMgr.skippedString(u"![CDATA"))
                 return Token_CData;
 
-            if (fReaderMgr.skippedString(gCommentString))
+            if (fReaderMgr.skippedString(u"!--"))
                 return Token_Comment;
 
             emitError(XMLErrs::ExpectedCommentOrCDATA);
@@ -2064,9 +2053,7 @@ bool XMLScanner::scanCharRef(XMLCh& toFill, XMLCh& second)
         //  running value with this new digit.
         if (nextVal >= radix)
         {
-            XMLCh tmpStr[2];
-            tmpStr[0] = nextCh;
-            tmpStr[1] = chNull;
+            XMLCh tmpStr[2] = { nextCh, '\0' };
             emitError(XMLErrs::BadDigitForRadix, tmpStr);
         }
         else

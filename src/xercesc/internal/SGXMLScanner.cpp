@@ -566,17 +566,11 @@ SGXMLScanner::rawAttrScan(const   XMLCh* const                elemName
             // And next must be an equal sign
             if (!scanEq())
             {
-                static const XMLCh tmpList[] =
-                {
-                    chSingleQuote, chDoubleQuote, chCloseAngle
-                    , chOpenAngle, chForwardSlash, chNull
-                };
-
                 emitError(XMLErrs::ExpectedEqSign);
 
                 //  Try to sync back up by skipping forward until we either
                 //  hit something meaningful.
-                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(tmpList);
+                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"'\"></");
 
                 if ((chFound == chCloseAngle) || (chFound == chForwardSlash))
                 {
@@ -607,17 +601,12 @@ SGXMLScanner::rawAttrScan(const   XMLCh* const                elemName
             //  is to expand entity references.
             if (!basicAttrValueScan(curAttNameBuf, fAttValueBuf))
             {
-                static const XMLCh tmpList[] =
-                {
-                    chCloseAngle, chOpenAngle, chForwardSlash, chNull
-                };
-
                 emitError(XMLErrs::ExpectedAttrValue);
 
                 //  It failed, so lets try to get synced back up. We skip
                 //  forward until we find some whitespace or one of the
                 //  chars in our list.
-                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(tmpList);
+                const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"></");
 
                 if ((chFound == chCloseAngle)
                 ||  (chFound == chForwardSlash)
@@ -1062,11 +1051,7 @@ void SGXMLScanner::scanDocTypeDecl()
 {
     // Just skips over it
     // REVISIT: Should we issue a warning
-    static const XMLCh doctypeIE[] =
-    {
-            chOpenSquare, chCloseAngle, chNull
-    };
-    XMLCh nextCh = fReaderMgr.skipUntilIn(doctypeIE);
+    XMLCh nextCh = fReaderMgr.skipUntilIn(u"[>");
 
     if (nextCh == chOpenSquare)
         fReaderMgr.skipPastChar(chCloseSquare);
@@ -4195,11 +4180,6 @@ bool SGXMLScanner::basicAttrValueScan(const XMLCh* const attrName, XMLBuffer& to
 //  this call.
 void SGXMLScanner::scanCDSection()
 {
-    static const XMLCh CDataClose[] =
-    {
-            chCloseSquare, chCloseAngle, chNull
-    };
-
     //  The next character should be the opening square bracket. If not
     //  issue an error, but then try to recover by skipping any whitespace
     //  and checking again.
@@ -4273,7 +4253,7 @@ void SGXMLScanner::scanCDSection()
 
         //  If this is a close square bracket it could be our closing
         //  sequence.
-        if (nextCh == chCloseSquare && fReaderMgr.skippedString(CDataClose))
+        if (nextCh == chCloseSquare && fReaderMgr.skippedString(u"]>"))
         {
             //  make sure we were not expecting a trailing surrogate.
             if (gotLeadingSurrogate) {

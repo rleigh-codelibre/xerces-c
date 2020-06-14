@@ -1608,7 +1608,7 @@ void XTemplateSerializer::loadObject(RefHashTableOf<DatatypeValidator>** objToLo
             XMLString::moveChars(typeKey, typeUri, uriLen+1);
             typeKey[uriLen] = chComma;
             XMLString::moveChars(&typeKey[uriLen+1], typeLocal, localLen+1);
-            typeKey[uriLen + localLen + 1] = chNull;
+            typeKey[uriLen + localLen + 1] = u'\0';
             ArrayJanitor<XMLCh> janName(typeKey, serEng.getMemoryManager());
 
             /*
