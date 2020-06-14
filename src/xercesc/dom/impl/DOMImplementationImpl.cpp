@@ -45,23 +45,14 @@ namespace XERCES_CPP_NAMESPACE {
 // ------------------------------------------------------------
 //  Static constants
 // ------------------------------------------------------------
-static const XMLCh  g1_0[] =     // Points to "1.0"
-        {chDigit_1, chPeriod, chDigit_0, chNull};
-static const XMLCh  g2_0[] =      // Points to "2.0"
-        {chDigit_2, chPeriod, chDigit_0, chNull};
-static const XMLCh  g3_0[] =      // Points to "3.0"
-        {chDigit_3, chPeriod, chDigit_0, chNull};
-static const XMLCh  gTrav[] =     // Points to "Traversal"
-        {chLatin_T, chLatin_r, chLatin_a, chLatin_v, chLatin_e, chLatin_r,
-            chLatin_s, chLatin_a, chLatin_l, chNull};
-static const XMLCh  gCore[] =     // Points to "Core"
-        {chLatin_C, chLatin_o, chLatin_r, chLatin_e, chNull};
-static const XMLCh  gRange[] =     // Points to "Range"
-        {chLatin_R, chLatin_a, chLatin_n, chLatin_g, chLatin_e, chNull};
-static const XMLCh  gLS[] =     // Points to "LS"
-        {chLatin_L, chLatin_S, chNull};
-static const XMLCh  gXPath[] =     // Points to "XPath"
-        {chLatin_X, chLatin_P, chLatin_a, chLatin_t, chLatin_h, chNull};
+static const XMLCh  *g1_0 =   u"1.0";
+static const XMLCh  *g2_0 =   u"2.0";
+static const XMLCh  *g3_0 =   u"3.0";
+static const XMLCh  *gTrav =  u"Traversal";
+static const XMLCh  *gCore =  u"Core";
+static const XMLCh  *gRange = u"Range";
+static const XMLCh  *gLS =    u"LS";
+static const XMLCh  *gXPath = u"XPath";
 
 
 static XMLMsgLoader *sMsgLoader = 0;

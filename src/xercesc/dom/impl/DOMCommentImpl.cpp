@@ -62,9 +62,7 @@ DOMNode * DOMCommentImpl::cloneNode(bool deep) const
 
 
 const XMLCh * DOMCommentImpl::getNodeName() const {
-    static const XMLCh gComment[] =
-        {chPound, chLatin_c, chLatin_o, chLatin_m, chLatin_m, chLatin_e,chLatin_n, chLatin_t, 0};
-    return gComment;
+    return u"#comment";
 }
 
 DOMNode::NodeType DOMCommentImpl::getNodeType() const {

@@ -68,9 +68,7 @@ DOMNode  *DOMCDATASectionImpl::cloneNode(bool deep) const
 
 
 const XMLCh * DOMCDATASectionImpl::getNodeName() const {
-    static const XMLCh gcdata_section[] = {chPound, chLatin_c, chLatin_d, chLatin_a, chLatin_t, chLatin_a,
-        chDash, chLatin_s, chLatin_e, chLatin_c, chLatin_t, chLatin_i, chLatin_o, chLatin_n, 0};
-    return gcdata_section;
+    return u"#cdata-section";
 }
 
 

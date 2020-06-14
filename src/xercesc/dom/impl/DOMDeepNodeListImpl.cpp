@@ -30,7 +30,7 @@
 namespace XERCES_CPP_NAMESPACE {
 
 
-static const XMLCh kAstr[] = {chAsterisk, chNull};
+static const XMLCh *kAstr = u"*";
 
 DOMDeepNodeListImpl::DOMDeepNodeListImpl(const DOMNode *rootNode,
                                        const XMLCh *tagName)

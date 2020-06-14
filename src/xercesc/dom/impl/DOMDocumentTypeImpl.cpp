@@ -43,8 +43,7 @@ void XMLInitializer::initializeDOMDocumentTypeImpl()
 {
     sDocumentMutex = new XMLMutex(XMLPlatformUtils::fgMemoryManager);
 
-    static const XMLCh gCoreStr[] = { chLatin_C, chLatin_o, chLatin_r, chLatin_e, chNull };
-    DOMImplementation* impl =  DOMImplementationRegistry::getDOMImplementation(gCoreStr);
+    DOMImplementation* impl =  DOMImplementationRegistry::getDOMImplementation(u"Core");
     sDocument = impl->createDocument(); // document type object (DTD).
 }
 
@@ -127,7 +126,7 @@ DOMDocumentTypeImpl::DOMDocumentTypeImpl(DOMDocument *ownerDoc,
             newName = temp;
 
         XMLString::copyNString(newName, qualifiedName, index);
-        newName[index] = chNull;
+        newName[index] = u'\0';
 
         // Before we carry on, we should check if the prefix or localName are valid XMLName
         if (ownerDoc) {

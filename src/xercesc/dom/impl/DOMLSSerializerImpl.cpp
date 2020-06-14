@@ -92,130 +92,25 @@ static const bool  featuresSupported[] = {
 };
 
 // default end-of-line sequence
-static const XMLCh  gEOLSeq[] =
-{
-    chLF, chNull
-};
-
-//UTF-8
-static const XMLCh  gUTF8[] =
-{
-    chLatin_U, chLatin_T, chLatin_F, chDash, chDigit_8, chNull
-};
-
-//</
-static const XMLCh  gEndElement[] =
-{
-    chOpenAngle, chForwardSlash, chNull
-};
-
-//?>
-static const XMLCh  gEndPI[] =
-{
-    chQuestion, chCloseAngle, chNull
-};
-
-//<?
-static const XMLCh  gStartPI[] =
-{
-    chOpenAngle, chQuestion, chNull
-};
-
-//<?xml version="
-static const XMLCh  gXMLDecl_VersionInfo[] =
-{
-    chOpenAngle, chQuestion, chLatin_x,     chLatin_m,  chLatin_l,  chSpace,
-    chLatin_v,   chLatin_e,  chLatin_r,     chLatin_s,  chLatin_i,  chLatin_o,
-    chLatin_n,   chEqual,    chDoubleQuote, chNull
-};
-
-//encoding="
-static const XMLCh  gXMLDecl_EncodingDecl[] =
-{
-    chLatin_e,  chLatin_n,  chLatin_c,  chLatin_o,      chLatin_d, chLatin_i,
-    chLatin_n,  chLatin_g,  chEqual,    chDoubleQuote,  chNull
-};
-
-//" standalone="
-static const XMLCh  gXMLDecl_SDDecl[] =
-{
-    chLatin_s, chLatin_t, chLatin_a,   chLatin_n,    chLatin_d,   chLatin_a,
-    chLatin_l, chLatin_o, chLatin_n,   chLatin_e,    chEqual,     chDoubleQuote,
-    chNull
-};
-
-//"
-static const XMLCh  gXMLDecl_separator[] =
-{
-    chDoubleQuote, chSpace, chNull
-};
-
-//?>
-static const XMLCh  gXMLDecl_endtag[] =
-{
-    chQuestion, chCloseAngle,  chNull
-};
-
-//<![CDATA[
-static const XMLCh  gStartCDATA[] =
-{
-    chOpenAngle, chBang,    chOpenSquare, chLatin_C, chLatin_D,
-    chLatin_A,   chLatin_T, chLatin_A,    chOpenSquare, chNull
-};
-
-//]]>
-static const XMLCh  gEndCDATA[] =
-{
-//    chCloseSquare, chCloseAngle, chCloseAngle, chNull  // test only: ]>>
-      chCloseSquare, chCloseSquare, chCloseAngle, chNull
-};
-
-//<!--
-static const XMLCh  gStartComment[] =
-{
-    chOpenAngle, chBang, chDash, chDash, chNull
-};
-
-//-->
-static const XMLCh  gEndComment[] =
-{
-    chDash, chDash, chCloseAngle, chNull
-};
-
-//<!DOCTYPE
-static const XMLCh  gStartDoctype[] =
-{
-    chOpenAngle, chBang,    chLatin_D, chLatin_O, chLatin_C, chLatin_T,
-    chLatin_Y,   chLatin_P, chLatin_E, chSpace,   chNull
-};
-
-//PUBLIC "
-static const XMLCh  gPublic[] =
-{
-    chLatin_P, chLatin_U, chLatin_B,     chLatin_L, chLatin_I,
-    chLatin_C, chSpace,   chDoubleQuote, chNull
-};
-
-//SYSTEM "
-static const XMLCh  gSystem[] =
-{
-    chLatin_S, chLatin_Y, chLatin_S,     chLatin_T, chLatin_E,
-    chLatin_M, chSpace,   chDoubleQuote, chNull
-};
-
-//<!ENTITY
-static const XMLCh  gStartEntity[] =
-{
-    chOpenAngle, chBang,    chLatin_E, chLatin_N, chLatin_T, chLatin_I,
-    chLatin_T,   chLatin_Y, chSpace,   chNull
-};
-
-//NDATA "
-static const XMLCh  gNotation[] =
-{
-    chLatin_N, chLatin_D,     chLatin_A, chLatin_T, chLatin_A,
-    chSpace,   chDoubleQuote, chNull
-};
+static const XMLCh  *gEOLSeq =               u"\n";
+static const XMLCh  *gUTF8 =                 u"UTF-8";
+static const XMLCh  *gEndElement =           u"</";
+static const XMLCh  *gEndPI =                u"?>";
+static const XMLCh  *gStartPI =              u"<?";
+static const XMLCh  *gXMLDecl_VersionInfo =  u"<?xml version=\"";
+static const XMLCh  *gXMLDecl_EncodingDecl = u"encoding=\"";
+static const XMLCh  *gXMLDecl_SDDecl =       u"standalone=\"";
+static const XMLCh  *gXMLDecl_separator =    u"\" ";
+static const XMLCh  *gXMLDecl_endtag =       u"?>";
+static const XMLCh  *gStartCDATA =           u"<![CDATA[";
+static const XMLCh  *gEndCDATA =             u"]]>";
+static const XMLCh  *gStartComment =         u"<!--";
+static const XMLCh  *gEndComment =           u"-->";
+static const XMLCh  *gStartDoctype =         u"<!DOCTYPE ";
+static const XMLCh  *gPublic =               u"PUBLIC \"";
+static const XMLCh  *gSystem =               u"SYSTEM \"";
+static const XMLCh  *gStartEntity =          u"<!ENTITY ";
+static const XMLCh  *gNotation =             u"NDATA \"";
 
 static const XMLByte  BOM_utf8[]    = {(XMLByte)0xEF, (XMLByte)0xBB, (XMLByte)0xBF, (XMLByte) 0};
 static const XMLByte  BOM_utf16be[] = {(XMLByte)0xFE, (XMLByte)0xFF, (XMLByte) 0};
@@ -1476,7 +1371,7 @@ void DOMLSSerializerImpl::procCdataSection(const XMLCh*   const nodeValue
         if (endTagPos != -1)
         {
             nextPtr = curPtr + endTagPos + offset;  // skip the ']]>'
-            *(curPtr + endTagPos) = chNull;         //nullify the first ']'
+            *(curPtr + endTagPos) = u'\0';         //nullify the first ']'
             if (XMLSize_t(endTagPos) != len)
                 reportError(nodeToWrite, DOMError::DOM_SEVERITY_WARNING, XMLDOMMsg::Writer_NestedCDATA);
             len = len - endTagPos - offset;
@@ -1584,7 +1479,7 @@ void DOMLSSerializerImpl::procUnrepCharInCdataSection(const XMLCh*   const nodeV
                 XMLString::binToText(*srcPtr, &tmpBuf[3], 8, 16, fMemoryManager);
                 const XMLSize_t bufLen = XMLString::stringLen(tmpBuf);
                 tmpBuf[bufLen] = chSemiColon;
-                tmpBuf[bufLen+1] = chNull;
+                tmpBuf[bufLen+1] = u'\0';
 
                 // And now call recursively back to our caller to format this
                 fFormatter->formatBuf

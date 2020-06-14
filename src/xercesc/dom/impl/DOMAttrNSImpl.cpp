@@ -115,10 +115,10 @@ void DOMAttrNSImpl::setPrefix(const XMLCh *prefix)
 
     if (fNode.isReadOnly())
         throw DOMException(DOMException::NO_MODIFICATION_ALLOWED_ERR, 0, GetDOMNodeMemoryManager);
-    if (fNamespaceURI == 0 || fNamespaceURI[0] == chNull || XMLString::equals(fLocalName, xmlns))
+    if (fNamespaceURI == 0 || fNamespaceURI[0] == u'\0' || XMLString::equals(fLocalName, xmlns))
         throw DOMException(DOMException::NAMESPACE_ERR, 0, GetDOMNodeMemoryManager);
 
-    if (prefix == 0 || prefix[0] == chNull) {
+    if (prefix == 0 || prefix[0] == u'\0') {
         fName = fLocalName;
         fPrefix = 0;
         return;

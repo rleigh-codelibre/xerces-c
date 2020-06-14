@@ -261,9 +261,7 @@ DOMNode *DOMDocumentImpl::cloneNode(bool deep) const {
 
 
 const XMLCh * DOMDocumentImpl::getNodeName() const {
-    static const XMLCh nam[] =  // "#document"
-        {chPound, chLatin_d, chLatin_o, chLatin_c, chLatin_u, chLatin_m, chLatin_e, chLatin_n, chLatin_t, 0};
-    return nam;
+    return u"#document";
 }
 
 

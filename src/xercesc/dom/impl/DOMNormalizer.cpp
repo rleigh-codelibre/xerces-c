@@ -275,7 +275,7 @@ void DOMNormalizer::namespaceFixUp(DOMElementImpl *ele) const {
 const XMLCh * DOMNormalizer::integerToXMLCh(unsigned int i) const {
     XMLCh *buf = (XMLCh*) fMemoryManager->allocate(15 * sizeof(XMLCh));//new XMLCh[15];
 	XMLCh *pos = buf + sizeof(buf) - sizeof(XMLCh);
-	*pos = chNull;
+	*pos = u'\0';
 
 	do {
         switch(i % 10) {

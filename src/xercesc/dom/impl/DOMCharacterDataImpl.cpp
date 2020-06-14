@@ -309,7 +309,7 @@ const XMLCh * DOMCharacterDataImpl::substringData(const DOMNode *node, XMLSize_t
         newString = temp;
 
     XMLString::copyNString(newString, fDataBuf->getRawBuffer()+offset, count);
-    newString[count] = chNull;
+    newString[count] = u'\0';
 
     const XMLCh* retString = doc->getPooledString(newString);
 

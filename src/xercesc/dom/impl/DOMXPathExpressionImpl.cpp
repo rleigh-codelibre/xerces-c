@@ -74,7 +74,7 @@ DOMXPathExpressionImpl::DOMXPathExpressionImpl(const XMLCh *expression, const DO
     {
         fExpression=(XMLCh*)fMemoryManager->allocate((XMLString::stringLen(expression)+2)*sizeof(XMLCh));
         *fExpression = chPeriod;
-        *(fExpression+1) = chNull;
+        *(fExpression+1) = u'\0';
         XMLString::catString(fExpression, expression);
         fMoveToRoot=true;
     }

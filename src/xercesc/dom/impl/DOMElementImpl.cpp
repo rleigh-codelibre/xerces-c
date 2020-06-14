@@ -500,17 +500,9 @@ const XMLCh* DOMElementImpl::getBaseURI() const
 {
     const XMLCh* baseURI = fNode.fOwnerNode->getBaseURI();
     if (fAttributes) {
-        const XMLCh baseString[] =
-        {
-            chLatin_b, chLatin_a, chLatin_s, chLatin_e, chNull
-        };
-        DOMNode* attrNode = fAttributes->getNamedItemNS(DOMNodeImpl::getXmlURIString(), baseString);
+        DOMNode* attrNode = fAttributes->getNamedItemNS(DOMNodeImpl::getXmlURIString(), u"base");
         if (attrNode==NULL) {
-            const XMLCh xmlBaseString[] =
-            {
-                chLatin_x, chLatin_m, chLatin_l, chColon, chLatin_b, chLatin_a, chLatin_s, chLatin_e, chNull
-            };
-            attrNode = fAttributes->getNamedItem(xmlBaseString);
+            attrNode = fAttributes->getNamedItem(u"xml:base");
         }
         if (attrNode) {
             const XMLCh* uri =  attrNode->getNodeValue();

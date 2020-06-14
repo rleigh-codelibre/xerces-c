@@ -78,8 +78,7 @@ DOMNode *DOMTextImpl::cloneNode(bool deep) const
 
 
 const XMLCh * DOMTextImpl::getNodeName() const {
-    static const XMLCh gtext[] = {chPound, chLatin_t, chLatin_e, chLatin_x, chLatin_t, chNull};
-    return gtext;
+    return u"#text";
 }
 
 DOMNode::NodeType DOMTextImpl::getNodeType() const {

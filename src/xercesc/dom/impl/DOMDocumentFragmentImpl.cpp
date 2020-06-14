@@ -58,10 +58,7 @@ DOMNode *DOMDocumentFragmentImpl::cloneNode(bool deep) const
 
 
 const XMLCh * DOMDocumentFragmentImpl::getNodeName() const {
-    static const XMLCh name[] = {chPound, chLatin_d, chLatin_o, chLatin_c, chLatin_u, chLatin_m,
-        chLatin_e, chLatin_n, chLatin_t, chDash,
-        chLatin_f, chLatin_r, chLatin_a, chLatin_g, chLatin_m, chLatin_e, chLatin_n, chLatin_t, 0};
-    return name;
+    return u"#document-fragment";
 }
 
 

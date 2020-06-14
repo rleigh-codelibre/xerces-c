@@ -116,7 +116,7 @@ void DOMElementNSImpl::setPrefix(const XMLCh *prefix)
 {
     if (fNode.isReadOnly())
         throw DOMException(DOMException::NO_MODIFICATION_ALLOWED_ERR, 0, GetDOMNodeMemoryManager);
-    if (fNamespaceURI == 0 || fNamespaceURI[0] == chNull)
+    if (fNamespaceURI == 0 || fNamespaceURI[0] == u'\0')
         throw DOMException(DOMException::NAMESPACE_ERR, 0, GetDOMNodeMemoryManager);
 
     if (prefix == 0 || *prefix == 0) {
