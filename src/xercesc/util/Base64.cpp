@@ -39,19 +39,14 @@ static const int FOURBYTE   = 4;
 
 // the base64 alphabet according to definition in RFC 2045
 const XMLByte Base64::base64Alphabet[] = {
-    chLatin_A, chLatin_B, chLatin_C, chLatin_D, chLatin_E,
-    chLatin_F, chLatin_G, chLatin_H, chLatin_I, chLatin_J,
-    chLatin_K, chLatin_L, chLatin_M, chLatin_N, chLatin_O,
-    chLatin_P, chLatin_Q, chLatin_R, chLatin_S, chLatin_T,
-    chLatin_U, chLatin_V, chLatin_W, chLatin_X, chLatin_Y, chLatin_Z,
-    chLatin_a, chLatin_b, chLatin_c, chLatin_d, chLatin_e,
-    chLatin_f, chLatin_g, chLatin_h, chLatin_i, chLatin_j,
-    chLatin_k, chLatin_l, chLatin_m, chLatin_n, chLatin_o,
-    chLatin_p, chLatin_q, chLatin_r, chLatin_s, chLatin_t,
-    chLatin_u, chLatin_v, chLatin_w, chLatin_x, chLatin_y, chLatin_z,
-    chDigit_0, chDigit_1, chDigit_2, chDigit_3, chDigit_4,
-    chDigit_5, chDigit_6, chDigit_7, chDigit_8, chDigit_9,
-    chPlus, chForwardSlash, chNull
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+    'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+    'U', 'V', 'W', 'X', 'Y', 'Z',
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+    'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+    'u', 'v', 'w', 'x', 'y', 'z',
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+    '+', '/', '\0'
 };
 
 // This is an inverse table for base64 decoding.  So, if
