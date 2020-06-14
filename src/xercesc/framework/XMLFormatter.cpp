@@ -50,38 +50,18 @@ namespace XERCES_CPP_NAMESPACE {
 //      no more valid entries in that list. The first entry is a dummy for
 //      the NoEscapes style.
 // ---------------------------------------------------------------------------
-static const XMLCh  gAmpRef[] =
-{
-    chAmpersand, chLatin_a, chLatin_m, chLatin_p, chSemiColon, chNull
-};
+static const XMLCh  *gAmpRef =   u"&amp;";
+static const XMLCh  *gAposRef =  u"&apos;";
+static const XMLCh  *gGTRef =    u"&gt;";
+static const XMLCh  *gLTRef =    u"&lt;";
+static const XMLCh  *gQuoteRef = u"&quot;";
 
-static const XMLCh  gAposRef[] =
+static const XMLCh *gEscapeChars[XMLFormatter::EscapeFlags_Count] =
 {
-    chAmpersand, chLatin_a, chLatin_p, chLatin_o, chLatin_s, chSemiColon, chNull
-};
-
-static const XMLCh  gGTRef[] =
-{
-    chAmpersand, chLatin_g, chLatin_t, chSemiColon, chNull
-};
-
-static const XMLCh  gLTRef[] =
-{
-    chAmpersand, chLatin_l, chLatin_t, chSemiColon, chNull
-};
-
-static const XMLCh  gQuoteRef[] =
-{
-    chAmpersand, chLatin_q, chLatin_u, chLatin_o, chLatin_t, chSemiColon, chNull
-};
-
-static const unsigned int kEscapeCount = 7;
-static const XMLCh gEscapeChars[XMLFormatter::EscapeFlags_Count][kEscapeCount] =
-{
-        { chNull      , chNull       , chNull        , chNull       , chNull        , chNull    , chNull }
-    ,   { chAmpersand , chCloseAngle , chDoubleQuote , chOpenAngle  , chSingleQuote , chNull    , chNull }
-    ,   { chAmpersand , chOpenAngle  , chDoubleQuote , chLF         , chCR          , chHTab    , chNull }
-    ,   { chAmpersand , chOpenAngle  , chCloseAngle  , chCR         , chNull        , chNull    , chNull }
+        u"",
+        u"&>\"<'",
+        u"&<\"\n\r\t",
+        u"&><\r"
 };
 
 // ---------------------------------------------------------------------------
@@ -570,7 +550,7 @@ void XMLFormatter::writeCharRef(const XMLCh &toWrite)
     XMLString::binToText(toWrite, &tmpBuf[3], 8, 16, fMemoryManager);
     const XMLSize_t bufLen = XMLString::stringLen(tmpBuf);
     tmpBuf[bufLen] = chSemiColon;
-    tmpBuf[bufLen+1] = chNull;
+    tmpBuf[bufLen+1] = '\0';
 
     // write it out
     formatBuf(tmpBuf
@@ -591,7 +571,7 @@ void XMLFormatter::writeCharRef(XMLSize_t toWrite)
     XMLString::sizeToText(toWrite, &tmpBuf[3], 32, 16, fMemoryManager);
     const XMLSize_t bufLen = XMLString::stringLen(tmpBuf);
     tmpBuf[bufLen] = chSemiColon;
-    tmpBuf[bufLen+1] = chNull;
+    tmpBuf[bufLen+1] = u'\0';
 
     // write it out
     formatBuf(tmpBuf

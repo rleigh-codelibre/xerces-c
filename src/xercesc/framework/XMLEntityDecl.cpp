@@ -115,8 +115,7 @@ XMLEntityDecl::XMLEntityDecl(const  XMLCh* const   entName
 
     try
     {
-        XMLCh dummy[2] = { chNull, chNull };
-        dummy[0] = value;
+        XMLCh dummy[2] = { value, u'\0' };
         fValue = XMLString::replicate(dummy, fMemoryManager);
         fName = XMLString::replicate(entName, fMemoryManager);
     }

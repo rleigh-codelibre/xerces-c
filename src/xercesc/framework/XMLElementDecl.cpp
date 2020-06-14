@@ -37,12 +37,7 @@ namespace XERCES_CPP_NAMESPACE {
 // ---------------------------------------------------------------------------
 const unsigned int  XMLElementDecl::fgInvalidElemId    = 0xFFFFFFFE;
 const unsigned int  XMLElementDecl::fgPCDataElemId     = 0xFFFFFFFF;
-const XMLCh         XMLElementDecl::fgPCDataElemName[] =
-{
-        chPound, chLatin_P, chLatin_C, chLatin_D, chLatin_A
-    ,   chLatin_T, chLatin_A, chNull
-};
-
+const XMLCh         XMLElementDecl::fgPCDataElemName[] = u"#PCDATA";
 
 
 // ---------------------------------------------------------------------------

@@ -239,8 +239,8 @@ static bool checkTimeZoneError(XSValue::DataType       const &datatype
 //  Local Data
 // ---------------------------------------------------------------------------
 
-static const XMLCh Separator_20[] = {chSpace, chNull};
-static const XMLCh Separator_ws[] = {chSpace, chLF, chCR, chHTab, chNull};
+static const XMLCh *Separator_20 = u" ";
+static const XMLCh *Separator_ws = u" \n\r\t";
 
 // ---------------------------------------------------------------------------
 //  XSValue: Constructors and Destructor
