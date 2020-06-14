@@ -1515,7 +1515,7 @@ bool DOMDocumentImpl::isSupported(const XMLCh *feature, const XMLCh *version) co
         return true;
     if(feature && *feature)
     {
-        if((*feature==chPlus && XMLString::equals(feature+1, XMLUni::fgXercescInterfaceDOMDocumentImpl)) ||
+        if((*feature==u'+' && XMLString::equals(feature+1, XMLUni::fgXercescInterfaceDOMDocumentImpl)) ||
            XMLString::equals(feature, XMLUni::fgXercescInterfaceDOMDocumentImpl))
             return true;
     }

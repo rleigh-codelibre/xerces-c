@@ -57,11 +57,11 @@ void ASCIIRangeFactory::buildRanges(RangeTokenMap *rangeTokMap) {
 
     // Create space ranges
     RangeToken* tok = tokFactory->createRange();
-    tok->addRange(chHTab, chHTab);
-    tok->addRange(chLF, chLF);
-    tok->addRange(chFF, chFF);
-    tok->addRange(chCR, chCR);
-    tok->addRange(chSpace, chSpace);
+    tok->addRange(u'\t', u'\t');
+    tok->addRange(u'\n', u'\n');
+    tok->addRange(u'\f', u'\f');
+    tok->addRange(u'\r', u'\r');
+    tok->addRange(u' ', u' ');
 
     // Build the internal map.
     tok->createMap();
@@ -95,7 +95,7 @@ void ASCIIRangeFactory::buildRanges(RangeTokenMap *rangeTokMap) {
     tok = tokFactory->createRange();
     tok->addRange(u'0', u'9');
     tok->addRange(u'A', u'Z');
-    tok->addRange(chUnderscore, chUnderscore);
+    tok->addRange(u'_', u'_');
     tok->addRange(u'a', u'z');
     // Build the internal map.
     tok->createMap();

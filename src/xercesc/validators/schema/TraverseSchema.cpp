@@ -496,12 +496,12 @@ TraverseSchema::traverseAnnotationDecl(const DOMElement* const annotationElem,
                     continue;
                 }
 
-                fBuffer.append(chSpace);
+                fBuffer.append(u' ');
                 fBuffer.append(attNode->getNodeName());
-                fBuffer.append(chEqual);
-                fBuffer.append(chDoubleQuote);
+                fBuffer.append(u'=');
+                fBuffer.append(u'"');
                 processAttValue(attNode->getNodeValue(), fBuffer);
-                fBuffer.append(chDoubleQuote);
+                fBuffer.append(u'"');
             }
 
             // add remaining annotation content
@@ -1204,7 +1204,7 @@ TraverseSchema::traverseSimpleTypeDecl(const DOMElement* const childElem,
     }
 
     fBuffer.set(fTargetNSURIString);
-    fBuffer.append(chComma);
+    fBuffer.append(u',');
     fBuffer.append(name);
 
     unsigned int fullTypeNameId = fStringPool->addOrFind(fBuffer.getRawBuffer());
@@ -1342,7 +1342,7 @@ int TraverseSchema::traverseComplexTypeDecl(const DOMElement* const elem,
     // Check if the type has already been registered
     // ------------------------------------------------------------------
     fBuffer.set(fTargetNSURIString);
-    fBuffer.append(chComma);
+    fBuffer.append(u',');
     fBuffer.append(name);
 
     int typeNameIndex = fStringPool->addOrFind(fBuffer.getRawBuffer());
@@ -1578,7 +1578,7 @@ TraverseSchema::traverseGroupDecl(const DOMElement* const elem,
     }
 
     fBuffer.set(fTargetNSURIString);
-    fBuffer.append(chComma);
+    fBuffer.append(u',');
     fBuffer.append(name);
 
     unsigned int nameIndex = fStringPool->addOrFind(fBuffer.getRawBuffer());
@@ -1846,7 +1846,7 @@ TraverseSchema::traverseAttributeGroupDecl(const DOMElement* const elem,
 
         // Check Attribute Derivation Restriction OK
         fBuffer.set(fTargetNSURIString);
-        fBuffer.append(chComma);
+        fBuffer.append(u',');
         fBuffer.append(name);
 
         unsigned int nameIndex = fStringPool->addOrFind(fBuffer.getRawBuffer());
@@ -2755,7 +2755,7 @@ TraverseSchema::traverseElementDecl(const DOMElement* const elem,
                         if (typeInfo->getPreprocessed()) {
 
                             const XMLCh* typeInfoName = typeInfo->getTypeName();
-                            fSchemaInfo->addRecursingType(content, typeInfoName + XMLString::indexOf(typeInfoName, chComma) + 1);
+                            fSchemaInfo->addRecursingType(content, typeInfoName + XMLString::indexOf(typeInfoName, u',') + 1);
                         }
                     }
                 }
@@ -3327,7 +3327,7 @@ TraverseSchema::traverseByRestriction(const DOMElement* const rootElem,
 
                         if (uriStr && *uriStr) {
                             fBuffer.set(uriStr);
-                            fBuffer.append(chColon);
+                            fBuffer.append(u':');
                             fBuffer.append(localPart);
                             enums.get()->addElement(XMLString::replicate(fBuffer.getRawBuffer(), fGrammarPoolMemoryManager));
                         }
@@ -3371,7 +3371,7 @@ TraverseSchema::traverseByRestriction(const DOMElement* const rootElem,
                     }
                     else { //datatypes: 5.2.4 pattern
 
-                        pattern.append(chPipe);
+                        pattern.append(u'|');
                         pattern.append(attValue);
                     }
                 }
@@ -3894,7 +3894,7 @@ void TraverseSchema::traverseSimpleContentDecl(const XMLCh* const typeName,
                         }
                         else { //datatypes: 5.2.4 pattern
 
-                            pattern.append(chPipe);
+                            pattern.append(u'|');
                             pattern.append(attValue);
                         }
                     }
@@ -4686,7 +4686,7 @@ bool TraverseSchema::retrieveNamespaceMapping(const DOMElement* const elem) {
                 fSchemaInfo->getNamespaceScope()->increaseDepth();
             seenNS=true;
 
-            int offsetIndex = XMLString::indexOf(attName, chColon);
+            int offsetIndex = XMLString::indexOf(attName, u':');
             const XMLCh* attValue = attribute->getNodeValue();
 
             fSchemaInfo->getNamespaceScope()->addPrefix(attName + offsetIndex + 1, fURIStringPool->addOrFind(attValue));
@@ -4747,7 +4747,7 @@ void TraverseSchema::processChildren(const DOMElement* const root) {
         if (typeName) {
 
             fBuffer.set(fTargetNSURIString);
-            fBuffer.append(chComma);
+            fBuffer.append(u',');
             fBuffer.append(typeName);
             fullNameId = fStringPool->addOrFind(fBuffer.getRawBuffer());
         }
@@ -4984,7 +4984,7 @@ TraverseSchema::getDatatypeValidator(const XMLCh* const uriStr,
     else {
 
         fBuffer.set(uriStr);
-        fBuffer.append(chComma);
+        fBuffer.append(u',');
         fBuffer.append(localPartStr);
 
         if ((uriStr) && !XMLString::equals(uriStr, fTargetNSURIString)) {
@@ -5475,7 +5475,7 @@ TraverseSchema::getElementComplexTypeInfo(const DOMElement* const elem,
     unsigned int         saveScope = fCurrentScope;
 
     fBuffer.set(typeURI);
-    fBuffer.append(chComma);
+    fBuffer.append(u',');
     fBuffer.append(localPart);
 
     if (otherSchemaURI != 0) {
@@ -6507,7 +6507,7 @@ void TraverseSchema::processBaseTypeInfo(const DOMElement* const elem,
     else {
 
         fBuffer.set(uriStr);
-        fBuffer.append(chComma);
+        fBuffer.append(u',');
         fBuffer.append(localPart);
 
         // assume the base is a complexType and try to locate the base type first
@@ -6603,7 +6603,7 @@ ComplexTypeInfo* TraverseSchema::getTypeInfoFromNS(const DOMElement* const elem,
     if (grammar != 0 && grammar->getGrammarType() == Grammar::SchemaGrammarType) {
 
         fBuffer.set(uriStr);
-        fBuffer.append(chComma);
+        fBuffer.append(u',');
         fBuffer.append(localPart);
 
         ComplexTypeInfo* typeInfo =
@@ -7148,7 +7148,7 @@ XercesGroupInfo* TraverseSchema::processGroupRef(const DOMElement* const elem,
     const XMLCh* uriStr = resolvePrefixToURI(elem, prefix);
 
     fBuffer.set(uriStr);
-    fBuffer.append(chComma);
+    fBuffer.append(u',');
     fBuffer.append(localPart);
 
     unsigned int nameIndex = fStringPool->addOrFind(fBuffer.getRawBuffer());
@@ -8254,7 +8254,7 @@ void TraverseSchema::renameRedefinedComponents(const DOMElement* const redefineE
         const XMLCh* typeName = getElementAttValue(child, SchemaSymbols::fgATT_NAME, DatatypeValidator::NCName);
 
         fBuffer.set(fTargetNSURIString);
-        fBuffer.append(chComma);
+        fBuffer.append(u',');
         fBuffer.append(typeName);
 
         if (fRedefineComponents->containsKey(childName, fStringPool->addOrFind(fBuffer.getRawBuffer()))) {
@@ -8283,7 +8283,7 @@ bool TraverseSchema::validateRedefineNameChange(const DOMElement* const redefine
     unsigned int typeNameId = fStringPool->addOrFind(redefineChildTypeName);
 
     fBuffer.set(fTargetNSURIString);
-    fBuffer.append(chComma);
+    fBuffer.append(u',');
     fBuffer.append(redefineChildTypeName);
 
     int   fullTypeNameId = fStringPool->addOrFind(fBuffer.getRawBuffer());
@@ -8577,7 +8577,7 @@ void TraverseSchema::fixRedefinedSchema(const DOMElement* const elem,
 
                             // and we now know we will traverse this, so set fRedefineComponents appropriately...
                             fBuffer.set(fTargetNSURIString);
-                            fBuffer.append(chComma);
+                            fBuffer.append(u',');
                             fBuffer.append(newInfoItemName);
                         }
                         else {
@@ -8587,7 +8587,7 @@ void TraverseSchema::fixRedefinedSchema(const DOMElement* const elem,
 
                             // and we now know we will traverse this, so set fRedefineComponents appropriately...
                             fBuffer.set(fTargetNSURIString);
-                            fBuffer.append(chComma);
+                            fBuffer.append(u',');
                             fBuffer.append(infoItemName);
                         }
 
@@ -9032,32 +9032,32 @@ void TraverseSchema::processAttValue(const XMLCh* const attVal,
     XMLCh nextCh = *srcVal;
     while (nextCh)
     {
-        if (nextCh <= chCloseAngle) {
+        if (nextCh <= u'>') {
             switch (nextCh) {
-            case chDoubleQuote:
-                aBuf.append(chAmpersand);
+            case u'"':
+                aBuf.append(u'&');
                 aBuf.append(XMLUni::fgQuot);
-                aBuf.append(chSemiColon);
+                aBuf.append(u';');
                 break;
-            case chSingleQuote:
-               aBuf.append(chAmpersand);
+            case u'\'':
+               aBuf.append(u'&');
                aBuf.append(XMLUni::fgApos);
-               aBuf.append(chSemiColon);
+               aBuf.append(u';');
                break;
-            case chCloseAngle:
-               aBuf.append(chAmpersand);
+            case u'>':
+               aBuf.append(u'&');
                aBuf.append(XMLUni::fgGT);
-               aBuf.append(chSemiColon);
+               aBuf.append(u';');
                break;
-            case chOpenAngle:
-               aBuf.append(chAmpersand);
+            case u'<':
+               aBuf.append(u'&');
                aBuf.append(XMLUni::fgLT);
-               aBuf.append(chSemiColon);
+               aBuf.append(u';');
                break;
-            case chAmpersand:
-               aBuf.append(chAmpersand);
+            case u'&':
+               aBuf.append(u'&');
                aBuf.append(XMLUni::fgAmp);
-               aBuf.append(chSemiColon);
+               aBuf.append(u';');
                break;
             default:
                aBuf.append(nextCh);
@@ -9079,11 +9079,11 @@ XSAnnotation* TraverseSchema::generateSyntheticAnnotation(const DOMElement* cons
     bool sawXMLNS = false;
 
     fBuffer.reset();
-    fBuffer.append(chOpenAngle);
+    fBuffer.append(u'<');
     if (prefix)
     {
         fBuffer.append(prefix);
-        fBuffer.append(chColon);
+        fBuffer.append(u':');
     }
     fBuffer.append(SchemaSymbols::fgELT_ANNOTATION);
 
@@ -9094,12 +9094,12 @@ XSAnnotation* TraverseSchema::generateSyntheticAnnotation(const DOMElement* cons
     {
         DOMNode* attNode = nonXSAttList->elementAt(i);
 
-        fBuffer.append(chSpace);
+        fBuffer.append(u' ');
         fBuffer.append(attNode->getNodeName());
-        fBuffer.append(chEqual);
-        fBuffer.append(chDoubleQuote);
+        fBuffer.append(u'=');
+        fBuffer.append(u'"');
         processAttValue(attNode->getNodeValue(), fBuffer);
-        fBuffer.append(chDoubleQuote);
+        fBuffer.append(u'"');
     }
 
     // next is the namespaces on the elem
@@ -9118,22 +9118,22 @@ XSAnnotation* TraverseSchema::generateSyntheticAnnotation(const DOMElement* cons
             {
                 if (!listOfURIs->containsKey((void*) attName)) {
                     listOfURIs->put((void*) attName, 0);
-                    fBuffer.append(chSpace);
+                    fBuffer.append(u' ');
                     fBuffer.append(attName);
-                    fBuffer.append(chEqual);
-                    fBuffer.append(chDoubleQuote);
+                    fBuffer.append(u'=');
+                    fBuffer.append(u'"');
                     processAttValue(attribute->getNodeValue(), fBuffer);
-                    fBuffer.append(chDoubleQuote);
+                    fBuffer.append(u'"');
                 }
             }
             else if (!sawXMLNS && XMLString::equals(attName, XMLUni::fgXMLNSString))
             {
-                fBuffer.append(chSpace);
+                fBuffer.append(u' ');
                 fBuffer.append(attName);
-                fBuffer.append(chEqual);
-                fBuffer.append(chDoubleQuote);
+                fBuffer.append(u'=');
+                fBuffer.append(u'"');
                 processAttValue(attribute->getNodeValue(), fBuffer);
-                fBuffer.append(chDoubleQuote);
+                fBuffer.append(u'"');
                 sawXMLNS = true;
             }
         }
@@ -9142,36 +9142,36 @@ XSAnnotation* TraverseSchema::generateSyntheticAnnotation(const DOMElement* cons
     while (currentElem != fSchemaInfo->getRoot()->getParentNode());
     delete listOfURIs;
 
-    fBuffer.append(chCloseAngle);
-    fBuffer.append(chLF);
-    fBuffer.append(chOpenAngle);
+    fBuffer.append(u'>');
+    fBuffer.append(u'\n');
+    fBuffer.append(u'<');
     if (prefix)
     {
         fBuffer.append(prefix);
-        fBuffer.append(chColon);
+        fBuffer.append(u':');
     }
     fBuffer.append(SchemaSymbols::fgELT_DOCUMENTATION);
-    fBuffer.append(chCloseAngle);
+    fBuffer.append(u'>');
     fBuffer.append(fgSynthetic_Annotation);
-    fBuffer.append(chOpenAngle);
-    fBuffer.append(chForwardSlash);
+    fBuffer.append(u'<');
+    fBuffer.append(u'/');
     if (prefix)
     {
         fBuffer.append(prefix);
-        fBuffer.append(chColon);
+        fBuffer.append(u':');
     }
     fBuffer.append(SchemaSymbols::fgELT_DOCUMENTATION);
-    fBuffer.append(chCloseAngle);
-    fBuffer.append(chLF);
-    fBuffer.append(chOpenAngle);
-    fBuffer.append(chForwardSlash);
+    fBuffer.append(u'>');
+    fBuffer.append(u'\n');
+    fBuffer.append(u'<');
+    fBuffer.append(u'/');
     if (prefix)
     {
         fBuffer.append(prefix);
-        fBuffer.append(chColon);
+        fBuffer.append(u':');
     }
     fBuffer.append(SchemaSymbols::fgELT_ANNOTATION);
-    fBuffer.append(chCloseAngle);
+    fBuffer.append(u'>');
 
     XSAnnotation* annot = new (fGrammarPoolMemoryManager) XSAnnotation(fBuffer.getRawBuffer(), fGrammarPoolMemoryManager);
     annot->setLineCol( ((XSDElementNSImpl*)elem)->getLineNo()
@@ -9254,7 +9254,7 @@ void TraverseSchema::validateAnnotations() {
     annotElemDecl->setComplexTypeInfo(complexType);
 
     fBuffer.set(SchemaSymbols::fgURI_SCHEMAFORSCHEMA);
-    fBuffer.append(chComma);
+    fBuffer.append(u',');
     fBuffer.append(u'C');
     fBuffer.append(u'0');
     const XMLCh* fullName = fStringPool->getValueForId(fStringPool->addOrFind(fBuffer.getRawBuffer()));

@@ -69,10 +69,10 @@ XIncludeLocation::prependPath(const XMLCh *baseToAdd){
     XMLPlatformUtils::removeDotDotSlash((XMLCh*)baseToAdd);
     XMLSize_t baseLength = XMLString::stringLen(baseToAdd);
 
-    int lastSlash = XMLString::lastIndexOf(baseToAdd, chForwardSlash);
+    int lastSlash = XMLString::lastIndexOf(baseToAdd, u'/');
     if (lastSlash == -1){
         /* not found, try another platform */
-        lastSlash = XMLString::lastIndexOf(baseToAdd, chBackSlash);
+        lastSlash = XMLString::lastIndexOf(baseToAdd, u'\\');
     }
 
     // Skip the scheme (e.g., file://) if fHref has one. Ideally we
@@ -102,10 +102,10 @@ XIncludeLocation::findEndOfProtocol(const XMLCh *URI){
         URI[1] == u'i' &&
         URI[2] == u'l' &&
         URI[3] == u'e' &&
-        URI[4] == chColon &&
-        URI[5] == chForwardSlash &&
-        URI[6] == chForwardSlash &&
-        URI[7] == chForwardSlash )
+        URI[4] == u':' &&
+        URI[5] == u'/' &&
+        URI[6] == u'/' &&
+        URI[7] == u'/' )
     {
         return URI + 8;
     }
@@ -113,10 +113,10 @@ XIncludeLocation::findEndOfProtocol(const XMLCh *URI){
     if (URI[0] == u'f' &&
         URI[1] == u't' &&
         URI[2] == u'p' &&
-        URI[3] == chColon &&
-        URI[4] == chForwardSlash &&
-        URI[5] == chForwardSlash &&
-        URI[6] == chForwardSlash )
+        URI[3] == u':' &&
+        URI[4] == u'/' &&
+        URI[5] == u'/' &&
+        URI[6] == u'/' )
     {
         return URI + 7;
     }
@@ -125,10 +125,10 @@ XIncludeLocation::findEndOfProtocol(const XMLCh *URI){
         URI[1] == u't' &&
         URI[2] == u't' &&
         URI[3] == u'p' &&
-        URI[4] == chColon &&
-        URI[5] == chForwardSlash &&
-        URI[6] == chForwardSlash &&
-        URI[7] == chForwardSlash )
+        URI[4] == u':' &&
+        URI[5] == u'/' &&
+        URI[6] == u'/' &&
+        URI[7] == u'/' )
     {
         return URI + 8;
     }

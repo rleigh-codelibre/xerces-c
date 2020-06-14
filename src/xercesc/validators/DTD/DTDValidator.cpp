@@ -265,7 +265,7 @@ DTDValidator::validateAttrValue(const   XMLAttDef*      attDef
             //
             //   only and only ONE #x20 is allowed to be the delimiter
             //
-            if (*valPtr==chSpace)
+            if (*valPtr==u' ')
             {
                 if (!multipleValues)
                 {
@@ -281,7 +281,7 @@ DTDValidator::validateAttrValue(const   XMLAttDef*      attDef
             //  All these must be valid XMLName
             // If namespace is enabled, colon is not allowed in the first 6
 
-            if (doNamespace && *valPtr == chColon && firstNameChar)
+            if (doNamespace && *valPtr == u':' && firstNameChar)
                 emitError(XMLValid::ColonNotValidWithNS);
 
             if (!getReaderMgr()->getCurrentReader()->isNameChar(*valPtr))
@@ -620,7 +620,7 @@ void DTDValidator::checkTokenList(const XMLAttDef&  curAttDef
     XMLCh*  lastPtr = listPtr;
     while (true)
     {
-        while (*listPtr && (*listPtr != chSpace))
+        while (*listPtr && (*listPtr != u' '))
             listPtr++;
 
         //

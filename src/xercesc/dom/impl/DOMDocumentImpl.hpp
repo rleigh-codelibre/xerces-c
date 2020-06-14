@@ -439,7 +439,7 @@ inline int DOMDocumentImpl::indexofQualifiedName(const XMLCh* name)
   int colon_count = 0;
   for (; *name != 0; ++i, ++name)
   {
-    if (*name == chColon)
+    if (*name == u':')
     {
       ++colon_count;
       colon = i;

@@ -153,7 +153,7 @@ inline bool XMLChar1_0::isXMLLetter(const XMLCh toCheck, const XMLCh toCheck2)
     // An XML letter is a FirstNameChar minus ':' and '_'.
     if (!toCheck2) {
         return (((fgCharCharsTable1_0[toCheck] & gFirstNameCharMask) != 0)
-                && (toCheck != chColon) && (toCheck != chUnderscore));
+                && (toCheck != u':') && (toCheck != u'_'));
     }
     return false;
 }
@@ -173,7 +173,7 @@ inline bool XMLChar1_0::isFirstNameChar(const XMLCh toCheck, const XMLCh toCheck
 inline bool XMLChar1_0::isFirstNCNameChar(const XMLCh toCheck, const XMLCh toCheck2)
 {
     if (!toCheck2) {
-        return (((fgCharCharsTable1_0[toCheck] & gFirstNameCharMask) != 0) && (toCheck != chColon));
+        return (((fgCharCharsTable1_0[toCheck] & gFirstNameCharMask) != 0) && (toCheck != u':'));
     }
     else {
         if ((toCheck >= 0xD800) && (toCheck <= 0xDB7F))
@@ -375,7 +375,7 @@ inline bool XMLChar1_1::isFirstNameChar(const XMLCh toCheck, const XMLCh toCheck
 inline bool XMLChar1_1::isFirstNCNameChar(const XMLCh toCheck, const XMLCh toCheck2)
 {
     if (!toCheck2) {
-        return (((fgCharCharsTable1_1[toCheck] & gFirstNameCharMask) != 0) && (toCheck != chColon));
+        return (((fgCharCharsTable1_1[toCheck] & gFirstNameCharMask) != 0) && (toCheck != u':'));
     }
     else {
         if ((toCheck >= 0xD800) && (toCheck <= 0xDB7F))

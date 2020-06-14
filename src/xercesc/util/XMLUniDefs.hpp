@@ -29,7 +29,6 @@ namespace XERCES_CPP_NAMESPACE {
 // ---------------------------------------------------------------------------
 //  Constants for the Unicode characters of interest to us in an XML parser
 // ---------------------------------------------------------------------------
-
 const XMLCh chNull                  = u'\u0000';
 const XMLCh chHTab                  = u'\u0009';
 const XMLCh chLF                    = u'\u000A';
@@ -54,7 +53,6 @@ const XMLCh chDoubleQuote           = u'\u0022';
 const XMLCh chEqual                 = u'\u003D';
 const XMLCh chForwardSlash          = u'\u002F';
 const XMLCh chGrave                 = u'\u0060';
-const XMLCh chNEL                   = u'\u0085';
 const XMLCh chOpenAngle             = u'\u003C';
 const XMLCh chOpenCurly             = u'\u007B';
 const XMLCh chOpenParen             = u'\u0028';
@@ -70,9 +68,6 @@ const XMLCh chSpace                 = u'\u0020';
 const XMLCh chSemiColon             = u'\u003B';
 const XMLCh chTilde                 = u'\u007E';
 const XMLCh chUnderscore            = u'\u005F';
-
-const XMLCh chSwappedUnicodeMarker  = u'\uFFFE';
-const XMLCh chUnicodeMarker         = u'\uFEFF';
 
 const XMLCh chDigit_0               = u'\u0030';
 const XMLCh chDigit_1               = u'\u0031';
@@ -139,11 +134,16 @@ const XMLCh chLatin_x               = u'\u0078';
 const XMLCh chLatin_y               = u'\u0079';
 const XMLCh chLatin_z               = u'\u007A';
 
+const XMLCh chNEL                   = u'\u0085';
+
 const XMLCh chYenSign               = u'\u00A5';
 const XMLCh chWonSign               = u'\u20A9';
 
 const XMLCh chLineSeparator         = u'\u2028';
 const XMLCh chParagraphSeparator    = u'\u2029';
+
+const XMLCh chSwappedUnicodeMarker  = u'\uFFFE';
+const XMLCh chUnicodeMarker         = u'\uFEFF';
 
 }
 

@@ -117,7 +117,7 @@ GrammarResolver::getDatatypeValidator(const XMLCh* const uriStr,
             XMLBuffer nameBuf(128, fMemoryManager);
 
             nameBuf.set(uriStr);
-            nameBuf.append(chComma);
+            nameBuf.append(u',');
             nameBuf.append(localPartStr);
 
             dv = ((SchemaGrammar*) grammar)->getDatatypeRegistry()->getDatatypeValidator(nameBuf.getRawBuffer());

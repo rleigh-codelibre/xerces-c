@@ -251,7 +251,7 @@ int main(int /*argc*/, char ** /*argv*/) {
         //use a binding
         XMLBuffer buf;
         buf.set(XMLUni::fgXMLNSString);
-        buf.append(chColon);
+        buf.append(u':');
         buf.append(X("po2"));
         docFirstElementChild->removeAttributeNS(XMLUni::fgXMLNSURIName, XMLUni::fgXMLNSString);
         docFirstElement->removeAttributeNS(XMLUni::fgXMLNSURIName, XMLUni::fgXMLNSString);

@@ -248,7 +248,7 @@ PosixFileMgr::isRelative(const XMLCh* const toCheck, MemoryManager* const /*mana
     //
     //  If it starts with a slash, then it cannot be relative.
     //
-    return toCheck[0] != chForwardSlash;
+    return toCheck[0] != u'/';
 }
 
 

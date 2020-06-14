@@ -154,7 +154,7 @@ XMLCh* XMLBigDecimal::getCanonicalRepresentation(const XMLCh*         const rawD
     if ( (sign == 0) || (totalDigits == 0))
     {
         retBuffer[0] = u'0';
-        retBuffer[1] = chPeriod;
+        retBuffer[1] = u'.';
         retBuffer[2] = u'0';
         retBuffer[3] = u'\0';
     }
@@ -164,13 +164,13 @@ XMLCh* XMLBigDecimal::getCanonicalRepresentation(const XMLCh*         const rawD
 
         if (sign == -1)
         {
-            *retPtr++ = chDash;
+            *retPtr++ = u'-';
         }
 
         if (fractDigits == totalDigits)   // no integer
         {           
             *retPtr++ = u'0';
-            *retPtr++ = chPeriod;
+            *retPtr++ = u'.';
             XMLString::copyNString(retPtr, retBuf, strLen);
             retPtr += strLen;
             *retPtr = u'\0';
@@ -179,7 +179,7 @@ XMLCh* XMLBigDecimal::getCanonicalRepresentation(const XMLCh*         const rawD
         {
             XMLString::copyNString(retPtr, retBuf, strLen);
             retPtr += strLen;
-            *retPtr++ = chPeriod;
+            *retPtr++ = u'.';
             *retPtr++ = u'0';
             *retPtr   = u'\0';
         }
@@ -188,7 +188,7 @@ XMLCh* XMLBigDecimal::getCanonicalRepresentation(const XMLCh*         const rawD
             int intLen = totalDigits - fractDigits;
             XMLString::copyNString(retPtr, retBuf, intLen);
             retPtr += intLen;
-            *retPtr++ = chPeriod;
+            *retPtr++ = u'.';
             XMLString::copyNString(retPtr, &(retBuf[intLen]), fractDigits);
             retPtr += fractDigits;
             *retPtr = u'\0';
@@ -228,7 +228,7 @@ void  XMLBigDecimal::parseDecimal(const XMLCh* const toParse
     // '+' or '-' is allowed only at the first position
     // and is NOT included in the return parsed string
     sign = 1;
-    if (*startPtr == chDash)
+    if (*startPtr == u'-')
     {
         sign = -1;
         startPtr++;
@@ -237,7 +237,7 @@ void  XMLBigDecimal::parseDecimal(const XMLCh* const toParse
             ThrowXMLwithMemMgr(NumberFormatException, XMLExcepts::XMLNUM_Inv_chars, manager);
         }
     }
-    else if (*startPtr == chPlus)
+    else if (*startPtr == u'+')
     {
         startPtr++;         
         if (startPtr == endPtr)
@@ -264,7 +264,7 @@ void  XMLBigDecimal::parseDecimal(const XMLCh* const toParse
     bool   dotSignFound = false;
     while (startPtr < endPtr)
     {
-        if (*startPtr == chPeriod)
+        if (*startPtr == u'.')
         {
             if (!dotSignFound)
             {
@@ -330,7 +330,7 @@ void  XMLBigDecimal::parseDecimal(const XMLCh*         const toParse
     // '+' or '-' is allowed only at the first position
     // and is NOT included in the return parsed string
 
-    if (*startPtr == chDash)
+    if (*startPtr == u'-')
     {
         startPtr++;
         if (startPtr == endPtr)
@@ -338,7 +338,7 @@ void  XMLBigDecimal::parseDecimal(const XMLCh*         const toParse
             ThrowXMLwithMemMgr(NumberFormatException, XMLExcepts::XMLNUM_Inv_chars, manager);
         }
     }
-    else if (*startPtr == chPlus)
+    else if (*startPtr == u'+')
     {
         startPtr++;
         if (startPtr == endPtr)
@@ -362,7 +362,7 @@ void  XMLBigDecimal::parseDecimal(const XMLCh*         const toParse
     bool   dotSignFound = false;
     while (startPtr < endPtr)
     {
-        if (*startPtr == chPeriod)
+        if (*startPtr == u'.')
         {
             if (!dotSignFound)
             {

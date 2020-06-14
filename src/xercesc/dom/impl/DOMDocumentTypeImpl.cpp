@@ -542,7 +542,7 @@ bool DOMDocumentTypeImpl::isSupported(const XMLCh *feature, const XMLCh *version
     // check for 'DOMDocumentTypeImpl' or '+DOMDocumentTypeImpl'
     if(feature && *feature)
     {
-        if((*feature==chPlus && XMLString::equals(feature+1, XMLUni::fgXercescInterfaceDOMDocumentTypeImpl)) ||
+        if((*feature==u'+' && XMLString::equals(feature+1, XMLUni::fgXercescInterfaceDOMDocumentTypeImpl)) ||
            XMLString::equals(feature, XMLUni::fgXercescInterfaceDOMDocumentTypeImpl))
             return true;
     }

@@ -66,7 +66,7 @@ bool SchemaAttDefList::isEmpty() const
 XMLAttDef* SchemaAttDefList::findAttDef(const  unsigned int uriID
                                     , const XMLCh* const    attName)
 {
-   const int colonInd = XMLString::indexOf(attName, chColon);
+   const int colonInd = XMLString::indexOf(attName, u':');
 
    // An index of 0 is really an error, but the QName class doesn't check for
    // that case either...
@@ -80,7 +80,7 @@ const XMLAttDef*
 SchemaAttDefList::findAttDef( const   unsigned int   uriID
                             , const XMLCh* const    attName) const
 {
-   const int colonInd = XMLString::indexOf(attName, chColon);
+   const int colonInd = XMLString::indexOf(attName, u':');
 
    // An index of 0 is really an error, but the QName class doesn't check for
    // that case either...

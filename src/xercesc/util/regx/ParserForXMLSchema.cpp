@@ -53,14 +53,14 @@ Token* ParserForXMLSchema::processCaret() {
 
     // XML Schema treats "^" like any other char
     processNext();
-    return getTokenFactory()->createChar(chCaret);
+    return getTokenFactory()->createChar(u'^');
 }
 
 Token* ParserForXMLSchema::processDollar() {
 
     // XML Schema treats "$" like any other char
     processNext();
-    return getTokenFactory()->createChar(chDollarSign);
+    return getTokenFactory()->createChar(u'$');
 }
 
 Token* ParserForXMLSchema::processPlus(Token* const tok) {
@@ -131,32 +131,32 @@ XMLInt32 ParserForXMLSchema::decodeEscaped() {
 
     switch (ch) {
     case u'n':
-        ch = chLF;
+        ch = u'\n';
         break;
     case u'r':
-        ch = chCR;
+        ch = u'\r';
         break;
     case u't':
-        ch = chHTab;
+        ch = u'\t';
         break;
-    case chBackSlash:
-    case chPipe:
-    case chPeriod:
-    case chCaret:
-    case chDash:
-    case chQuestion:
-    case chAsterisk:
-    case chPlus:
-    case chOpenCurly:
-    case chCloseCurly:
-    case chOpenParen:
-    case chCloseParen:
-    case chOpenSquare:
-    case chCloseSquare:
+    case u'\\':
+    case u'|':
+    case u'.':
+    case u'^':
+    case u'-':
+    case u'?':
+    case u'*':
+    case u'+':
+    case u'{':
+    case u'}':
+    case u'(':
+    case u')':
+    case u'[':
+    case u']':
         break;
     default:
         {
-        XMLCh chString[] = {chBackSlash, (XMLCh)ch, u'\0'};
+        XMLCh chString[] = {u'\\', (XMLCh)ch, u'\0'};
         ThrowXMLwithMemMgr1(ParseException,XMLExcepts::Parser_Process2, chString, getMemoryManager());
         }
     }

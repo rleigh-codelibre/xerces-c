@@ -499,7 +499,7 @@ XMLSize_t XMLString::replaceTokens(          XMLCh* const    errText
         //  Loop until we see a { character. Until we do, just copy chars
         //  from src to target, being sure not to overrun the output buffer.
         //
-        while ((*pszSrc != chOpenCurly) && (curOutInd < maxChars))
+        while ((*pszSrc != u'{') && (curOutInd < maxChars))
         {
             if (!*pszSrc)
                 break;
@@ -507,7 +507,7 @@ XMLSize_t XMLString::replaceTokens(          XMLCh* const    errText
         }
 
         // If we did not find a curly, then we are done
-        if (*pszSrc != chOpenCurly)
+        if (*pszSrc != u'{')
             break;
 
         //
@@ -516,7 +516,7 @@ XMLSize_t XMLString::replaceTokens(          XMLCh* const    errText
         //
         if ((*(pszSrc+1) >= u'0')
         &&  (*(pszSrc+1) <= u'3')
-        &&  (*(pszSrc+2) == chCloseCurly))
+        &&  (*(pszSrc+2) == u'}'))
         {
             //
             //  Its one of our guys, so move the source pointer up past the
@@ -691,7 +691,7 @@ bool XMLString::isValidNOTATION(const XMLCh*         const name
     //        ':' and localPart must be present
     //
     XMLSize_t nameLen = XMLString::stringLen(name);
-    int colPos = XMLString::lastIndexOf(name, chColon);
+    int colPos = XMLString::lastIndexOf(name, u':');
 
     if ((colPos == 0)         ||      // no ':'
         (colPos == ((int)nameLen) - 1)  )     // <URI>':'
@@ -751,9 +751,9 @@ bool XMLString::isValidEncName(const XMLCh* const name)
     {
         if (( !isAlpha(*tempName))       &&
             ( !isDigit(*tempName))       &&
-            ( *tempName != chPeriod)     &&
-            ( *tempName != chUnderscore) &&
-            ( *tempName != chDash)        )
+            ( *tempName != u'.')     &&
+            ( *tempName != u'_') &&
+            ( *tempName != u'-')        )
             return false;
 
         tempName++;
@@ -1001,7 +1001,7 @@ void XMLString::binToText(  const   long            toFormat
     unsigned long actualVal;
     if (toFormat < 0)
     {
-        toFill[0] = chDash;
+        toFill[0] = u'-';
         startInd++;
         // Signed integers can represent one extra negative value
         // compared to the positive values. If we simply do (v * -1)
@@ -1384,10 +1384,10 @@ XMLString::makeUName(const XMLCh* const pszURI, const XMLCh* const pszName)
         XMLCh szTmp[2];
         szTmp[1] = 0;
 
-        szTmp[0] = chOpenCurly;
+        szTmp[0] = u'{';
         copyString(pszRet, szTmp);
         catString(pszRet, pszURI);
-        szTmp[0] = chCloseCurly;
+        szTmp[0] = u'}';
         catString(pszRet, szTmp);
         catString(pszRet, pszName);
     }
@@ -1417,7 +1417,7 @@ bool XMLString::textToBin(const XMLCh* const toConvert, unsigned int& toFill
 		return false;
 
 	// we don't allow '-' sign
-	if (XMLString::indexOf(trimmedStr, chDash, 0, manager) != -1)
+	if (XMLString::indexOf(trimmedStr, u'-', 0, manager) != -1)
 		return false;
 
 	//the errno set by previous run is NOT automatically cleared
@@ -1716,12 +1716,12 @@ bool XMLString::isInList(const XMLCh* const toFind, const XMLCh* const enumList)
         //
         if (testInd == findLen)
         {
-            if ((listPtr[testInd] == chSpace) || !listPtr[testInd])
+            if ((listPtr[testInd] == u' ') || !listPtr[testInd])
                 return true;
         }
 
         // Run the list pointer up to the next substring
-        while ((*listPtr != chSpace) && *listPtr)
+        while ((*listPtr != u' ') && *listPtr)
             listPtr++;
 
         // If we hit the end, then we failed
@@ -1751,9 +1751,9 @@ bool XMLString::isWSReplaced(const XMLCh* const toCheck)
     const XMLCh* startPtr = toCheck;
     while ( *startPtr )
     {
-        if ( ( *startPtr == chCR) ||
-             ( *startPtr == chLF) ||
-             ( *startPtr == chHTab))
+        if ( ( *startPtr == u'\r') ||
+             ( *startPtr == u'\n') ||
+             ( *startPtr == u'\t'))
         return false;
 
         startPtr++;
@@ -1777,10 +1777,10 @@ void XMLString::replaceWS(XMLCh* toConvert, MemoryManager* const)
     XMLCh* cursorPtr = toConvert;
     while ( *cursorPtr )
     {
-        if ( ( *cursorPtr == chCR) ||
-             ( *cursorPtr == chLF) ||
-             ( *cursorPtr == chHTab))
-            *cursorPtr = chSpace;
+        if ( ( *cursorPtr == u'\r') ||
+             ( *cursorPtr == u'\n') ||
+             ( *cursorPtr == u'\t'))
+            *cursorPtr = u' ';
 
         cursorPtr++;
     }
@@ -1803,8 +1803,8 @@ bool XMLString::isWSCollapsed(const XMLCh* const toCheck)
         return false;
 
     // no leading or trailing space
-    if ((*toCheck == chSpace) ||
-        (toCheck[XMLString::stringLen(toCheck)-1] == chSpace))
+    if ((*toCheck == u' ') ||
+        (toCheck[XMLString::stringLen(toCheck)-1] == u' '))
         return false;
 
     const XMLCh* startPtr = toCheck;
@@ -1812,7 +1812,7 @@ bool XMLString::isWSCollapsed(const XMLCh* const toCheck)
     bool  inSpace = false;
     while ( (theChar = *startPtr) != 0 )
     {
-        if ( theChar == chSpace)
+        if ( theChar == u' ')
         {
             if (inSpace)
                 return false;
@@ -1846,7 +1846,7 @@ void XMLString::collapseWS(XMLCh* toConvert
 
     // remove leading spaces
     XMLCh* startPtr = toConvert;
-    while ( *startPtr == chSpace )
+    while ( *startPtr == u' ' )
         startPtr++;
 
     if (!*startPtr)
@@ -1857,7 +1857,7 @@ void XMLString::collapseWS(XMLCh* toConvert
 
     // remove trailing spaces
     XMLCh* endPtr = toConvert + stringLen(toConvert);
-    while (*(endPtr - 1) == chSpace)
+    while (*(endPtr - 1) == u' ')
         endPtr--;
     *endPtr = u'\0';
 
@@ -1875,13 +1875,13 @@ void XMLString::collapseWS(XMLCh* toConvert
         bool inSpace = false;
         while (*startPtr)
         {
-            if ( *startPtr == chSpace)
+            if ( *startPtr == u' ')
             {
                 // copy a single space, then ignore subsequent
                 if (!inSpace)
                 {
                     inSpace = true;
-                    *retPtr++ = chSpace;
+                    *retPtr++ = u' ';
                 }
             }
             else
@@ -1911,10 +1911,10 @@ void XMLString::removeWS(XMLCh* toConvert, MemoryManager* const)
 
     while (*startPtr)
     {
-        if ( ( *startPtr != chCR)    &&
-             ( *startPtr != chLF)    &&
-             ( *startPtr != chHTab)  &&
-             ( *startPtr != chSpace)  )
+        if ( ( *startPtr != u'\r')    &&
+             ( *startPtr != u'\n')    &&
+             ( *startPtr != u'\t')  &&
+             ( *startPtr != u' ')  )
         {
             *retPtr++ = *startPtr;
         }
@@ -1952,19 +1952,19 @@ void XMLString::fixURI(const XMLCh* const str, XMLCh* const target)
     if (!str || !*str)
         return;
 
-    int colonIdx = XMLString::indexOf(str, chColon);
+    int colonIdx = XMLString::indexOf(str, u':');
 
     // If starts with a '/' we assume
     // this is an absolute (UNIX) file path and prefix it with file://
-    if (colonIdx == -1 && XMLString::indexOf(str, chForwardSlash) == 0) {
+    if (colonIdx == -1 && XMLString::indexOf(str, u'/') == 0) {
         unsigned index = 0;
         target[index++] = u'f';
         target[index++] = u'i';
         target[index++] = u'l';
         target[index++] = u'e';
-        target[index++] = chColon;
-        target[index++] = chForwardSlash;
-        target[index++] = chForwardSlash;
+        target[index++] = u':';
+        target[index++] = u'/';
+        target[index++] = u'/';
 
         // copy the string
         const XMLCh* inPtr = str;
@@ -1981,18 +1981,18 @@ void XMLString::fixURI(const XMLCh* const str, XMLCh* const target)
         target[index++] = u'i';
         target[index++] = u'l';
         target[index++] = u'e';
-        target[index++] = chColon;
-        target[index++] = chForwardSlash;
-        target[index++] = chForwardSlash;
-        target[index++] = chForwardSlash;
+        target[index++] = u':';
+        target[index++] = u'/';
+        target[index++] = u'/';
+        target[index++] = u'/';
 
         // copy the string and fix any backward slash
         const XMLCh* inPtr = str;
         while (*inPtr) {
             if (*inPtr == chYenSign ||
                 *inPtr == chWonSign ||
-                *inPtr == chBackSlash)
-                target[index++] = chForwardSlash;
+                *inPtr == u'\\')
+                target[index++] = u'/';
             else
                 target[index++] = *inPtr;
             inPtr++;

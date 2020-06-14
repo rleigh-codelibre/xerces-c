@@ -128,7 +128,7 @@ LocalFileInputSource::LocalFileInputSource(const XMLCh* const filePath,
         );//new XMLCh [ curDirLen + filePathLen + 2];
 
         XMLString::copyString(fullDir, curDir);
-        fullDir[curDirLen] = chForwardSlash;
+        fullDir[curDirLen] = u'/';
         XMLString::copyString(&fullDir[curDirLen+1], filePath);
         
         XMLPlatformUtils::removeDotSlash(fullDir, manager);

@@ -70,10 +70,10 @@ DOMXPathExpressionImpl::DOMXPathExpressionImpl(const XMLCh *expression, const DO
     CleanupType cleanup(this, &DOMXPathExpressionImpl::cleanUp);
     fStringPool = new (fMemoryManager) XMLStringPool(109, fMemoryManager);
     // XercesPath will complain if the expression starts with '/', add a "." in front of it and start from the document root
-    if(*expression==chForwardSlash)
+    if(*expression==u'/')
     {
         fExpression=(XMLCh*)fMemoryManager->allocate((XMLString::stringLen(expression)+2)*sizeof(XMLCh));
-        *fExpression = chPeriod;
+        *fExpression = u'.';
         *(fExpression+1) = u'\0';
         XMLString::catString(fExpression, expression);
         fMoveToRoot=true;

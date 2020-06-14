@@ -162,11 +162,11 @@ void SAX2PrintHandlers::endElement(const XMLCh* const uri,
 	if ( fExpandNS )
 	{
 		if (XMLString::compareIString(uri,XMLUni::fgZeroLenString) != 0)
-				fFormatter  << uri << chColon;
-		fFormatter << localname << chCloseAngle;
+				fFormatter  << uri << u':';
+		fFormatter << localname << u'>';
 	}
 	else
-		fFormatter << qname << chCloseAngle;
+		fFormatter << qname << u'>';
 }
 
 
@@ -182,7 +182,7 @@ void SAX2PrintHandlers::processingInstruction(const  XMLCh* const target
 {
     fFormatter << XMLFormatter::NoEscapes << gStartPI  << target;
     if (data)
-        fFormatter << chSpace << data;
+        fFormatter << u' ' << data;
     fFormatter << XMLFormatter::NoEscapes << gEndPI;
 }
 
@@ -198,11 +198,11 @@ void SAX2PrintHandlers::startElement(const   XMLCh* const    uri,
                                     const   Attributes&		attributes)
 {
     // The name has to be representable without any escapes
-    fFormatter  << XMLFormatter::NoEscapes << chOpenAngle ;
+    fFormatter  << XMLFormatter::NoEscapes << u'<' ;
 	if ( fExpandNS )
 	{
 		if (XMLString::compareIString(uri,XMLUni::fgZeroLenString) != 0)
-				fFormatter  << uri << chColon;
+				fFormatter  << uri << u':';
 		fFormatter << localname ;
 	}
 	else
@@ -216,21 +216,21 @@ void SAX2PrintHandlers::startElement(const   XMLCh* const    uri,
         //  attribute can have refs and requires the attribute style
         //  escaping.
         //
-        fFormatter  << XMLFormatter::NoEscapes << chSpace ;
+        fFormatter  << XMLFormatter::NoEscapes << u' ' ;
 		if ( fExpandNS )
 		{
 			if (XMLString::compareIString(attributes.getURI(index),XMLUni::fgZeroLenString) != 0)
-				fFormatter  << attributes.getURI(index) << chColon;
+				fFormatter  << attributes.getURI(index) << u':';
 			fFormatter  << attributes.getLocalName(index) ;
 		}
 		else
 			fFormatter  << attributes.getQName(index) ;
 
-		fFormatter  << chEqual << chDoubleQuote
+		fFormatter  << u'=' << u'"'
                     << XMLFormatter::AttrEscapes
 		            << attributes.getValue(index)
                     << XMLFormatter::NoEscapes
-                    << chDoubleQuote;
+                    << u'"';
     }
-    fFormatter << chCloseAngle;
+    fFormatter << u'>';
 }

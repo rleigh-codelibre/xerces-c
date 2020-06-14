@@ -104,7 +104,7 @@ ICUMsgLoader::ICUMsgLoader(const XMLCh* const  msgDomain)
     /***
 	Resolve domainName
     ***/
-    int     index = XMLString::lastIndexOf(msgDomain, chForwardSlash);
+    int     index = XMLString::lastIndexOf(msgDomain, u'/');
     char*   domainName = XMLString::transcode(&(msgDomain[index + 1]), XMLPlatformUtils::fgMemoryManager);
     ArrayJanitor<char> jan1(domainName, XMLPlatformUtils::fgMemoryManager);
 

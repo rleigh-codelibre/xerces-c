@@ -497,7 +497,7 @@ XMLUTF8Transcoder::transcodeTo( const   XMLCh* const    srcData
             }
 
             // Else, use the replacement character
-            *outPtr++ = chSpace;
+            *outPtr++ = u' ';
             srcPtr += srcUsed;
             continue;
         }

@@ -344,7 +344,7 @@ XMLReader::XMLReader(const  XMLCh* const          pubId
         // This represents no data from the source
         fCharSizeBuf[fCharsAvail] = 0;
         fCharOfsBuf[fCharsAvail] = 0;
-        fCharBuf[fCharsAvail++] = chSpace;
+        fCharBuf[fCharsAvail++] = u' ';
     }
 }
 
@@ -449,7 +449,7 @@ XMLReader::XMLReader(const  XMLCh* const          pubId
         // This represents no data from the source
         fCharSizeBuf[fCharsAvail] = 0;
         fCharOfsBuf[fCharsAvail] = 0;
-        fCharBuf[fCharsAvail++] = chSpace;
+        fCharBuf[fCharsAvail++] = u' ';
     }
 }
 
@@ -592,7 +592,7 @@ bool XMLReader::refreshCharBuffer()
     &&  (fRefFrom == RefFrom_NonLiteral)
     &&  !fSentTrailingSpace)
     {
-        fCharBuf[0] = chSpace;
+        fCharBuf[0] = u' ';
         fCharsAvail = 1;
         fSentTrailingSpace = true;
     }
@@ -832,14 +832,14 @@ bool XMLReader::getQName(XMLBuffer& toFill, int* colonPosition)
         *colonPosition = -1;
         return true;
     }
-    if (fCharBuf[fCharIndex] != chColon)
+    if (fCharBuf[fCharIndex] != u':')
     {
         *colonPosition = -1;
         return true;
     }
 
     *colonPosition = (int)toFill.getLen();
-    toFill.append(chColon);
+    toFill.append(u':');
     fCharIndex++;
     fCurCol++;
     return getNCName(toFill);
@@ -874,20 +874,20 @@ bool XMLReader::getSpaces(XMLBuffer& toFill)
 
                 //
                 //  'curCh' is a whitespace(x20|x9|xD|xA), so we only can have
-                //  end-of-line combinations with a leading chCR(xD) or chLF(xA)
+                //  end-of-line combinations with a leading u'\r'(xD) or u'\n'(xA)
                 //
                 //  100000 x20
                 //  001001 x9
-                //  001010 chLF
-                //  001101 chCR
+                //  001010 u'\n'
+                //  001101 u'\r'
                 //  -----------
-                //  000110 == (chCR|chLF) & ~(0x9|0x20)
+                //  000110 == (u'\r'|u'\n') & ~(0x9|0x20)
                 //
                 //  if the result of thelogical-& operation is
                 //  true  : 'curCh' must be xA  or xD
                 //  false : 'curCh' must be x20 or x9
                 //
-                if ( ( curCh & (chCR|chLF) & ~(0x9|0x20) ) == 0 )
+                if ( ( curCh & (u'\r'|u'\n') & ~(0x9|0x20) ) == 0 )
                 {
                     fCurCol++;
                 } else
@@ -987,7 +987,7 @@ bool XMLReader::skipIfQuote(XMLCh& chGotten)
         return false;
 
     chGotten = fCharBuf[fCharIndex];
-    if ((chGotten == chDoubleQuote) || (chGotten == chSingleQuote))
+    if ((chGotten == u'"') || (chGotten == u'\''))
     {
         fCharIndex++;
         fCurCol++;
@@ -1018,20 +1018,20 @@ bool XMLReader::skipSpaces(bool& skippedSomething, bool inDecl)
                 skippedSomething = true;
                 //
                 //  'curCh' is a whitespace(x20|x9|xD|xA), so we only can have
-                //  end-of-line combinations with a leading chCR(xD) or chLF(xA)
+                //  end-of-line combinations with a leading u'\r'(xD) or u'\n'(xA)
                 //
                 //  100000 x20
                 //  001001 x9
-                //  001010 chLF
-                //  001101 chCR
+                //  001010 u'\n'
+                //  001101 u'\r'
                 //  -----------
-                //  000110 == (chCR|chLF) & ~(0x9|0x20)
+                //  000110 == (u'\r'|u'\n') & ~(0x9|0x20)
                 //
                 //  if the result of the logical-& operation is
                 //  true  : 'curCh' must be xA  or xD
                 //  false : 'curCh' must be x20 or x9
                 //
-                if ( ( curCh & (chCR|chLF) & ~(0x9|0x20) ) == 0 )
+                if ( ( curCh & (u'\r'|u'\n') & ~(0x9|0x20) ) == 0 )
                 {
                     fCurCol++;
                 } else
@@ -1102,20 +1102,20 @@ bool XMLReader::skippedSpace()
 
         //
         //  'curCh' is a whitespace(x20|x9|xD|xA), so we only can have
-        //  end-of-line combinations with a leading chCR(xD) or chLF(xA)
+        //  end-of-line combinations with a leading u'\r'(xD) or u'\n'(xA)
         //
         //  100000 x20
         //  001001 x9
-        //  001010 chLF
-        //  001101 chCR
+        //  001010 u'\n'
+        //  001101 u'\r'
         //  -----------
-        //  000110 == (chCR|chLF) & ~(0x9|0x20)
+        //  000110 == (u'\r'|u'\n') & ~(0x9|0x20)
         //
         //  if the result of the logical-& operation is
         //  true  : 'curCh' must be xA  or xD
         //  false : 'curCh' must be x20 or x9
         //
-        if ( ( curCh & (chCR|chLF) & ~(0x9|0x20) ) == 0 )
+        if ( ( curCh & (u'\r'|u'\n') & ~(0x9|0x20) ) == 0 )
         {
             fCurCol++;
         } else
@@ -1557,7 +1557,7 @@ void XMLReader::doInitDecode()
                 fCharBuf[fCharsAvail++] = XMLCh(curVal);
 
                 // Break out on the > character
-                if (curVal == chCloseAngle)
+                if (curVal == u'>')
                     break;
             }
             break;
@@ -1625,7 +1625,7 @@ void XMLReader::doInitDecode()
                 fCharBuf[fCharsAvail++] = XMLCh(curCh);
 
                 // Break out on a > character
-                if (curCh == chCloseAngle)
+                if (curCh == u'>')
                     break;
 
                 //
@@ -1752,7 +1752,7 @@ void XMLReader::doInitDecode()
                 fCharBuf[fCharsAvail++] = curVal;
 
                 // Break out on a > char
-                if (curVal == chCloseAngle)
+                if (curVal == u'>')
                     break;
             }
             break;
@@ -1797,7 +1797,7 @@ void XMLReader::doInitDecode()
                 fCharBuf[fCharsAvail++] = chCur;
 
                 // If its a > char, then break out
-                if (chCur == chCloseAngle)
+                if (chCur == u'>')
                     break;
 
                 // Watch for using up all input and get out
@@ -1823,7 +1823,7 @@ void XMLReader::doInitDecode()
     //  is required by XML.
     //
     if ((fType == Type_PE) && (fRefFrom == RefFrom_NonLiteral))
-        fCharBuf[fCharsAvail++] = chSpace;
+        fCharBuf[fCharsAvail++] = u' ';
 
     //  Calculate fCharOfsBuf buffer using the elements from fCharBufSize
     if (fCalculateSrcOfs)
@@ -1972,7 +1972,7 @@ void XMLReader::handleEOL(XMLCh& curCh, bool inDecl)
     // 5. any #xD character that is not immediately followed by #xA or #x85.
     switch(curCh)
     {
-    case chCR:
+    case u'\r':
         fCurCol = 1;
         fCurLine++;
 
@@ -1984,17 +1984,17 @@ void XMLReader::handleEOL(XMLCh& curCh, bool inDecl)
         {
             if ((fCharIndex < fCharsAvail) || refreshCharBuffer())
             {
-                if ( fCharBuf[fCharIndex] == chLF              ||
+                if ( fCharBuf[fCharIndex] == u'\n'              ||
                     ((fCharBuf[fCharIndex] == chNEL) && fNEL)  )
                 {
                     fCharIndex++;
                 }
             }
-            curCh = chLF;
+            curCh = u'\n';
         }
         break;
 
-    case chLF:
+    case u'\n':
         fCurCol = 1;
         fCurLine++;
         break;
@@ -2030,7 +2030,7 @@ void XMLReader::handleEOL(XMLCh& curCh, bool inDecl)
         {
             fCurCol = 1;
             fCurLine++;
-            curCh = chLF;
+            curCh = u'\n';
         }
         break;
     default:

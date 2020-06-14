@@ -735,7 +735,7 @@ bool XSValue::validateStrings(const XMLCh*         const content
                             isValid = false;
                             break;
                         }
-                        else if (*rawPtr == chCR || *rawPtr == chLF || *rawPtr == chHTab) {
+                        else if (*rawPtr == u'\r' || *rawPtr == u'\n' || *rawPtr == u'\t') {
                             isValid = false;
                             break;
                         }
@@ -750,7 +750,7 @@ bool XSValue::validateStrings(const XMLCh*         const content
                             isValid = false;
                             break;
                         }
-                        else if (*rawPtr == chCR || *rawPtr == chLF || *rawPtr == chHTab) {
+                        else if (*rawPtr == u'\r' || *rawPtr == u'\n' || *rawPtr == u'\t') {
                             isValid = false;
                             break;
                         }
@@ -781,7 +781,7 @@ bool XSValue::validateStrings(const XMLCh*         const content
                                 isValid = false;
                                 break;
                             }
-                            else if (*rawPtr == chCR || *rawPtr == chLF || *rawPtr == chHTab) {
+                            else if (*rawPtr == u'\r' || *rawPtr == u'\n' || *rawPtr == u'\t') {
                                 isValid = false;
                                 break;
                             }
@@ -814,7 +814,7 @@ bool XSValue::validateStrings(const XMLCh*         const content
                                 isValid = false;
                                 break;
                             }
-                            else if (*rawPtr == chCR || *rawPtr == chLF || *rawPtr == chHTab) {
+                            else if (*rawPtr == u'\r' || *rawPtr == u'\n' || *rawPtr == u'\t') {
                                 isValid = false;
                                 break;
                             }
@@ -1575,7 +1575,7 @@ bool XSValue::getActualNumericValue(const XMLCh*  const content
     }
     else
     {
-        if (XMLString::indexOf(content, chDash) != -1)
+        if (XMLString::indexOf(content, u'-') != -1)
         {
             status = st_FOCA0002; //invalid lexcial value
             return false;

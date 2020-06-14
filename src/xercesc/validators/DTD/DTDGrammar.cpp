@@ -53,11 +53,11 @@ void XMLInitializer::initializeDTDGrammar()
     //
     if (DTDGrammar::fDefaultEntities)
     {
-        DTDGrammar::fDefaultEntities->put(new DTDEntityDecl(XMLUni::fgAmp, chAmpersand, true, true));
-        DTDGrammar::fDefaultEntities->put(new DTDEntityDecl(XMLUni::fgLT, chOpenAngle, true, true));
-        DTDGrammar::fDefaultEntities->put(new DTDEntityDecl(XMLUni::fgGT, chCloseAngle, true, true));
-        DTDGrammar::fDefaultEntities->put(new DTDEntityDecl(XMLUni::fgQuot, chDoubleQuote, true, true));
-        DTDGrammar::fDefaultEntities->put(new DTDEntityDecl(XMLUni::fgApos, chSingleQuote, true, true));
+        DTDGrammar::fDefaultEntities->put(new DTDEntityDecl(XMLUni::fgAmp, u'&', true, true));
+        DTDGrammar::fDefaultEntities->put(new DTDEntityDecl(XMLUni::fgLT, u'<', true, true));
+        DTDGrammar::fDefaultEntities->put(new DTDEntityDecl(XMLUni::fgGT, u'>', true, true));
+        DTDGrammar::fDefaultEntities->put(new DTDEntityDecl(XMLUni::fgQuot, u'"', true, true));
+        DTDGrammar::fDefaultEntities->put(new DTDEntityDecl(XMLUni::fgApos, u'\'', true, true));
     }
 }
 

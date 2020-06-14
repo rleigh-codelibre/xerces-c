@@ -207,7 +207,7 @@ bool SchemaValidator::checkContent (XMLElementDecl* const elemDecl
                     const XMLCh* uriText = getScanner()->getURIText(uriId);
                     if (uriText && *uriText) {
                         fNotationBuf->set(uriText);
-                        fNotationBuf->append(chColon);
+                        fNotationBuf->append(u':');
                         fNotationBuf->append(&value[colonPos + 1]);
                         value = fNotationBuf->getRawBuffer();
                     }
@@ -426,7 +426,7 @@ void SchemaValidator::validateAttrValue (const XMLAttDef*      attDef
                 const XMLCh* uriText = getScanner()->getURIText(uriId);
                 if (uriText && *uriText) {
                     notationBuf.set(uriText);
-                    notationBuf.append(chColon);
+                    notationBuf.append(u':');
                     notationBuf.append(&attrValue[colonPos + 1]);
                 }
                 else {
@@ -608,7 +608,7 @@ void SchemaValidator::validateElement(const   XMLElementDecl*  elemDef)
                     // retrieve the typeInfo specified in xsi:type
                     XMLBuffer aBuffer(1023, fMemoryManager);
                     aBuffer.set(uriStr);
-                    aBuffer.append(chComma);
+                    aBuffer.append(u',');
                     aBuffer.append(localPart);
                     ComplexTypeInfo* typeInfo = complexTypeRegistry->get(aBuffer.getRawBuffer());
 
@@ -870,7 +870,7 @@ void SchemaValidator::preContentValidation(bool,
                         XMLCh*  lastPtr = listPtr;
                         while (true)
                         {
-                            while (*listPtr && (*listPtr != chSpace))
+                            while (*listPtr && (*listPtr != u' '))
                                 listPtr++;
 
                             //
@@ -1000,7 +1000,7 @@ void SchemaValidator::normalizeWhiteSpace(DatatypeValidator* dV, const XMLCh* co
         {
             nextCh = *srcPtr++;
             if (fCurReader->isWhitespace(nextCh))
-                nextCh = chSpace;
+                nextCh = u' ';
             // Add this char to the target buffer
             toFill.append(nextCh);
         }
@@ -1031,7 +1031,7 @@ void SchemaValidator::normalizeWhiteSpace(DatatypeValidator* dV, const XMLCh* co
                 if (fCurReader->isWhitespace(nextCh))
                     continue;
                 if (fSeenNonWhiteSpace)
-                    toFill.append(chSpace);
+                    toFill.append(u' ');
                 curState = InContent;
                 fSeenNonWhiteSpace = true;
             }

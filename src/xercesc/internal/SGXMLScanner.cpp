@@ -383,7 +383,7 @@ bool SGXMLScanner::scanNext(XMLPScanToken& token)
                     break;
 
                 default :
-                    fReaderMgr.skipToChar(chOpenAngle);
+                    fReaderMgr.skipToChar(u'<');
                     break;
             }
 
@@ -525,7 +525,7 @@ SGXMLScanner::rawAttrScan(const   XMLCh* const                elemName
         //
         if (attCount)
         {
-            if ((nextCh != chForwardSlash) && (nextCh != chCloseAngle))
+            if ((nextCh != u'/') && (nextCh != u'>'))
             {
                 if (fReaderMgr.getCurrentReader()->isWhitespace(nextCh))
                 {
@@ -557,7 +557,7 @@ SGXMLScanner::rawAttrScan(const   XMLCh* const                elemName
                     emitError(XMLErrs::ExpectedAttrName);
                 else
                     emitError(XMLErrs::InvalidAttrName, fAttNameBuf.getRawBuffer());
-                fReaderMgr.skipPastChar(chCloseAngle);
+                fReaderMgr.skipPastChar(u'>');
                 return attCount;
             }
 
@@ -572,18 +572,18 @@ SGXMLScanner::rawAttrScan(const   XMLCh* const                elemName
                 //  hit something meaningful.
                 const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"'\"></");
 
-                if ((chFound == chCloseAngle) || (chFound == chForwardSlash))
+                if ((chFound == u'>') || (chFound == u'/'))
                 {
                     // Jump back to top for normal processing of these
                     continue;
                 }
-                else if ((chFound == chSingleQuote)
-                      ||  (chFound == chDoubleQuote)
+                else if ((chFound == u'\'')
+                      ||  (chFound == u'"')
                       ||  fReaderMgr.getCurrentReader()->isWhitespace(chFound))
                 {
                     // Just fall through assuming that the value is to follow
                 }
-                else if (chFound == chOpenAngle)
+                else if (chFound == u'<')
                 {
                     // Assume a malformed tag and that new one is starting
                     emitError(XMLErrs::UnterminatedStartTag, elemName);
@@ -608,14 +608,14 @@ SGXMLScanner::rawAttrScan(const   XMLCh* const                elemName
                 //  chars in our list.
                 const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"></");
 
-                if ((chFound == chCloseAngle)
-                ||  (chFound == chForwardSlash)
+                if ((chFound == u'>')
+                ||  (chFound == u'/')
                 ||  fReaderMgr.getCurrentReader()->isWhitespace(chFound))
                 {
                     //  Just fall through and process this attribute, though
                     //  the value will be "".
                 }
-                else if (chFound == chOpenAngle)
+                else if (chFound == u'<')
                 {
                     // Assume a malformed tag and that new one is starting
                     emitError(XMLErrs::UnterminatedStartTag, elemName);
@@ -672,20 +672,20 @@ SGXMLScanner::rawAttrScan(const   XMLCh* const                elemName
         if (!nextCh)
             ThrowXMLwithMemMgr(UnexpectedEOFException, XMLExcepts::Gen_UnexpectedEOF, fMemoryManager);
 
-        if (nextCh == chForwardSlash)
+        if (nextCh == u'/')
         {
             fReaderMgr.getNextChar();
             isEmpty = true;
-            if (!fReaderMgr.skippedChar(chCloseAngle))
+            if (!fReaderMgr.skippedChar(u'>'))
                 emitError(XMLErrs::UnterminatedStartTag, elemName);
             break;
         }
-        else if (nextCh == chCloseAngle)
+        else if (nextCh == u'>')
         {
             fReaderMgr.getNextChar();
             break;
         }
-        else if (nextCh == chOpenAngle)
+        else if (nextCh == u'<')
         {
             //  Check for this one specially, since its going to be common
             //  and it is kind of auto-recovering since we've already hit the
@@ -694,7 +694,7 @@ SGXMLScanner::rawAttrScan(const   XMLCh* const                elemName
             emitError(XMLErrs::UnterminatedStartTag, elemName);
             break;
         }
-        else if ((nextCh == chSingleQuote) || (nextCh == chDoubleQuote))
+        else if ((nextCh == u'\'') || (nextCh == u'"'))
         {
             //  Check for this one specially, which is probably a missing
             //  attribute name, e.g. ="value". Just issue expected name
@@ -797,7 +797,7 @@ bool SGXMLScanner::scanContent()
                         break;
 
                     default :
-                        fReaderMgr.skipToChar(chOpenAngle);
+                        fReaderMgr.skipToChar(u'<');
                         break;
                 }
 
@@ -840,7 +840,7 @@ void SGXMLScanner::scanEndTag(bool& gotData)
     if (fElemStack.isEmpty())
     {
         emitError(XMLErrs::MoreEndThanStartTags);
-        fReaderMgr.skipPastChar(chCloseAngle);
+        fReaderMgr.skipPastChar(u'>');
         ThrowXMLwithMemMgr(RuntimeException, XMLExcepts::Scan_UnbalancedStartEnd, fMemoryManager);
     }
 
@@ -859,7 +859,7 @@ void SGXMLScanner::scanEndTag(bool& gotData)
             XMLErrs::ExpectedEndOfTagX
             , elemName
         );
-        fReaderMgr.skipPastChar(chCloseAngle);
+        fReaderMgr.skipPastChar(u'>');
         fElemStack.popTop();
         return;
     }
@@ -874,7 +874,7 @@ void SGXMLScanner::scanEndTag(bool& gotData)
     fReaderMgr.skipPastSpaces();
 
     // Make sure we find the closing bracket
-    if (!fReaderMgr.skippedChar(chCloseAngle))
+    if (!fReaderMgr.skippedChar(u'>'))
     {
         emitError
         (
@@ -1053,10 +1053,10 @@ void SGXMLScanner::scanDocTypeDecl()
     // REVISIT: Should we issue a warning
     XMLCh nextCh = fReaderMgr.skipUntilIn(u"[>");
 
-    if (nextCh == chOpenSquare)
-        fReaderMgr.skipPastChar(chCloseSquare);
+    if (nextCh == u'[')
+        fReaderMgr.skipPastChar(u']');
 
-    fReaderMgr.skipPastChar(chCloseAngle);
+    fReaderMgr.skipPastChar(u'>');
 }
 
 //  This method is called to scan a start tag when we are processing
@@ -1082,7 +1082,7 @@ bool SGXMLScanner::scanStartTag(bool& gotData)
             emitError(XMLErrs::ExpectedElementName);
         else
             emitError(XMLErrs::InvalidElementName, fQNameBuf.getRawBuffer());
-        fReaderMgr.skipToChar(chOpenAngle);
+        fReaderMgr.skipToChar(u'<');
         return false;
     }
 
@@ -1518,7 +1518,7 @@ bool SGXMLScanner::scanStartTag(bool& gotData)
 
         // switch grammar if the typeinfo has a different grammar (happens when there is xsi:type)
         XMLCh* typeName = typeinfo->getTypeName();
-        const int comma = XMLString::indexOf(typeName, chComma);
+        const int comma = XMLString::indexOf(typeName, u',');
         if (comma > 0) {
             XMLBuffer prefixBuf(comma+1, fMemoryManager);
             prefixBuf.append(typeName, comma);
@@ -1953,11 +1953,11 @@ void SGXMLScanner::commonInit()
     //  Add the default entity entries for the character refs that must always
     //  be present.
     fEntityTable = new (fMemoryManager) ValueHashTableOf<XMLCh>(11, fMemoryManager);
-    fEntityTable->put((void*) XMLUni::fgAmp, chAmpersand);
-    fEntityTable->put((void*) XMLUni::fgLT, chOpenAngle);
-    fEntityTable->put((void*) XMLUni::fgGT, chCloseAngle);
-    fEntityTable->put((void*) XMLUni::fgQuot, chDoubleQuote);
-    fEntityTable->put((void*) XMLUni::fgApos, chSingleQuote);
+    fEntityTable->put((void*) XMLUni::fgAmp, u'&');
+    fEntityTable->put((void*) XMLUni::fgLT, u'<');
+    fEntityTable->put((void*) XMLUni::fgGT, u'>');
+    fEntityTable->put((void*) XMLUni::fgQuot, u'"');
+    fEntityTable->put((void*) XMLUni::fgApos, u'\'');
     fElemNonDeclPool = new (fMemoryManager) RefHash3KeysIdPool<SchemaElementDecl>(29, true, 128, fMemoryManager);
     fAttDefRegistry = new (fMemoryManager) RefHashTableOf<unsigned int, PtrHasher>
     (
@@ -2449,9 +2449,9 @@ SGXMLScanner::buildAttList(const  RefVectorOf<KVStringPair>&  providedAttrs
 
                     getURIText(uriId, bufURI);
 
-                    bufMsg.append(chOpenCurly);
+                    bufMsg.append(u'{');
                     bufMsg.append(bufURI.getRawBuffer());
-                    bufMsg.append(chCloseCurly);
+                    bufMsg.append(u'}');
                 }
                 bufMsg.append(suffPtr);
                 fValidator->emitError
@@ -2894,9 +2894,9 @@ bool SGXMLScanner::normalizeAttValue( const   XMLAttDef* const    attDef
                      // values are subject to normalisation
                      fValidator->emitError(XMLValid::NoAttNormForStandalone, attName);
                 }
-                nextCh = chSpace;
+                nextCh = u' ';
             }
-            else if (nextCh == chOpenAngle) {
+            else if (nextCh == u'<') {
                 //  If its not escaped, then make sure its not a < character, which is
                 //  not allowed in attribute values.
                 emitError(XMLErrs::BracketInAttrValue, attName);
@@ -2923,7 +2923,7 @@ bool SGXMLScanner::normalizeAttValue( const   XMLAttDef* const    attDef
             {
                 nextCh = *++srcPtr;
             }
-            else if (nextCh == chOpenAngle) {
+            else if (nextCh == u'<') {
                 //  If its not escaped, then make sure its not a < character, which is
                 //  not allowed in attribute values.
                 emitError(XMLErrs::BracketInAttrValue, attName);
@@ -2935,7 +2935,7 @@ bool SGXMLScanner::normalizeAttValue( const   XMLAttDef* const    attDef
                 if (!fReaderMgr.getCurrentReader()->isWhitespace(nextCh))
                 {
                     if (firstNonWS)
-                        toFill.append(chSpace);
+                        toFill.append(u' ');
                     curState = InContent;
                     firstNonWS = true;
                 }
@@ -2956,7 +2956,7 @@ bool SGXMLScanner::normalizeAttValue( const   XMLAttDef* const    attDef
                     // XML 1.0, Section 2.9
                     if (fStandalone && fValidate && isAttTokenizedExternal)
                     {
-                        if (!firstNonWS || (nextCh != chSpace && *srcPtr && fReaderMgr.getCurrentReader()->isWhitespace(*srcPtr)))
+                        if (!firstNonWS || (nextCh != u' ' && *srcPtr && fReaderMgr.getCurrentReader()->isWhitespace(*srcPtr)))
                         {
                             // Can't have a standalone document declaration of "yes" if  attribute
                             // values are subject to normalisation
@@ -3006,7 +3006,7 @@ bool SGXMLScanner::normalizeAttRawValue( const   XMLCh* const        attrName
 
         //  If its not escaped, then make sure its not a < character, which is
         //  not allowed in attribute values.
-        if (!escaped && (*srcPtr == chOpenAngle))
+        if (!escaped && (*srcPtr == u'<'))
         {
             emitError(XMLErrs::BracketInAttrValue, attrName);
             retVal = false;
@@ -3018,7 +3018,7 @@ bool SGXMLScanner::normalizeAttRawValue( const   XMLCh* const        attrName
             //  replaced with an 0x20. But its faster to do this (I think)
             //  than checking for 9, A, and D separately.
             if (fReaderMgr.getCurrentReader()->isWhitespace(nextCh))
-                nextCh = chSpace;
+                nextCh = u' ';
         }
 
         // Add this char to the target buffer
@@ -3358,7 +3358,7 @@ void SGXMLScanner::sendCharData(XMLBuffer& toSend)
 void SGXMLScanner::updateNSMap(const  XMLCh* const    attrName
                               , const XMLCh* const    attrValue)
 {
-    updateNSMap(attrName, attrValue, XMLString::indexOf(attrName, chColon));
+    updateNSMap(attrName, attrValue, XMLString::indexOf(attrName, u':'));
 }
 
 void SGXMLScanner::updateNSMap(const  XMLCh* const    attrName
@@ -4073,7 +4073,7 @@ bool SGXMLScanner::basicAttrValueScan(const XMLCh* const attrName, XMLBuffer& to
 
                 if (nextCh != quoteCh)
                 {
-                    if (nextCh != chAmpersand)
+                    if (nextCh != u'&')
                     {
                         if ((nextCh < 0xD800) || (nextCh > 0xDFFF))
                         {
@@ -4117,7 +4117,7 @@ bool SGXMLScanner::basicAttrValueScan(const XMLCh* const attrName, XMLBuffer& to
                                 emitError(XMLErrs::Unexpected2ndSurrogateChar);
                             }
                         }
-                    } else // its a chAmpersand
+                    } else // its a u'&'
                     {
                         //  Check for an entity ref . We ignore the empty flag in
                         //  this one.
@@ -4183,13 +4183,13 @@ void SGXMLScanner::scanCDSection()
     //  The next character should be the opening square bracket. If not
     //  issue an error, but then try to recover by skipping any whitespace
     //  and checking again.
-    if (!fReaderMgr.skippedChar(chOpenSquare))
+    if (!fReaderMgr.skippedChar(u'['))
     {
         emitError(XMLErrs::ExpectedOpenSquareBracket);
         fReaderMgr.skipPastSpaces();
 
         // If we still don't find it, then give up, else keep going
-        if (!fReaderMgr.skippedChar(chOpenSquare))
+        if (!fReaderMgr.skippedChar(u'['))
             return;
     }
 
@@ -4253,7 +4253,7 @@ void SGXMLScanner::scanCDSection()
 
         //  If this is a close square bracket it could be our closing
         //  sequence.
-        if (nextCh == chCloseSquare && fReaderMgr.skippedString(u"]>"))
+        if (nextCh == u']' && fReaderMgr.skippedString(u"]>"))
         {
             //  make sure we were not expecting a trailing surrogate.
             if (gotLeadingSurrogate) {
@@ -4416,7 +4416,7 @@ void SGXMLScanner::scanCharData(XMLBuffer& toUse)
 
                 // Try to get another char from the source
                 //   The code from here on down covers all contengencies,
-                if (!fReaderMgr.getNextCharIfNot(chOpenAngle, nextCh))
+                if (!fReaderMgr.getNextCharIfNot(u'<', nextCh))
                 {
                     // If we were waiting for a trailing surrogate, its an error
                     if (gotLeadingSurrogate)
@@ -4429,7 +4429,7 @@ void SGXMLScanner::scanCharData(XMLBuffer& toUse)
                 //  Watch for a reference. Note that the escapement mechanism
                 //  is ignored in this content.
                 escaped = false;
-                if (nextCh == chAmpersand)
+                if (nextCh == u'&')
                 {
                     sendCharData(toUse);
 
@@ -4492,14 +4492,14 @@ void SGXMLScanner::scanCharData(XMLBuffer& toUse)
                 // Keep the state machine up to date
                 if (!escaped)
                 {
-                    if (nextCh == chCloseSquare)
+                    if (nextCh == u']')
                     {
                         if (curState == State_Waiting)
                             curState = State_GotOne;
                         else if (curState == State_GotOne)
                             curState = State_GotTwo;
                     }
-                    else if (nextCh == chCloseAngle)
+                    else if (nextCh == u'>')
                     {
                         if (curState == State_GotTwo)
                             emitError(XMLErrs::BadSequenceInCharData);
@@ -4611,7 +4611,7 @@ SGXMLScanner::scanEntityRef(  const   bool
 
     //  If the next char is a pound, then its a character reference and we
     //  need to expand it always.
-    if (fReaderMgr.skippedChar(chPound))
+    if (fReaderMgr.skippedChar(u'#'))
     {
         //  Its a character reference, so scan it and get back the numeric
         //  value it represents.
@@ -4640,7 +4640,7 @@ SGXMLScanner::scanEntityRef(  const   bool
 
     //  Next char must be a semi-colon. But if its not, just emit
     //  an error and try to continue.
-    if (!fReaderMgr.skippedChar(chSemiColon))
+    if (!fReaderMgr.skippedChar(u';'))
         emitError(XMLErrs::UnterminatedEntityRef, bbName.getRawBuffer());
 
     // Make sure we ended up on the same entity reader as the & char

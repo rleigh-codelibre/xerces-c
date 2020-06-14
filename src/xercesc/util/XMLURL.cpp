@@ -555,7 +555,7 @@ bool XMLURL::isRelative() const
     if (!fPath)
         return true;
 
-    if (*fPath != chForwardSlash)
+    if (*fPath != u'/')
         return true;
 
     return false;
@@ -587,7 +587,7 @@ BinInputStream* XMLURL::makeNewStream() const
             // HTTP protocol will be done automatically by the netaccessor
             //
             XMLSize_t end = XMLString::stringLen(realPath);
-            int percentIndex = XMLString::indexOf(realPath, chPercent, 0, fMemoryManager);
+            int percentIndex = XMLString::indexOf(realPath, u'%', 0, fMemoryManager);
 
             while (percentIndex != -1) {
 
@@ -627,7 +627,7 @@ BinInputStream* XMLURL::makeNewStream() const
                 end = i;
 
                 if (((XMLSize_t)(percentIndex + 1)) < end)
-                  percentIndex = XMLString::indexOf(realPath, chPercent, percentIndex + 1, fMemoryManager);
+                  percentIndex = XMLString::indexOf(realPath, u'%', percentIndex + 1, fMemoryManager);
                 else
                   percentIndex = -1;
             }
@@ -706,9 +706,9 @@ void XMLURL::buildFullText()
     {
         XMLString::catString(fURLText, getProtocolName());
         outPtr += XMLString::stringLen(fURLText);
-        *outPtr++ = chColon;
-        *outPtr++ = chForwardSlash;
-        *outPtr++ = chForwardSlash;
+        *outPtr++ = u':';
+        *outPtr++ = u'/';
+        *outPtr++ = u'/';
     }
 
     if (fUser)
@@ -718,12 +718,12 @@ void XMLURL::buildFullText()
 
         if (fPassword)
         {
-            *outPtr++ = chColon;
+            *outPtr++ = u':';
             XMLString::copyString(outPtr, fPassword);
             outPtr += XMLString::stringLen(fPassword);
         }
 
-        *outPtr++ = chAt;
+        *outPtr++ = u'@';
     }
 
     if (fHost)
@@ -737,7 +737,7 @@ void XMLURL::buildFullText()
         //
         if (fPortNum)
         {
-            *outPtr++ = chColon;
+            *outPtr++ = u':';
 
             XMLCh tmpBuf[17];
             XMLString::binToText(fPortNum, tmpBuf, 16, 10, fMemoryManager);
@@ -754,14 +754,14 @@ void XMLURL::buildFullText()
 
     if (fQuery)
     {
-        *outPtr++ = chQuestion;
+        *outPtr++ = u'?';
         XMLString::copyString(outPtr, fQuery);
         outPtr += XMLString::stringLen(fQuery);
     }
 
     if (fFragment)
     {
-        *outPtr++ = chPound;
+        *outPtr++ = u'#';
         XMLString::copyString(outPtr, fFragment);
         outPtr += XMLString::stringLen(fFragment);
     }
@@ -882,7 +882,7 @@ bool XMLURL::conglomerateWithBase(const XMLURL& baseURL, bool useExceptions)
     const bool hadPath = (fPath != 0);
     if (hadPath)
     {
-        if (*fPath == chForwardSlash)
+        if (*fPath == u'/')
             return true;
     }
 
@@ -929,10 +929,10 @@ void XMLURL::parse(const XMLCh* const urlText)
     if (((*urlText >= u'A') && (*urlText <= u'Z'))
     ||  ((*urlText >= u'a') && (*urlText <= u'z')))
     {
-        if (*(urlText + 1) == chColon)
+        if (*(urlText + 1) == u':')
         {
-            if ((*(urlText + 2) == chForwardSlash)
-            ||  (*(urlText + 2) == chBackSlash))
+            if ((*(urlText + 2) == u'/')
+            ||  (*(urlText + 2) == u'\\'))
             {
                 ThrowXMLwithMemMgr(MalformedURLException, XMLExcepts::URL_NoProtocolPresent, fMemoryManager);
             }
@@ -972,7 +972,7 @@ void XMLURL::parse(const XMLCh* const urlText)
     // If we found a protocol, then deal with it
     if (ptr1)
     {
-        if (*ptr1 == chColon)
+        if (*ptr1 == u':')
         {
             // Cap the string at the colon
             *ptr1 = 0;
@@ -1000,7 +1000,7 @@ void XMLURL::parse(const XMLCh* const urlText)
     //  Ok, next we need to see if we have any host part. If the next
     //  two characters are //, then we need to check, else move on.
     //
-    if ((*srcPtr == chForwardSlash) && (*(srcPtr + 1) == chForwardSlash))
+    if ((*srcPtr == u'/') && (*(srcPtr + 1) == u'/'))
     {
         // Move up past the slashes
         srcPtr += 2;
@@ -1126,7 +1126,7 @@ void XMLURL::parse(const XMLCh* const urlText)
     // If we are at the end, then we are done now
     if (!*srcPtr) {
         if(fHost) {
-            static const XMLCh slash[] = { chForwardSlash, u'\0' };
+            static const XMLCh slash[] = { u'/', u'\0' };
             fPath = XMLString::replicate(slash, fMemoryManager);
         }
         return;
@@ -1163,7 +1163,7 @@ void XMLURL::parse(const XMLCh* const urlText)
     //  If we found a fragment, then it is the rest of the string and we
     //  are done.
     //
-    if (*srcPtr == chPound)
+    if (*srcPtr == u'#')
     {
         srcPtr++;
         fMemoryManager->deallocate(fFragment);//delete [] fFragment;
@@ -1196,7 +1196,7 @@ void XMLURL::parse(const XMLCh* const urlText)
     }
 
     // If we are not at the end now, then everything else is the fragment
-    if (*srcPtr == chPound)
+    if (*srcPtr == u'#')
     {
         srcPtr++;
         fMemoryManager->deallocate(fFragment);//delete [] fFragment;
@@ -1224,10 +1224,10 @@ bool XMLURL::parse(const XMLCh* const urlText, XMLURL& xmlURL)
     if (((*urlText >= u'A') && (*urlText <= u'Z'))
     ||  ((*urlText >= u'a') && (*urlText <= u'z')))
     {
-        if (*(urlText + 1) == chColon)
+        if (*(urlText + 1) == u':')
         {
-            if ((*(urlText + 2) == chForwardSlash)
-            ||  (*(urlText + 2) == chBackSlash))
+            if ((*(urlText + 2) == u'/')
+            ||  (*(urlText + 2) == u'\\'))
             {
                 return false;
             }
@@ -1267,7 +1267,7 @@ bool XMLURL::parse(const XMLCh* const urlText, XMLURL& xmlURL)
     // If we found a protocol, then deal with it
     if (ptr1)
     {
-        if (*ptr1 == chColon)
+        if (*ptr1 == u':')
         {
             // Cap the string at the colon
             *ptr1 = 0;
@@ -1287,7 +1287,7 @@ bool XMLURL::parse(const XMLCh* const urlText, XMLURL& xmlURL)
     //  Ok, next we need to see if we have any host part. If the next
     //  two characters are //, then we need to check, else move on.
     //
-    if ((*srcPtr == chForwardSlash) && (*(srcPtr + 1) == chForwardSlash))
+    if ((*srcPtr == u'/') && (*(srcPtr + 1) == u'/'))
     {
         // Move up past the slashes
         srcPtr += 2;
@@ -1403,7 +1403,7 @@ bool XMLURL::parse(const XMLCh* const urlText, XMLURL& xmlURL)
     // If we are at the end, then we are done now
     if (!*srcPtr) {
         if(xmlURL.fHost) {
-            static const XMLCh slash[] = { chForwardSlash, u'\0' };
+            static const XMLCh slash[] = { u'/', u'\0' };
             xmlURL.fPath = XMLString::replicate(slash, xmlURL.fMemoryManager);
         }
         return true;
@@ -1438,7 +1438,7 @@ bool XMLURL::parse(const XMLCh* const urlText, XMLURL& xmlURL)
     //  If we found a fragment, then it is the rest of the string and we
     //  are done.
     //
-    if (*srcPtr == chPound)
+    if (*srcPtr == u'#')
     {
         srcPtr++;
         xmlURL.fFragment = XMLString::replicate(srcPtr, xmlURL.fMemoryManager);
@@ -1469,7 +1469,7 @@ bool XMLURL::parse(const XMLCh* const urlText, XMLURL& xmlURL)
     }
 
     // If we are not at the end now, then everything else is the fragment
-    if (*srcPtr == chPound)
+    if (*srcPtr == u'#')
     {
         srcPtr++;
         xmlURL.fFragment = XMLString::replicate(srcPtr, xmlURL.fMemoryManager);

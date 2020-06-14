@@ -127,7 +127,7 @@ void BinHTTPInputStreamCommon::createHTTPRequest(const XMLURL &urlSource, const 
     if(username && password) {
         XMLBuffer userPassBuf(256, fMemoryManager);
         userPassBuf.append(username);
-        userPassBuf.append(chColon);
+        userPassBuf.append(u':');
         userPassBuf.append(password);
 
         TranscodeToStr userPass(userPassBuf.getRawBuffer(), trans, fMemoryManager);
@@ -142,7 +142,7 @@ void BinHTTPInputStreamCommon::createHTTPRequest(const XMLURL &urlSource, const 
             ArrayJanitor<XMLByte> janBuf(authData, fMemoryManager);
             XMLByte *cursor = authData;
             for(XMLSize_t i = 0; i < len; ++i)
-                if(encodedData[i] != chLF)
+                if(encodedData[i] != u'\n')
                     *cursor++ = encodedData[i];
             *cursor++ = 0;
             buffer.append(AUTHORIZATION);
@@ -252,7 +252,7 @@ int BinHTTPInputStreamCommon::sendRequest(const XMLURL &url, const XMLNetHTTPInf
         ThrowXMLwithMemMgr1(NetAccessorException, XMLExcepts::NetAcc_ReadSocket, url.getURLText(), fMemoryManager);
     }
 
-    p = strchr(p, chSpace);
+    p = strchr(p, u' ');
     if(p == 0) {
         ThrowXMLwithMemMgr1(NetAccessorException, XMLExcepts::NetAcc_ReadSocket, url.getURLText(), fMemoryManager);
     }
@@ -278,7 +278,7 @@ const XMLCh *BinHTTPInputStreamCommon::getEncoding() const
 		{
 			const XMLCh *szCharsetEquals = u"charset=";
 
-			BaseRefVectorOf<XMLCh>* tokens=XMLString::tokenizeString(contentTypeHeader, chSemiColon, fMemoryManager);
+			BaseRefVectorOf<XMLCh>* tokens=XMLString::tokenizeString(contentTypeHeader, u';', fMemoryManager);
 			for(XMLSize_t i=0;i<tokens->size();i++)
 			{
 				XMLString::removeWS(tokens->elementAt(i), fMemoryManager);
@@ -310,7 +310,7 @@ const XMLCh *BinHTTPInputStreamCommon::getEncoding() const
 					// has a default encoding of us-ascii
 					XMLCh* subType = strType+XMLString::stringLen(szTextSlash);
 
-					BaseRefVectorOf<XMLCh>* tokens=XMLString::tokenizeString(subType, chPlus, fMemoryManager);
+					BaseRefVectorOf<XMLCh>* tokens=XMLString::tokenizeString(subType, u'+', fMemoryManager);
 					for(XMLSize_t i=0;i<tokens->size();i++)
 					{
 						XMLCh* part=tokens->elementAt(i);

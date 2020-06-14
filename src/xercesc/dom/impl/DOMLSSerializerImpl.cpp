@@ -559,7 +559,7 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
                         // as well as the number of whitespaces after the last
                         // newline character to do indentation properly.
                         //
-                        int pos = XMLString::lastIndexOf(nodeValue, chLF);
+                        int pos = XMLString::lastIndexOf(nodeValue, u'\n');
                         if (-1 != pos)
                         {
                             fLineFeedInTextNodePrinted = true;
@@ -567,9 +567,9 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
                         }
                         else
                         {
-                            // for those platforms using chCR alone as
+                            // for those platforms using u'\r' alone as
                             // a newline character
-                            pos = XMLString::lastIndexOf(nodeValue, chCR);
+                            pos = XMLString::lastIndexOf(nodeValue, u'\r');
                             if (-1 != pos)
                             {
                                 fLineFeedInTextNodePrinted = true;
@@ -604,7 +604,7 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
                 *fFormatter << XMLFormatter::NoEscapes << gStartPI << nodeName;
                 if (lent > 0)
                 {
-                    *fFormatter << chSpace << nodeValue;
+                    *fFormatter << u' ' << nodeValue;
                 }
                 *fFormatter << gEndPI;
             )
@@ -699,7 +699,7 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
                 (
                 // The name has to be representable without any escapes
                     *fFormatter  << XMLFormatter::NoEscapes
-                                 << chOpenAngle << nodeName;
+                                 << u'<' << nodeName;
                 )
 
                 // Output any attributes on this element
@@ -723,14 +723,14 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
                         }
                         namespaceMap->put((void*)prefix,(XMLCh*)uri);
                         *fFormatter  << XMLFormatter::NoEscapes
-                                     << chSpace << XMLUni::fgXMLNSString;
+                                     << u' ' << XMLUni::fgXMLNSString;
                         if(!XMLString::equals(prefix,XMLUni::fgZeroLenString))
-                            *fFormatter  << chColon << prefix;
-                        *fFormatter  << chEqual << chDoubleQuote
+                            *fFormatter  << u':' << prefix;
+                        *fFormatter  << u'=' << u'"'
                                      << XMLFormatter::AttrEscapes
                                      << uri
                                      << XMLFormatter::NoEscapes
-                                     << chDoubleQuote;
+                                     << u'"';
                     }
                 }
 
@@ -801,12 +801,12 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
                                     }
                                     namespaceMap->put((void*)prefix,(XMLCh*)uri);
                                     *fFormatter  << XMLFormatter::NoEscapes
-                                                 << chSpace << XMLUni::fgXMLNSString << chColon << prefix
-                                                 << chEqual << chDoubleQuote
+                                                 << u' ' << XMLUni::fgXMLNSString << u':' << prefix
+                                                 << u'=' << u'"'
                                                  << XMLFormatter::AttrEscapes
                                                  << uri
                                                  << XMLFormatter::NoEscapes
-                                                 << chDoubleQuote;
+                                                 << u'"';
                                 }
                             }
                         }
@@ -814,8 +814,8 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
                     if (XMLString::equals(ns, XMLUni::fgXMLNSURIName) || checkFilter(attribute) == DOMNodeFilter::FILTER_ACCEPT)
                     {
                         *fFormatter  << XMLFormatter::NoEscapes
-                                     << chSpace << attribute->getNodeName()
-                                     << chEqual << chDoubleQuote
+                                     << u' ' << attribute->getNodeName()
+                                     << u'=' << u'"'
                                      << XMLFormatter::AttrEscapes;
                         if (getFeature(ENTITIES_ID))
                         {
@@ -829,7 +829,7 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
                                 }
                                 else if(child->getNodeType()==DOMNode::ENTITY_REFERENCE_NODE)
                                     *fFormatter << XMLFormatter::NoEscapes
-                                                << chAmpersand << child->getNodeName() << chSemiColon
+                                                << u'&' << child->getNodeName() << u';'
                                                 << XMLFormatter::AttrEscapes;
                                 child = child->getNextSibling();
                             }
@@ -840,7 +840,7 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
                             *fFormatter  << attribute->getNodeValue();
                         }
                         *fFormatter  << XMLFormatter::NoEscapes
-                                     << chDoubleQuote;
+                                     << u'"';
                     }
                 } // end of for
             } // end of FILTER_ACCEPT
@@ -859,7 +859,7 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
                 // There are children. Close start-tag, and output children.
                 // No escapes are legal here
                 if (filterAction == DOMNodeFilter::FILTER_ACCEPT)
-                    *fFormatter << XMLFormatter::NoEscapes << chCloseAngle;
+                    *fFormatter << XMLFormatter::NoEscapes << u'>';
 
                 while( child != 0)
                 {
@@ -892,7 +892,7 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
                     TRY_CATCH_THROW
                     (
                          *fFormatter << XMLFormatter::NoEscapes << gEndElement
-                                     << nodeName << chCloseAngle;
+                                     << nodeName << u'>';
                     )
 
                 }
@@ -909,7 +909,7 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
                 {
                     TRY_CATCH_THROW
                     (
-                        *fFormatter << XMLFormatter::NoEscapes << chForwardSlash << chCloseAngle;
+                        *fFormatter << XMLFormatter::NoEscapes << u'/' << u'>';
                     )
                 }
             }
@@ -933,9 +933,9 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
                              << nodeToWrite->getNodeName();
             else
                 *fFormatter  << XMLFormatter::NoEscapes
-                             << chOpenCurly << nodeToWrite->getNamespaceURI()
-                             << chCloseCurly << localName;
-            *fFormatter  << chEqual << chDoubleQuote
+                             << u'{' << nodeToWrite->getNamespaceURI()
+                             << u'}' << localName;
+            *fFormatter  << u'=' << u'"'
                          << XMLFormatter::AttrEscapes;
             if (getFeature(ENTITIES_ID))
             {
@@ -949,7 +949,7 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
                     }
                     else if(child->getNodeType()==DOMNode::ENTITY_REFERENCE_NODE)
                         *fFormatter << XMLFormatter::NoEscapes
-                                    << chAmpersand << child->getNodeName() << chSemiColon
+                                    << u'&' << child->getNodeName() << u';'
                                     << XMLFormatter::AttrEscapes;
                     child = child->getNextSibling();
                 }
@@ -960,7 +960,7 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
                 *fFormatter  << nodeValue;
             }
             *fFormatter  << XMLFormatter::NoEscapes
-                         << chDoubleQuote;
+                         << u'"';
 
             break;
         }
@@ -985,8 +985,8 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
             {
                 TRY_CATCH_THROW
                 (
-                    *fFormatter << XMLFormatter::NoEscapes << chAmpersand
-                                << nodeName << chSemiColon;
+                    *fFormatter << XMLFormatter::NoEscapes << u'&'
+                                << nodeName << u';';
                 )
             }
             else
@@ -1006,7 +1006,7 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
                 {
                     TRY_CATCH_THROW
                    (
-                        *fFormatter<<XMLFormatter::NoEscapes<<chAmpersand<<nodeName<<chSemiColon;
+                        *fFormatter<<XMLFormatter::NoEscapes<<u'&'<<nodeName<<u';';
                     )
                 }
             }
@@ -1121,12 +1121,12 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
                 const XMLCh  *id = doctype->getPublicId();
                 if (id && *id)
                 {
-                    *fFormatter << chSpace << gPublic << id << chDoubleQuote;
+                    *fFormatter << u' ' << gPublic << id << u'"';
 
                     id = doctype->getSystemId();
                     if (id && *id)
                     {
-                        *fFormatter << chSpace << chDoubleQuote << id << chDoubleQuote;
+                        *fFormatter << u' ' << u'"' << id << u'"';
                     }
                     else
                     {
@@ -1147,17 +1147,17 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
                     id = doctype->getSystemId();
                     if (id && *id)
                     {
-                        *fFormatter << chSpace << gSystem << id << chDoubleQuote;
+                        *fFormatter << u' ' << gSystem << id << u'"';
                     }
                 }
 
                 id = doctype->getInternalSubset();
                 if (id && *id)
                 {
-                    *fFormatter << chSpace << chOpenSquare << id << chCloseSquare;
+                    *fFormatter << u' ' << u'[' << id << u']';
                 }
 
-                *fFormatter << chCloseAngle;
+                *fFormatter << u'>';
             ) // end of TRY_CATCH_THROW
 
             break;
@@ -1177,17 +1177,17 @@ void DOMLSSerializerImpl::processNode(const DOMNode* const nodeToWrite, int leve
 
             const XMLCh * id = ((const DOMEntity*)nodeToWrite)->getPublicId();
             if (id)
-                *fFormatter << gPublic << id << chDoubleQuote;
+                *fFormatter << gPublic << id << u'"';
 
             id = ((const DOMEntity*)nodeToWrite)->getSystemId();
             if (id)
-                *fFormatter << gSystem << id << chDoubleQuote;
+                *fFormatter << gSystem << id << u'"';
 
             id = ((const DOMEntity*)nodeToWrite)->getNotationName();
             if (id)
-                *fFormatter << gNotation << id << chDoubleQuote;
+                *fFormatter << gNotation << id << u'"';
 
-            *fFormatter << chCloseAngle;
+            *fFormatter << u'>';
 
             break;
         }
@@ -1398,7 +1398,7 @@ void DOMLSSerializerImpl::procCdataSection(const XMLCh*   const nodeValue
 
         if (endTagFound)
         {
-            *(nextPtr - offset) = chCloseSquare;   //restore the first ']'
+            *(nextPtr - offset) = u']';   //restore the first ']'
             curPtr = nextPtr;
         }
     }
@@ -1423,8 +1423,8 @@ void DOMLSSerializerImpl::procUnrepCharInCdataSection(const XMLCh*   const nodeV
 
     // Set up the common part of the buffer that we build char refs into
     XMLCh tmpBuf[32];
-    tmpBuf[0] = chAmpersand;
-    tmpBuf[1] = chPound;
+    tmpBuf[0] = u'&';
+    tmpBuf[1] = u'#';
     tmpBuf[2] = u'x';
 
     while (srcPtr < endPtr)
@@ -1478,7 +1478,7 @@ void DOMLSSerializerImpl::procUnrepCharInCdataSection(const XMLCh*   const nodeV
                 // Build a char ref for the current char
                 XMLString::binToText(*srcPtr, &tmpBuf[3], 8, 16, fMemoryManager);
                 const XMLSize_t bufLen = XMLString::stringLen(tmpBuf);
-                tmpBuf[bufLen] = chSemiColon;
+                tmpBuf[bufLen] = u';';
                 tmpBuf[bufLen+1] = u'\0';
 
                 // And now call recursively back to our caller to format this
@@ -1525,7 +1525,7 @@ void DOMLSSerializerImpl::printIndent(unsigned int level)
     {
         if (fLastWhiteSpaceInTextNode)
         {
-            unsigned int indentLevel = fLastWhiteSpaceInTextNode/2; // two chSpaces equals one indent level
+            unsigned int indentLevel = fLastWhiteSpaceInTextNode/2; // two u' 's equals one indent level
             fLastWhiteSpaceInTextNode = 0;
             // if fLastWhiteSpaceInTextNode/2 is greater than level, then
             // it means too many spaces have been written to the
@@ -1537,7 +1537,7 @@ void DOMLSSerializerImpl::printIndent(unsigned int level)
         }
 
         for(unsigned int i = 0; i < level; i++)
-            *fFormatter << chSpace << chSpace;
+            *fFormatter << u' ' << u' ';
     }
 }
 

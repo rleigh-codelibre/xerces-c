@@ -323,7 +323,7 @@ bool WFXMLScanner::scanNext(XMLPScanToken& token)
                     break;
 
                 default :
-                    fReaderMgr.skipToChar(chOpenAngle);
+                    fReaderMgr.skipToChar(u'<');
                     break;
             }
 
@@ -429,11 +429,11 @@ void WFXMLScanner::commonInit()
 
     //  Add the default entity entries for the character refs that must always
     //  be present.
-    fEntityTable->put((void*) XMLUni::fgAmp, chAmpersand);
-    fEntityTable->put((void*) XMLUni::fgLT, chOpenAngle);
-    fEntityTable->put((void*) XMLUni::fgGT, chCloseAngle);
-    fEntityTable->put((void*) XMLUni::fgQuot, chDoubleQuote);
-    fEntityTable->put((void*) XMLUni::fgApos, chSingleQuote);
+    fEntityTable->put((void*) XMLUni::fgAmp, u'&');
+    fEntityTable->put((void*) XMLUni::fgLT, u'<');
+    fEntityTable->put((void*) XMLUni::fgGT, u'>');
+    fEntityTable->put((void*) XMLUni::fgQuot, u'"');
+    fEntityTable->put((void*) XMLUni::fgApos, u'\'');
 }
 
 void WFXMLScanner::cleanUp()
@@ -624,7 +624,7 @@ bool WFXMLScanner::scanContent()
                         break;
 
                     default :
-                        fReaderMgr.skipToChar(chOpenAngle);
+                        fReaderMgr.skipToChar(u'<');
                         break;
                 }
 
@@ -667,7 +667,7 @@ void WFXMLScanner::scanEndTag(bool& gotData)
     if (fElemStack.isEmpty())
     {
         emitError(XMLErrs::MoreEndThanStartTags);
-        fReaderMgr.skipPastChar(chCloseAngle);
+        fReaderMgr.skipPastChar(u'>');
         ThrowXMLwithMemMgr(RuntimeException, XMLExcepts::Scan_UnbalancedStartEnd, fMemoryManager);
     }
 
@@ -688,7 +688,7 @@ void WFXMLScanner::scanEndTag(bool& gotData)
             XMLErrs::ExpectedEndOfTagX
             , topElem->fThisElement->getFullName()
         );
-        fReaderMgr.skipPastChar(chCloseAngle);
+        fReaderMgr.skipPastChar(u'>');
         return;
     }
 
@@ -700,7 +700,7 @@ void WFXMLScanner::scanEndTag(bool& gotData)
     fReaderMgr.skipPastSpaces();
 
     // Make sure we find the closing bracket
-    if (!fReaderMgr.skippedChar(chCloseAngle))
+    if (!fReaderMgr.skippedChar(u'>'))
     {
         emitError
         (
@@ -731,10 +731,10 @@ void WFXMLScanner::scanDocTypeDecl()
     // REVISIT: Should we issue a warning
     XMLCh nextCh = fReaderMgr.skipUntilIn(u"[>");
 
-    if (nextCh == chOpenSquare)
-        fReaderMgr.skipPastChar(chCloseSquare);
+    if (nextCh == u'[')
+        fReaderMgr.skipPastChar(u']');
 
-    fReaderMgr.skipPastChar(chCloseAngle);
+    fReaderMgr.skipPastChar(u'>');
 }
 
 bool WFXMLScanner::scanStartTag(bool& gotData)
@@ -748,7 +748,7 @@ bool WFXMLScanner::scanStartTag(bool& gotData)
     if (!fReaderMgr.getName(fQNameBuf))
     {
         emitError(XMLErrs::ExpectedElementName);
-        fReaderMgr.skipToChar(chOpenAngle);
+        fReaderMgr.skipToChar(u'<');
         return false;
     }
 
@@ -801,7 +801,7 @@ bool WFXMLScanner::scanStartTag(bool& gotData)
         //  one.
         if (attCount)
         {
-            if ((nextCh != chForwardSlash) && (nextCh != chCloseAngle))
+            if ((nextCh != u'/') && (nextCh != u'>'))
             {
                 bool bFoundSpace;
                 fReaderMgr.skipPastSpaces(bFoundSpace);
@@ -826,7 +826,7 @@ bool WFXMLScanner::scanStartTag(bool& gotData)
             if (!fReaderMgr.getName(fAttNameBuf))
             {
                 emitError(XMLErrs::ExpectedAttrName);
-                fReaderMgr.skipPastChar(chCloseAngle);
+                fReaderMgr.skipPastChar(u'>');
                 return false;
             }
 
@@ -839,18 +839,18 @@ bool WFXMLScanner::scanStartTag(bool& gotData)
                 //  hit something meaningful.
                 const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"'\"></");
 
-                if ((chFound == chCloseAngle) || (chFound == chForwardSlash))
+                if ((chFound == u'>') || (chFound == u'/'))
                 {
                     // Jump back to top for normal processing of these
                     continue;
                 }
-                else if ((chFound == chSingleQuote)
-                      ||  (chFound == chDoubleQuote)
+                else if ((chFound == u'\'')
+                      ||  (chFound == u'"')
                       ||  fReaderMgr.getCurrentReader()->isWhitespace(chFound))
                 {
                     // Just fall through assuming that the value is to follow
                 }
-                else if (chFound == chOpenAngle)
+                else if (chFound == u'<')
                 {
                     // Assume a malformed tag and that new one is starting
                     emitError(XMLErrs::UnterminatedStartTag, qnameRawBuf);
@@ -905,14 +905,14 @@ bool WFXMLScanner::scanStartTag(bool& gotData)
                 //  chars in our list.
                 const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"></");
 
-                if ((chFound == chCloseAngle)
-                ||  (chFound == chForwardSlash)
+                if ((chFound == u'>')
+                ||  (chFound == u'/')
                 ||  fReaderMgr.getCurrentReader()->isWhitespace(chFound))
                 {
                     //  Just fall through and process this attribute, though
                     //  the value will be "".
                 }
-                else if (chFound == chOpenAngle)
+                else if (chFound == u'<')
                 {
                     // Assume a malformed tag and that new one is starting
                     emitError(XMLErrs::UnterminatedStartTag, qnameRawBuf);
@@ -968,20 +968,20 @@ bool WFXMLScanner::scanStartTag(bool& gotData)
         if (!nextCh)
             ThrowXMLwithMemMgr(UnexpectedEOFException, XMLExcepts::Gen_UnexpectedEOF, fMemoryManager);
 
-        if (nextCh == chForwardSlash)
+        if (nextCh == u'/')
         {
             fReaderMgr.getNextChar();
             isEmpty = true;
-            if (!fReaderMgr.skippedChar(chCloseAngle))
+            if (!fReaderMgr.skippedChar(u'>'))
                 emitError(XMLErrs::UnterminatedStartTag, qnameRawBuf);
             break;
         }
-        else if (nextCh == chCloseAngle)
+        else if (nextCh == u'>')
         {
             fReaderMgr.getNextChar();
             break;
         }
-        else if (nextCh == chOpenAngle)
+        else if (nextCh == u'<')
         {
             //  Check for this one specially, since its going to be common
             //  and it is kind of auto-recovering since we've already hit the
@@ -990,7 +990,7 @@ bool WFXMLScanner::scanStartTag(bool& gotData)
             emitError(XMLErrs::UnterminatedStartTag, elemDecl->getFullName());
             break;
         }
-        else if ((nextCh == chSingleQuote) || (nextCh == chDoubleQuote))
+        else if ((nextCh == u'\'') || (nextCh == u'"'))
         {
             //  Check for this one specially, which is probably a missing
             //  attribute name, e.g. ="value". Just issue expected name
@@ -1061,7 +1061,7 @@ bool WFXMLScanner::scanStartTagNS(bool& gotData)
             emitError(XMLErrs::ExpectedElementName);
         else
             emitError(XMLErrs::InvalidElementName, fQNameBuf.getRawBuffer());
-        fReaderMgr.skipToChar(chOpenAngle);
+        fReaderMgr.skipToChar(u'<');
         return false;
     }
 
@@ -1119,7 +1119,7 @@ bool WFXMLScanner::scanStartTagNS(bool& gotData)
         //  one.
         if (attCount)
         {
-            if ((nextCh != chForwardSlash) && (nextCh != chCloseAngle))
+            if ((nextCh != u'/') && (nextCh != u'>'))
             {
                 bool bFoundSpace;
                 fReaderMgr.skipPastSpaces(bFoundSpace);
@@ -1148,7 +1148,7 @@ bool WFXMLScanner::scanStartTagNS(bool& gotData)
                     emitError(XMLErrs::ExpectedAttrName);
                 else
                     emitError(XMLErrs::InvalidAttrName, fAttNameBuf.getRawBuffer()); 
-                fReaderMgr.skipPastChar(chCloseAngle);
+                fReaderMgr.skipPastChar(u'>');
                 return false;
             }
 
@@ -1161,18 +1161,18 @@ bool WFXMLScanner::scanStartTagNS(bool& gotData)
                 //  hit something meaningful.
                 const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"'\"></");
 
-                if ((chFound == chCloseAngle) || (chFound == chForwardSlash))
+                if ((chFound == u'>') || (chFound == u'/'))
                 {
                     // Jump back to top for normal processing of these
                     continue;
                 }
-                else if ((chFound == chSingleQuote)
-                      ||  (chFound == chDoubleQuote)
+                else if ((chFound == u'\'')
+                      ||  (chFound == u'"')
                       ||  fReaderMgr.getCurrentReader()->isWhitespace(chFound))
                 {
                     // Just fall through assuming that the value is to follow
                 }
-                else if (chFound == chOpenAngle)
+                else if (chFound == u'<')
                 {
                     // Assume a malformed tag and that new one is starting
                     emitError(XMLErrs::UnterminatedStartTag, qnameRawBuf);
@@ -1222,14 +1222,14 @@ bool WFXMLScanner::scanStartTagNS(bool& gotData)
                 //  chars in our list.
                 const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"></");
 
-                if ((chFound == chCloseAngle)
-                ||  (chFound == chForwardSlash)
+                if ((chFound == u'>')
+                ||  (chFound == u'/')
                 ||  fReaderMgr.getCurrentReader()->isWhitespace(chFound))
                 {
                     //  Just fall through and process this attribute, though
                     //  the value will be "".
                 }
-                else if (chFound == chOpenAngle)
+                else if (chFound == u'<')
                 {
                     // Assume a malformed tag and that new one is starting
                     emitError(XMLErrs::UnterminatedStartTag, qnameRawBuf);
@@ -1336,20 +1336,20 @@ bool WFXMLScanner::scanStartTagNS(bool& gotData)
         if (!nextCh)
             ThrowXMLwithMemMgr(UnexpectedEOFException, XMLExcepts::Gen_UnexpectedEOF, fMemoryManager);
 
-        if (nextCh == chForwardSlash)
+        if (nextCh == u'/')
         {
             fReaderMgr.getNextChar();
             isEmpty = true;
-            if (!fReaderMgr.skippedChar(chCloseAngle))
+            if (!fReaderMgr.skippedChar(u'>'))
                 emitError(XMLErrs::UnterminatedStartTag, qnameRawBuf);
             break;
         }
-        else if (nextCh == chCloseAngle)
+        else if (nextCh == u'>')
         {
             fReaderMgr.getNextChar();
             break;
         }
-        else if (nextCh == chOpenAngle)
+        else if (nextCh == u'<')
         {
             //  Check for this one specially, since its going to be common
             //  and it is kind of auto-recovering since we've already hit the
@@ -1358,7 +1358,7 @@ bool WFXMLScanner::scanStartTagNS(bool& gotData)
             emitError(XMLErrs::UnterminatedStartTag, qnameRawBuf);
             break;
         }
-        else if ((nextCh == chSingleQuote) || (nextCh == chDoubleQuote))
+        else if ((nextCh == u'\'') || (nextCh == u'"'))
         {
             //  Check for this one specially, which is probably a missing
             //  attribute name, e.g. ="value". Just issue expected name
@@ -1530,7 +1530,7 @@ bool WFXMLScanner::scanAttValue(const XMLCh* const attrName
             //  whitespace normalization logic below. We ignore the empty flag
             //  in this one.
             escaped = false;
-            if (nextCh == chAmpersand)
+            if (nextCh == u'&')
             {
                 if (scanEntityRef(true, nextCh, secondCh, escaped) != EntityExp_Returned)
                 {
@@ -1590,10 +1590,10 @@ bool WFXMLScanner::scanAttValue(const XMLCh* const attrName
             //  If its not escaped, then make sure its not a < character, which
             //  is not allowed in attribute values.
             if (!escaped) {
-                if (nextCh == chOpenAngle)
+                if (nextCh == u'<')
                     emitError(XMLErrs::BracketInAttrValue, attrName);
                 else if (fReaderMgr.getCurrentReader()->isWhitespace(nextCh))
-                    nextCh = chSpace;
+                    nextCh = u' ';
             }
 
             // Else add it to the buffer
@@ -1626,13 +1626,13 @@ void WFXMLScanner::scanCDSection()
     //  The next character should be the opening square bracket. If not
     //  issue an error, but then try to recover by skipping any whitespace
     //  and checking again.
-    if (!fReaderMgr.skippedChar(chOpenSquare))
+    if (!fReaderMgr.skippedChar(u'['))
     {
         emitError(XMLErrs::ExpectedOpenSquareBracket);
         fReaderMgr.skipPastSpaces();
 
         // If we still don't find it, then give up, else keep going
-        if (!fReaderMgr.skippedChar(chOpenSquare))
+        if (!fReaderMgr.skippedChar(u'['))
             return;
     }
 
@@ -1657,7 +1657,7 @@ void WFXMLScanner::scanCDSection()
 
         //  If this is a close square bracket it could be our closing
         //  sequence.
-        if (nextCh == chCloseSquare && fReaderMgr.skippedString(u"]>"))
+        if (nextCh == u']' && fReaderMgr.skippedString(u"]>"))
         {
             //  make sure we were not expecting a trailing surrogate.
             if (gotLeadingSurrogate)
@@ -1784,7 +1784,7 @@ void WFXMLScanner::scanCharData(XMLBuffer& toUse)
 
                 // Try to get another char from the source
                 //   The code from here on down covers all contengencies,
-                if (!fReaderMgr.getNextCharIfNot(chOpenAngle, nextCh))
+                if (!fReaderMgr.getNextCharIfNot(u'<', nextCh))
                 {
                     // If we were waiting for a trailing surrogate, its an error
                     if (gotLeadingSurrogate)
@@ -1797,7 +1797,7 @@ void WFXMLScanner::scanCharData(XMLBuffer& toUse)
                 //  Watch for a reference. Note that the escapement mechanism
                 //  is ignored in this content.
                 escaped = false;
-                if (nextCh == chAmpersand)
+                if (nextCh == u'&')
                 {
                     sendCharData(toUse);
 
@@ -1862,14 +1862,14 @@ void WFXMLScanner::scanCharData(XMLBuffer& toUse)
                 // Keep the state machine up to date
                 if (!escaped)
                 {
-                    if (nextCh == chCloseSquare)
+                    if (nextCh == u']')
                     {
                         if (curState == State_Waiting)
                             curState = State_GotOne;
                         else if (curState == State_GotOne)
                             curState = State_GotTwo;
                     }
-                    else if (nextCh == chCloseAngle)
+                    else if (nextCh == u'>')
                     {
                         if (curState == State_GotTwo)
                             emitError(XMLErrs::BadSequenceInCharData);
@@ -1943,7 +1943,7 @@ WFXMLScanner::scanEntityRef(const bool
 
     //  If the next char is a pound, then its a character reference and we
     //  need to expand it always.
-    if (fReaderMgr.skippedChar(chPound))
+    if (fReaderMgr.skippedChar(u'#'))
     {
         //  Its a character reference, so scan it and get back the numeric
         //  value it represents.
@@ -1968,7 +1968,7 @@ WFXMLScanner::scanEntityRef(const bool
 
     //  Next char must be a semi-colon. But if its not, just emit
     //  an error and try to continue.
-    if (!fReaderMgr.skippedChar(chSemiColon))
+    if (!fReaderMgr.skippedChar(u';'))
         emitError(XMLErrs::UnterminatedEntityRef, bbName.getRawBuffer());
 
     // Make sure we ended up on the same entity reader as the & char

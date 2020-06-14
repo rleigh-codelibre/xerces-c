@@ -84,9 +84,9 @@ void XSDDOMParser::startAnnotation( const XMLElementDecl&       elemDecl
                                   , const RefVectorOf<XMLAttr>& attrList
                                   , const XMLSize_t             attrCount)
 {
-    fAnnotationBuf.append(chOpenAngle);
+    fAnnotationBuf.append(u'<');
 	fAnnotationBuf.append(elemDecl.getFullName());
-    fAnnotationBuf.append(chSpace);
+    fAnnotationBuf.append(u' ');
 
     // attributes are a bit of a pain.  To get this right, we have to keep track
     // of the namespaces we've seen declared, then examine the namespace context
@@ -105,11 +105,11 @@ void XSDDOMParser::startAnnotation( const XMLElementDecl&       elemDecl
             fURIs->addElement(fScanner->getPrefixId(oneAttrib->getName()));
 
         fAnnotationBuf.append(oneAttrib->getQName());
-        fAnnotationBuf.append(chEqual);
-        fAnnotationBuf.append(chDoubleQuote);
+        fAnnotationBuf.append(u'=');
+        fAnnotationBuf.append(u'"');
         fAnnotationBuf.append(attrValue);
-        fAnnotationBuf.append(chDoubleQuote);
-        fAnnotationBuf.append(chSpace);
+        fAnnotationBuf.append(u'"');
+        fAnnotationBuf.append(u' ');
     }
 
     // now we have to look through currently in-scope namespaces to see what
@@ -131,40 +131,40 @@ void XSDDOMParser::startAnnotation( const XMLElementDecl&       elemDecl
                 fAnnotationBuf.append(prefix);
             }
 
-            fAnnotationBuf.append(chEqual);
-            fAnnotationBuf.append(chDoubleQuote);
+            fAnnotationBuf.append(u'=');
+            fAnnotationBuf.append(u'"');
             fAnnotationBuf.append(fScanner->getURIText(namespaceContext->elementAt(j)->fURIId));
-            fAnnotationBuf.append(chDoubleQuote);
-            fAnnotationBuf.append(chSpace);
+            fAnnotationBuf.append(u'"');
+            fAnnotationBuf.append(u' ');
 
             fURIs->addElement(prefId);
         }
     }
 
-    fAnnotationBuf.append(chCloseAngle);
-    fAnnotationBuf.append(chLF);
+    fAnnotationBuf.append(u'>');
+    fAnnotationBuf.append(u'\n');
 }
 
 void XSDDOMParser::startAnnotationElement( const XMLElementDecl&       elemDecl
                                          , const RefVectorOf<XMLAttr>& attrList
                                          , const XMLSize_t             attrCount)
 {
-    fAnnotationBuf.append(chOpenAngle);
+    fAnnotationBuf.append(u'<');
     fAnnotationBuf.append(elemDecl.getFullName());
-    //fAnnotationBuf.append(chSpace);
+    //fAnnotationBuf.append(u' ');
 
     for(XMLSize_t i=0; i < attrCount; i++) {
 
         const XMLAttr* oneAttr = attrList.elementAt(i);
-        fAnnotationBuf.append(chSpace);
+        fAnnotationBuf.append(u' ');
         fAnnotationBuf.append(oneAttr ->getQName());
-        fAnnotationBuf.append(chEqual);
-        fAnnotationBuf.append(chDoubleQuote);
+        fAnnotationBuf.append(u'=');
+        fAnnotationBuf.append(u'"');
         fAnnotationBuf.append(oneAttr->getValue());
-        fAnnotationBuf.append(chDoubleQuote);
+        fAnnotationBuf.append(u'"');
     }
 
-    fAnnotationBuf.append(chCloseAngle);
+    fAnnotationBuf.append(u'>');
 }
 
 void XSDDOMParser::endAnnotationElement( const XMLElementDecl& elemDecl
@@ -172,11 +172,11 @@ void XSDDOMParser::endAnnotationElement( const XMLElementDecl& elemDecl
 {
     if (complete)
     {
-        fAnnotationBuf.append(chLF);
-        fAnnotationBuf.append(chOpenAngle);
-        fAnnotationBuf.append(chForwardSlash);
+        fAnnotationBuf.append(u'\n');
+        fAnnotationBuf.append(u'<');
+        fAnnotationBuf.append(u'/');
         fAnnotationBuf.append(elemDecl.getFullName());
-        fAnnotationBuf.append(chCloseAngle);
+        fAnnotationBuf.append(u'>');
 
         // note that this is always called after endElement on <annotation>'s
         // child and before endElement on annotation.
@@ -188,10 +188,10 @@ void XSDDOMParser::endAnnotationElement( const XMLElementDecl& elemDecl
     }
     else      //capturing character calls
     {
-        fAnnotationBuf.append(chOpenAngle);
-        fAnnotationBuf.append(chForwardSlash);
+        fAnnotationBuf.append(u'<');
+        fAnnotationBuf.append(u'/');
         fAnnotationBuf.append(elemDecl.getFullName());
-        fAnnotationBuf.append(chCloseAngle);
+        fAnnotationBuf.append(u'>');
     }
 }
 
@@ -261,7 +261,7 @@ void XSDDOMParser::startElement( const XMLElementDecl&       elemDecl
         {
             XMLBufBid elemQName(&fBufMgr);
             elemQName.set(elemPrefix);
-            elemQName.append(chColon);
+            elemQName.append(u':');
             elemQName.append(elemDecl.getBaseName());
             elem = createElementNSNode(
                 fScanner->getURIText(urlId), elemQName.getRawBuffer());
@@ -441,17 +441,17 @@ void XSDDOMParser::docCharacters(  const   XMLCh* const    chars
     {
         for(unsigned int i = 0; i < length; i++ )
         {
-            if(chars[i] == chAmpersand)
+            if(chars[i] == u'&')
             {
-                fAnnotationBuf.append(chAmpersand);
+                fAnnotationBuf.append(u'&');
                 fAnnotationBuf.append(XMLUni::fgAmp);
-                fAnnotationBuf.append(chSemiColon);
+                fAnnotationBuf.append(u';');
             }
-            else if (chars[i] == chOpenAngle)
+            else if (chars[i] == u'<')
             {
-                fAnnotationBuf.append(chAmpersand);
+                fAnnotationBuf.append(u'&');
                 fAnnotationBuf.append(XMLUni::fgLT);
-                fAnnotationBuf.append(chSemiColon);
+                fAnnotationBuf.append(u';');
             }
             else {
                 fAnnotationBuf.append(chars[i]);
@@ -466,9 +466,9 @@ void XSDDOMParser::docComment(const XMLCh* const comment)
     {
         fAnnotationBuf.append(XMLUni::fgCommentString);
         fAnnotationBuf.append(comment);
-        fAnnotationBuf.append(chDash);
-        fAnnotationBuf.append(chDash);
-        fAnnotationBuf.append(chCloseAngle);
+        fAnnotationBuf.append(u'-');
+        fAnnotationBuf.append(u'-');
+        fAnnotationBuf.append(u'>');
     }
 }
 

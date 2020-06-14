@@ -153,7 +153,7 @@ void UnicodeRangeFactory::buildRanges(RangeTokenMap *rangeTokMap) {
     // Create word range
     tok = tokFactory->createRange();
     tok->mergeRanges(alnumTok);
-    tok->addRange(chUnderscore, chUnderscore);
+    tok->addRange(u'_', u'_');
     // build the internal map.
     tok->createMap();
     rangeTokMap->setRangeToken(fgUniIsWord, tok);

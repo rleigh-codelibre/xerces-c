@@ -76,14 +76,14 @@ bool RegularExpression::matchIgnoreCase(const XMLInt32 ch1,
             // that is not in the surrogate range.  Just to be safe, we pad the
             // shorter string with a space, which cannot hvae a case mapping.
             string2[0] = (XMLCh)ch2;
-            string2[1] = chSpace;
+            string2[1] = u' ';
         }
 
         return (0==XMLString::compareNIString(string1, string2, 2));
     }
     else if (ch2 >= 0x10000)
     {
-        const XMLCh string1[2] = { (XMLCh)ch1, chSpace };
+        const XMLCh string1[2] = { (XMLCh)ch1, u' ' };
         XMLCh string2[2];
 
         RegxUtil::decomposeToSurrogates(ch2, string2[0], string2[1]);
@@ -862,8 +862,8 @@ XMLCh* RegularExpression::replace(const XMLCh* const matchString,
  * in actual values for parenthesized sub expressions.
  *
  * An error will be thrown if:
- *  1) there is chBackSlash not followed by a chDollarSign or chBackSlash
- *  2) there is an unescaped chDollarSign which is not followed by a digit
+ *  1) there is u'\\' not followed by a u'$' or u'\\'
+ *  2) there is an unescaped u'$' which is not followed by a digit
  *
  */
 void RegularExpression::subInExp(const XMLCh* const repString,
@@ -875,7 +875,7 @@ void RegularExpression::subInExp(const XMLCh* const repString,
     int numSubExp = subEx->getNoGroups() - 1;
 
     for(const XMLCh *ptr = repString; *ptr != u'\0'; ++ptr) {
-        if(*ptr == chDollarSign) {
+        if(*ptr == u'$') {
             ++ptr;
 
             // check that after the $ is a digit
@@ -908,12 +908,12 @@ void RegularExpression::subInExp(const XMLCh* const repString,
             }
 
         } else {
-            if(*ptr == chBackSlash) {
+            if(*ptr == u'\\') {
                 ++ptr;
 
                 // if you have a slash and then a character that's not a $ or /,
                 // then it's an invalid replace string
-                if(*ptr != chDollarSign && *ptr != chBackSlash) {
+                if(*ptr != u'$' && *ptr != u'\\') {
                     ThrowXMLwithMemMgr(RuntimeException, XMLExcepts::Regex_InvalidRepPattern, manager);
                 }
             }
@@ -1277,7 +1277,7 @@ bool RegularExpression::matchAnchor(Context* const context, const XMLInt32 ch,
                                     const XMLSize_t offset) const
 {
     switch ((XMLCh) ch) {
-    case chDollarSign:
+    case u'$':
         if (isSet(context->fOptions, MULTIPLE_LINE)) {
             if (!(offset == context->fLimit || (offset < context->fLimit
                 && RegxUtil::isEOLChar(context->fString[offset]))))
@@ -1289,12 +1289,12 @@ bool RegularExpression::matchAnchor(Context* const context, const XMLInt32 ch,
                 || (offset+1 == context->fLimit
                     && RegxUtil::isEOLChar(context->fString[offset]))
                 || (offset+2 == context->fLimit
-                    && context->fString[offset] == chCR
-                    && context->fString[offset+1] == chLF)))
+                    && context->fString[offset] == u'\r'
+                    && context->fString[offset+1] == u'\n')))
                 return false;
         }
         break;
-    case chCaret:
+    case u'^':
         if (!isSet(context->fOptions, MULTIPLE_LINE)) {
 
             if (offset != context->fStart)

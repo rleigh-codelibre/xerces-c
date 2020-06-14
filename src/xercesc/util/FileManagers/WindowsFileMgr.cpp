@@ -33,7 +33,7 @@
 namespace XERCES_CPP_NAMESPACE {
 
 static bool isBackSlash(XMLCh c) {
-    return c == chBackSlash ||
+    return c == u'\\' ||
            c == chYenSign   ||
            c == chWonSign;
 }
@@ -66,11 +66,11 @@ WindowsFileMgr::fileOpen(const XMLCh* fileName, bool toWrite, MemoryManager* con
     //  character.
     //
     const XMLCh* nameToOpen = fileName;
-    if (*fileName == chForwardSlash)
+    if (*fileName == u'/')
     {
         if (XMLString::stringLen(fileName) > 3)
         {
-            if (*(fileName + 2) == chColon)
+            if (*(fileName + 2) == u':')
             {
                 const XMLCh chDrive = *(fileName + 1);
                 if (((chDrive >= u'A') && (chDrive <= u'Z'))
@@ -82,8 +82,8 @@ WindowsFileMgr::fileOpen(const XMLCh* fileName, bool toWrite, MemoryManager* con
 
             // Similarly for UNC paths
             if ( *(fileName + 1) == *(fileName + 2) &&
-                 (*(fileName + 1) == chForwardSlash ||
-                  *(fileName + 1) == chBackSlash) )
+                 (*(fileName + 1) == u'/' ||
+                  *(fileName + 1) == u'\\') )
             {
                 nameToOpen = fileName + 1;
             }
@@ -132,7 +132,7 @@ WindowsFileMgr::fileOpen(const XMLCh* fileName, bool toWrite, MemoryManager* con
         {
             if (*tmpPtr == chYenSign ||
                 *tmpPtr == chWonSign)
-                *tmpPtr = chForwardSlash;
+                *tmpPtr = u'/';
             tmpPtr++;
         }
         nameToOpen = tmpUName;
@@ -405,7 +405,7 @@ WindowsFileMgr::isRelative(const XMLCh* const toCheck, MemoryManager* const /*ma
     //  char long and the check of the 1st char will fail because its really
     //  a null character.
     //
-    if (toCheck[1] == chColon)
+    if (toCheck[1] == u':')
     {
         if (((toCheck[0] >= u'A') && (toCheck[0] <= u'Z'))
         ||  ((toCheck[0] >= u'a') && (toCheck[0] <= u'z')))

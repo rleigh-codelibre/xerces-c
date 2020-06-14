@@ -98,7 +98,7 @@ bool  DOMImplementationImpl::hasFeature(const  XMLCh * feature,  const  XMLCh * 
         return false;
 
     // ignore the + modifier
-    if(*feature==chPlus)
+    if(*feature==u'+')
         feature++;
 
     bool anyVersion = (version == 0 || !*version);

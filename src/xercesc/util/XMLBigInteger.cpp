@@ -53,7 +53,7 @@ XMLCh* XMLBigInteger::getCanonicalRepresentation(const XMLCh*         const rawD
         else if (sign == -1)
         {
             XMLCh* retBuffer = (XMLCh*) memMgr->allocate( (XMLString::stringLen(retBuf) + 2) * sizeof(XMLCh));
-            retBuffer[0] = chDash;
+            retBuffer[0] = u'-';
             XMLString::copyString(&(retBuffer[1]), retBuf);
             return retBuffer;
         }
@@ -132,7 +132,7 @@ void XMLBigInteger::parseBigInteger(const XMLCh* const toConvert
     //
     // '+' or '-' is allowed only at the first position
     //
-    if (*startPtr == chDash)
+    if (*startPtr == u'-')
     {
         signValue = -1;
         startPtr++;
@@ -141,7 +141,7 @@ void XMLBigInteger::parseBigInteger(const XMLCh* const toConvert
             ThrowXMLwithMemMgr(NumberFormatException, XMLExcepts::XMLNUM_Inv_chars, manager);
         }
     }
-    else if (*startPtr == chPlus)
+    else if (*startPtr == u'+')
     {
         // skip the '+'
         startPtr++;

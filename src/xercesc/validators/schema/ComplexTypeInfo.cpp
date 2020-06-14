@@ -48,7 +48,7 @@ void XMLInitializer::initializeComplexTypeInfo()
   XMLSize_t nsLen = XMLString::stringLen(SchemaSymbols::fgURI_SCHEMAFORSCHEMA);
 
   XMLString::copyString(typeName, SchemaSymbols::fgURI_SCHEMAFORSCHEMA);
-  typeName[nsLen] = chComma;
+  typeName[nsLen] = u',';
   XMLString::copyString(typeName + nsLen + 1, SchemaSymbols::fgATTVAL_ANYTYPE);
 
   // Create and initialize 'anyType'

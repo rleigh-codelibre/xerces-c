@@ -55,33 +55,33 @@ XMLCh* RegxUtil::stripExtendedComment(const XMLCh* const expression,
 
             XMLCh ch = *inPtr++;
 
-            if (ch == chFF || ch == chCR || ch == chLF
-                || ch == chSpace || ch == chHTab) {
+            if (ch == u'\f' || ch == u'\r' || ch == u'\n'
+                || ch == u' ' || ch == u'\t') {
                 continue;
             }
 
             // Skips chracters between '#' and a line end.
-            if (ch == chPound) {
+            if (ch == u'#') {
 
                 while (*inPtr) {
 
                     ch = *inPtr++;
-                    if (ch == chLF || ch == chCR)
+                    if (ch == u'\n' || ch == u'\r')
                         break;
                 }
 
                 continue;
             }
 
-            if (ch == chBackSlash && *inPtr) {
+            if (ch == u'\\' && *inPtr) {
 
-                if ((ch = *inPtr++) == chPound || ch == chHTab || ch == chLF
-                    || ch == chFF || ch == chCR || ch == chSpace) {
+                if ((ch = *inPtr++) == u'#' || ch == u'\t' || ch == u'\n'
+                    || ch == u'\f' || ch == u'\r' || ch == u' ') {
                     *outPtr++ = ch;
                 }
                 else { // Other escaped character.
 
-                    *outPtr++ = chBackSlash;
+                    *outPtr++ = u'\\';
                     *outPtr++ = ch;
                 }
             }

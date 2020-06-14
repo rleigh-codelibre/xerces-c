@@ -310,7 +310,7 @@ void DOMNormalizer::addOrChangeNamespaceDecl(const XMLCh* prefix, const XMLCh* u
     } else {
         XMLBuffer buf(1023, fMemoryManager);
         buf.set(XMLUni::fgXMLNSString);
-        buf.append(chColon);
+        buf.append(u':');
         buf.append(prefix);
         element->setAttributeNS(XMLUni::fgXMLNSURIName, buf.getRawBuffer(), uri);
     }
@@ -333,7 +333,7 @@ const XMLCh* DOMNormalizer::addCustomNamespaceDecl(const XMLCh* uri, DOMElementI
 
     XMLBuffer buf(1023, fMemoryManager);
     buf.set(XMLUni::fgXMLNSString);
-    buf.append(chColon);
+    buf.append(u':');
     buf.append(preBuf.getRawBuffer());
     element->setAttributeNS(XMLUni::fgXMLNSURIName, buf.getRawBuffer(), uri);
 

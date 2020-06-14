@@ -352,10 +352,10 @@ void XMLUri::initialize(const XMLUri* const baseURI
 	bool foundScheme = false;
 
 	// Check for scheme, which must be before `/', '?' or '#'.
-        int colonIdx = XMLString::indexOf(trimmedUriSpec, chColon);
-        int slashIdx = XMLString::indexOf(trimmedUriSpec, chForwardSlash);
-        int queryIdx = XMLString::indexOf(trimmedUriSpec, chQuestion);
-        int fragmentIdx = XMLString::indexOf(trimmedUriSpec, chPound);
+        int colonIdx = XMLString::indexOf(trimmedUriSpec, u':');
+        int slashIdx = XMLString::indexOf(trimmedUriSpec, u'/');
+        int queryIdx = XMLString::indexOf(trimmedUriSpec, u'?');
+        int fragmentIdx = XMLString::indexOf(trimmedUriSpec, u'#');
 
         if ((colonIdx <= 0) ||
             (colonIdx > slashIdx && slashIdx != -1) ||
@@ -376,7 +376,7 @@ void XMLUri::initialize(const XMLUri* const baseURI
         }
 
     // It's an error if we stop here
-    if (index == trimmedUriSpecLen || (foundScheme && (trimmedUriSpec[index] == chPound)))
+    if (index == trimmedUriSpecLen || (foundScheme && (trimmedUriSpec[index] == u'#')))
     {
         ThrowXMLwithMemMgr1(MalformedURLException
                 , XMLExcepts::XMLNUM_URI_Component_Empty
@@ -403,9 +403,9 @@ void XMLUri::initialize(const XMLUri* const baseURI
         while (index < trimmedUriSpecLen)
         {
             testChar = trimmedUriSpec[index];
-            if (testChar == chForwardSlash ||
-                testChar == chQuestion     ||
-                testChar == chPound         )
+            if (testChar == u'/' ||
+                testChar == u'?'     ||
+                testChar == u'#'         )
             {
                 break;
             }
@@ -526,7 +526,7 @@ void XMLUri::initialize(const XMLUri* const baseURI
         // 6a - get all but the last segment of the base URI path
         if (basePath)
         {
-            int lastSlash = XMLString::lastIndexOf(basePath, chForwardSlash);
+            int lastSlash = XMLString::lastIndexOf(basePath, u'/');
             if (lastSlash != -1)
             {
                 XMLString::subString(path, basePath, 0, lastSlash+1, fMemoryManager);
@@ -567,12 +567,12 @@ void XMLUri::initialize(const XMLUri* const baseURI
 
 			// Find start of <segment> within substring ending at found point.
 			XMLString::subString(tmp1, path, 0, iIndex-1, fMemoryManager);
-			segIndex = XMLString::lastIndexOf(tmp1, chForwardSlash);
+			segIndex = XMLString::lastIndexOf(tmp1, u'/');
 
 			// Ensure <segment> exists and != ".."
             if (segIndex != -1                &&
-                (path[segIndex+1] != chPeriod ||
-                 path[segIndex+2] != chPeriod ||
+                (path[segIndex+1] != u'.' ||
+                 path[segIndex+2] != u'.' ||
 				 segIndex + 3 != iIndex))
             {
 
@@ -598,11 +598,11 @@ void XMLUri::initialize(const XMLUri* const baseURI
 			// Find start of <segment> within substring ending at found point.
             index = XMLString::stringLen(path) - 3;
 			XMLString::subString(tmp1, path, 0, index-1, fMemoryManager);
-			segIndex = XMLString::lastIndexOf(tmp1, chForwardSlash);
+			segIndex = XMLString::lastIndexOf(tmp1, u'/');
 
             if (segIndex != -1                &&
-                (path[segIndex+1] != chPeriod ||
-                 path[segIndex+2] != chPeriod ||
+                (path[segIndex+1] != u'.' ||
+                 path[segIndex+2] != u'.' ||
 				 segIndex + 3 != (int)index))
             {
                 path[segIndex+1] = u'\0';
@@ -649,7 +649,7 @@ void XMLUri::initializeAuthority(const XMLCh* const uriSpec)
         (end+1) * sizeof(XMLCh)
     );//new XMLCh[end+1];
     ArrayJanitor<XMLCh> userName(userinfo, fMemoryManager);
-    index = XMLString::indexOf(&(uriSpec[start]), chAt);
+    index = XMLString::indexOf(&(uriSpec[start]), u'@');
 
     if ( index != -1)
     {
@@ -674,19 +674,19 @@ void XMLUri::initializeAuthority(const XMLCh* const uriSpec)
     ArrayJanitor<XMLCh> hostName(host, fMemoryManager);
 
     // Search for port boundary.
-    if (start < end && uriSpec[start] == chOpenSquare)
+    if (start < end && uriSpec[start] == u'[')
     {
-    	index = XMLString::indexOf(&(uriSpec[start]), chCloseSquare);
+    	index = XMLString::indexOf(&(uriSpec[start]), u']');
     	if (index != -1)
     	{
             // skip the ']'
             index = ((start + index + 1) < end
-              && uriSpec[start + index + 1] == chColon) ? index+1 : -1;
+              && uriSpec[start + index + 1] == u':') ? index+1 : -1;
     	}
     }
     else
     {
-        index = XMLString::indexOf(&(uriSpec[start]), chColon);
+        index = XMLString::indexOf(&(uriSpec[start]), u':');
     }
 
     if ( index != -1 )
@@ -782,7 +782,7 @@ void XMLUri::initializePath(const XMLCh* const uriSpec)
     if (start < end)
     {
         // RFC 2732 only allows '[' and ']' to appear in the opaque part.
-        if (!getScheme() || uriSpec[start] == chForwardSlash)
+        if (!getScheme() || uriSpec[start] == u'/')
         {
             // Scan path.
             // abs_path = "/"  path_segments
@@ -790,13 +790,13 @@ void XMLUri::initializePath(const XMLCh* const uriSpec)
             while (index < end)
             {
                 testChar = uriSpec[index];
-                if (testChar == chQuestion || testChar == chPound)
+                if (testChar == u'?' || testChar == u'#')
                 {
                     break;
                 }
 
                 // check for valid escape sequence
-                if (testChar == chPercent)
+                if (testChar == u'%')
                 {
                     if (index + 2 >= end)
                     {
@@ -845,13 +845,13 @@ void XMLUri::initializePath(const XMLCh* const uriSpec)
             while (index < end)
             {
                 testChar = uriSpec[index];
-                if (testChar == chQuestion || testChar == chPound)
+                if (testChar == u'?' || testChar == u'#')
                 {
                     break;
                 }
 
                 // check for valid escape sequence
-                if (testChar == chPercent)
+                if (testChar == u'%')
                 {
                     if (index + 2 >= end)
                     {
@@ -908,19 +908,19 @@ void XMLUri::initializePath(const XMLCh* const uriSpec)
     XMLString::subString(fPath, uriSpec, start, index, fMemoryManager);
 
     // query - starts with ? and up to fragment or end
-    if (testChar == chQuestion)
+    if (testChar == u'?')
     {
         index++;
         start = index;
         while (index < end)
         {
             testChar = uriSpec[index];
-            if (testChar == chPound)
+            if (testChar == u'#')
             {
                 break;
             }
 
-            if (testChar == chPercent)
+            if (testChar == u'%')
             {
                 if (index + 2 >= end)
                 {
@@ -973,7 +973,7 @@ void XMLUri::initializePath(const XMLCh* const uriSpec)
     }
 
     // fragment - starts with #
-    if (testChar == chPound)
+    if (testChar == u'#')
     {
         index++;
         start = index;
@@ -981,7 +981,7 @@ void XMLUri::initializePath(const XMLCh* const uriSpec)
         {
             testChar = uriSpec[index];
 
-            if (testChar == chPercent)
+            if (testChar == u'%')
             {
                 if (index + 2 >= end)
                 {
@@ -1371,7 +1371,7 @@ void XMLUri::isConformantUserInfo(const XMLCh* const userInfo
         {
             tmpStr++;
         }
-        else if (*tmpStr == chPercent)               // '%'
+        else if (*tmpStr == u'%')
         {
             if (XMLString::stringLen(tmpStr) >= 3
                 && XMLString::isHex(*(tmpStr+1))     // 1st hex
@@ -1382,7 +1382,7 @@ void XMLUri::isConformantUserInfo(const XMLCh* const userInfo
             else
             {
                 XMLCh value1[4];
-                value1[0] = chPercent;
+                value1[0] = u'%';
                 value1[1] = *(tmpStr+1);
                 value1[2] = *(tmpStr+2);
                 value1[3] = u'\0';
@@ -1430,7 +1430,7 @@ bool XMLUri::isValidServerBasedAuthority(const XMLCh* const host,
         {
             index++;
         }
-        else if (userinfo[index] == chPercent)               // '%'
+        else if (userinfo[index] == u'%')
         {
             if (index + 2 < userLen
                 && XMLString::isHex(userinfo[index+1])       // 1st hex
@@ -1471,7 +1471,7 @@ bool XMLUri::isValidServerBasedAuthority(const XMLCh* const host
         {
             tmpStr++;
         }
-        else if (*tmpStr == chPercent)               // '%'
+        else if (*tmpStr == u'%')
         {
             if (XMLString::stringLen(tmpStr) >= 3
                 && XMLString::isHex(*(tmpStr+1))     // 1st hex
@@ -1501,7 +1501,7 @@ bool XMLUri::isValidRegistryBasedAuthority(const XMLCh* const authority,
         {
             index++;
         }
-        else if (authority[index] == chPercent)               // '%'
+        else if (authority[index] == u'%')
         {
             if (index + 2 < authLen
                 && XMLString::isHex(authority[index+1])       // 1st hex
@@ -1531,7 +1531,7 @@ bool XMLUri::isValidRegistryBasedAuthority(const XMLCh* const authority)
         {
             tmpStr++;
         }
-        else if (*tmpStr == chPercent)               // '%'
+        else if (*tmpStr == u'%')
         {
             if (XMLString::stringLen(tmpStr) >= 3
                 && XMLString::isHex(*(tmpStr + 1))     // 1st hex
@@ -1568,7 +1568,7 @@ bool XMLUri::isURIString(const XMLCh* const uricString)
         {
             tmpStr++;
         }
-        else if (*tmpStr == chPercent)               // '%'
+        else if (*tmpStr == u'%')
         {
             if (XMLString::stringLen(tmpStr) >=3
                 && XMLString::isHex(*(tmpStr+1))     // 1st hex
@@ -1610,7 +1610,7 @@ bool XMLUri::isWellFormedAddress(const XMLCh* const addrString
     XMLSize_t addrStrLen = XMLString::stringLen(addrString);
 
     // Check if the host is a valid IPv6reference.
-    if (*addrString == chOpenSquare)
+    if (*addrString == u'[')
     {
         return isWellFormedIPv6Reference(addrString, addrStrLen);
     }
@@ -1618,16 +1618,16 @@ bool XMLUri::isWellFormedAddress(const XMLCh* const addrString
     //
     // Cannot start with a '.', '-', or end with a '-'.
     //
-    if (*addrString == chPeriod ||
-        *addrString == chDash ||
-        addrString[addrStrLen-1] == chDash)
+    if (*addrString == u'.' ||
+        *addrString == u'-' ||
+        addrString[addrStrLen-1] == u'-')
         return false;
 
     // rightmost domain label starting with digit indicates IP address
     // since top level domain label can only start with an alpha
     // see RFC 2396 Section 3.2.2
 
-    int lastPeriodPos = XMLString::lastIndexOf(addrString, chPeriod);
+    int lastPeriodPos = XMLString::lastIndexOf(addrString, u'.');
 
     // if the string ends with "."
     // get the second last "."
@@ -1638,7 +1638,7 @@ bool XMLUri::isWellFormedAddress(const XMLCh* const addrString
             addrStrLen * sizeof(XMLCh)
         );//new XMLCh[addrStrLen];
         XMLString::subString(tmp2, addrString, 0, lastPeriodPos, manager);
-        lastPeriodPos = XMLString::lastIndexOf(tmp2, chPeriod);
+        lastPeriodPos = XMLString::lastIndexOf(tmp2, u'.');
         manager->deallocate(tmp2);//delete [] tmp2;
 
         if ( XMLString::isDigit(addrString[lastPeriodPos + 1]))
@@ -1669,7 +1669,7 @@ bool XMLUri::isWellFormedAddress(const XMLCh* const addrString
         // but must start and end with an alphanumeric
         for (XMLSize_t i = 0; i < addrStrLen; i++)
         {
-            if (addrString[i] == chPeriod)
+            if (addrString[i] == u'.')
             {
               if (((i > 0)  &&
                    (!XMLString::isAlphaNum(addrString[i-1]))) ||
@@ -1681,7 +1681,7 @@ bool XMLUri::isWellFormedAddress(const XMLCh* const addrString
                 labelCharCount = 0;
             }
             else if (!XMLString::isAlphaNum(addrString[i]) &&
-                      addrString[i] != chDash)
+                      addrString[i] != u'-')
             {
                 return false;
             }
@@ -1716,7 +1716,7 @@ bool XMLUri::isWellFormedIPv4Address(const XMLCh* const addr, const XMLSize_t le
     // 5) that each segment is not greater than 255.
     for (XMLSize_t i = 0; i < length; ++i)
     {
-        if (addr[i] == chPeriod)
+        if (addr[i] == u'.')
         {
             if ((i == 0) ||
                 (i+1 == length) ||
@@ -1764,7 +1764,7 @@ bool XMLUri::isWellFormedIPv6Reference(const XMLCh* const addr, const XMLSize_t 
     XMLSize_t end = length-1;
 
     // Check if string is a potential match for IPv6reference.
-    if (!(length > 2 && addr[0] == chOpenSquare && addr[end] == chCloseSquare))
+    if (!(length > 2 && addr[0] == u'[' && addr[end] == u']'))
     {
         return false;
     }
@@ -1784,9 +1784,9 @@ bool XMLUri::isWellFormedIPv6Reference(const XMLCh* const addr, const XMLSize_t 
        return (counter == 8);
     }
 
-    if (index+1 < end && addr[index] == chColon)
+    if (index+1 < end && addr[index] == u':')
     {
-        if (addr[index+1] == chColon)
+        if (addr[index+1] == u':')
         {
             // '::' represents at least one 16-bit group of zeros.
             if (++counter > 8)
@@ -1851,7 +1851,7 @@ int XMLUri::scanHexSequence (const XMLCh* const addr, XMLSize_t index, XMLSize_t
     for (; index < end; ++index)
     {
       	testChar = addr[index];
-      	if (testChar == chColon)
+      	if (testChar == u':')
       	{
       	    // IPv6 addresses are 128-bit, so there can be at most eight sections.
       	    if (numDigits > 0 && ++counter > 8)
@@ -1859,7 +1859,7 @@ int XMLUri::scanHexSequence (const XMLCh* const addr, XMLSize_t index, XMLSize_t
       	        return -1;
       	    }
       	    // This could be '::'.
-      	    if (numDigits == 0 || ((index+1 < end) && addr[index+1] == chColon))
+      	    if (numDigits == 0 || ((index+1 < end) && addr[index+1] == u':'))
       	    {
       	        return (int)index;
       	    }
@@ -1869,7 +1869,7 @@ int XMLUri::scanHexSequence (const XMLCh* const addr, XMLSize_t index, XMLSize_t
         // backup to just after the last valid character that matches hexseq.
         else if (!XMLString::isHex(testChar))
         {
-            if (testChar == chPeriod && numDigits < 4 && numDigits > 0 && counter <= 6)
+            if (testChar == u'.' && numDigits < 4 && numDigits > 0 && counter <= 6)
             {
                 int back = (int)index - numDigits - 1;
                 return (back >= (int)start) ? back : (int)start;
@@ -1917,14 +1917,14 @@ void XMLUri::buildFullText()
     {
         XMLString::catString(fURIText, getScheme());
         outPtr += XMLString::stringLen(fURIText);
-        *outPtr++ = chColon;
+        *outPtr++ = u':';
     }
 
     // Authority
     if (fHost || fRegAuth)
     {
-        *outPtr++ = chForwardSlash;
-        *outPtr++ = chForwardSlash;
+        *outPtr++ = u'/';
+        *outPtr++ = u'/';
 
         // Server based authority.
         if (fHost)
@@ -1933,7 +1933,7 @@ void XMLUri::buildFullText()
             {
                 XMLString::copyString(outPtr, fUserInfo);
                 outPtr += XMLString::stringLen(fUserInfo);
-                *outPtr++ = chAt;
+                *outPtr++ = u'@';
             }
 
             XMLString::copyString(outPtr, fHost);
@@ -1945,7 +1945,7 @@ void XMLUri::buildFullText()
             //
             if (fPort != -1)
             {
-                *outPtr++ = chColon;
+                *outPtr++ = u':';
 
                 XMLCh tmpBuf[17];
                 XMLString::binToText(fPort, tmpBuf, 16, 10, fMemoryManager);
@@ -1968,14 +1968,14 @@ void XMLUri::buildFullText()
 
     if (fQueryString)
     {
-        *outPtr++ = chQuestion;
+        *outPtr++ = u'?';
         XMLString::copyString(outPtr, fQueryString);
         outPtr += XMLString::stringLen(fQueryString);
     }
 
     if (fFragment)
     {
-        *outPtr++ = chPound;
+        *outPtr++ = u'#';
         XMLString::copyString(outPtr, fFragment);
         outPtr += XMLString::stringLen(fFragment);
     }
@@ -2017,10 +2017,10 @@ bool XMLUri::isValidURI(const XMLUri* const baseURI
     bool foundScheme = false;
 
     // Check for scheme, which must be before `/', '?' or '#'.
-    int colonIdx = XMLString::indexOf(trimmedUriSpec, chColon);
-    int slashIdx = XMLString::indexOf(trimmedUriSpec, chForwardSlash);
-    int queryIdx = XMLString::indexOf(trimmedUriSpec, chQuestion);
-    int fragmentIdx = XMLString::indexOf(trimmedUriSpec, chPound);
+    int colonIdx = XMLString::indexOf(trimmedUriSpec, u':');
+    int slashIdx = XMLString::indexOf(trimmedUriSpec, u'/');
+    int queryIdx = XMLString::indexOf(trimmedUriSpec, u'?');
+    int fragmentIdx = XMLString::indexOf(trimmedUriSpec, u'#');
 
     if ((colonIdx <= 0) ||
         (colonIdx > slashIdx && slashIdx != -1) ||
@@ -2040,7 +2040,7 @@ bool XMLUri::isValidURI(const XMLUri* const baseURI
     }
 
     // It's an error if we stop here
-    if (index == trimmedUriSpecLen || (foundScheme && (trimmedUriSpec[index] == chPound)))
+    if (index == trimmedUriSpecLen || (foundScheme && (trimmedUriSpec[index] == u'#')))
         return false;
 
 	// two slashes means generic URI syntax, so we get the authority
@@ -2056,9 +2056,9 @@ bool XMLUri::isValidURI(const XMLUri* const baseURI
         while (index < trimmedUriSpecLen)
         {
             testChar = trimmedUriSpec[index];
-            if (testChar == chForwardSlash ||
-                testChar == chQuestion     ||
-                testChar == chPound         )
+            if (testChar == u'/' ||
+                testChar == u'?'     ||
+                testChar == u'#'         )
             {
                 break;
             }
@@ -2117,10 +2117,10 @@ bool XMLUri::isValidURI(bool haveBaseURI, const XMLCh* const uriStr, bool bAllow
     bool foundScheme = false;
 
     // Check for scheme, which must be before `/', '?' or '#'.
-    int colonIdx = XMLString::indexOf(trimmedUriSpec, chColon);
-    int slashIdx = XMLString::indexOf(trimmedUriSpec, chForwardSlash);
-    int queryIdx = XMLString::indexOf(trimmedUriSpec, chQuestion);
-    int fragmentIdx = XMLString::indexOf(trimmedUriSpec, chPound);
+    int colonIdx = XMLString::indexOf(trimmedUriSpec, u':');
+    int slashIdx = XMLString::indexOf(trimmedUriSpec, u'/');
+    int queryIdx = XMLString::indexOf(trimmedUriSpec, u'?');
+    int fragmentIdx = XMLString::indexOf(trimmedUriSpec, u'#');
 
     if ((colonIdx <= 0) ||
         (colonIdx > slashIdx && slashIdx != -1) ||
@@ -2140,7 +2140,7 @@ bool XMLUri::isValidURI(bool haveBaseURI, const XMLCh* const uriStr, bool bAllow
     }
 
     // It's an error if we stop here
-    if (index == trimmedUriSpecLen || (foundScheme && (trimmedUriSpec[index] == chPound)))
+    if (index == trimmedUriSpecLen || (foundScheme && (trimmedUriSpec[index] == u'#')))
         return false;
 
 	// two slashes means generic URI syntax, so we get the authority
@@ -2156,9 +2156,9 @@ bool XMLUri::isValidURI(bool haveBaseURI, const XMLCh* const uriStr, bool bAllow
         while (index < trimmedUriSpecLen)
         {
             testChar = trimmedUriSpec[index];
-            if (testChar == chForwardSlash ||
-                testChar == chQuestion     ||
-                testChar == chPound         )
+            if (testChar == u'/' ||
+                testChar == u'?'     ||
+                testChar == u'#'         )
             {
                 break;
             }
@@ -2193,7 +2193,7 @@ bool XMLUri::isWellFormedAddress(const XMLCh* const addrString,
         return false;
 
     // Check if the host is a valid IPv6reference.
-    if (*addrString == chOpenSquare)
+    if (*addrString == u'[')
     {
         return isWellFormedIPv6Reference(addrString, addrStrLen);
     }
@@ -2201,22 +2201,22 @@ bool XMLUri::isWellFormedAddress(const XMLCh* const addrString,
     //
     // Cannot start with a '.', '-', or end with a '-'.
     //
-    if (*addrString == chPeriod ||
-        *addrString == chDash ||
-        addrString[addrStrLen-1] == chDash)
+    if (*addrString == u'.' ||
+        *addrString == u'-' ||
+        addrString[addrStrLen-1] == u'-')
         return false;
 
     // rightmost domain label starting with digit indicates IP address
     // since top level domain label can only start with an alpha
     // see RFC 2396 Section 3.2.2
 
-    int lastPeriodPos = XMLString::lastIndexOf(chPeriod, addrString, addrStrLen);
+    int lastPeriodPos = XMLString::lastIndexOf(u'.', addrString, addrStrLen);
 
     // if the string ends with "."
     // get the second last "."
     if (XMLSize_t(lastPeriodPos + 1) == addrStrLen)
     {
-        lastPeriodPos = XMLString::lastIndexOf(chPeriod, addrString, lastPeriodPos);
+        lastPeriodPos = XMLString::lastIndexOf(u'.', addrString, lastPeriodPos);
 
         if ( XMLString::isDigit(addrString[lastPeriodPos + 1]))
 			return false;
@@ -2246,7 +2246,7 @@ bool XMLUri::isWellFormedAddress(const XMLCh* const addrString,
         // but must start and end with an alphanumeric
         for (XMLSize_t i = 0; i < addrStrLen; i++)
         {
-            if (addrString[i] == chPeriod)
+            if (addrString[i] == u'.')
             {
               if (((i > 0)  &&
                    (!XMLString::isAlphaNum(addrString[i-1]))) ||
@@ -2258,7 +2258,7 @@ bool XMLUri::isWellFormedAddress(const XMLCh* const addrString,
                 labelCharCount = 0;
             }
             else if (!XMLString::isAlphaNum(addrString[i]) &&
-                      addrString[i] != chDash)
+                      addrString[i] != u'-')
             {
                 return false;
             }
@@ -2306,7 +2306,7 @@ bool XMLUri::isConformantSchemeName( const XMLCh* const scheme
 bool XMLUri::processAuthority( const XMLCh* const authSpec
                              , const XMLSize_t authLen)
 {
-    int index = XMLString::indexOf(authSpec, chAt);
+    int index = XMLString::indexOf(authSpec, u'@');
     XMLSize_t start = 0;
 
     // server = [ [ userinfo "@" ] hostport ]
@@ -2331,19 +2331,19 @@ bool XMLUri::processAuthority( const XMLCh* const authSpec
     // Search for port boundary.
     const XMLCh* host;
     XMLSize_t hostLen = 0;
-    if ((start < authLen) && (authSpec[start] == chOpenSquare))
+    if ((start < authLen) && (authSpec[start] == u'['))
     {
-    	index = XMLString::indexOf(&(authSpec[start]), chCloseSquare);
+    	index = XMLString::indexOf(&(authSpec[start]), u']');
     	if ((index != -1) && (XMLSize_t(index) < authLen))
     	{
             // skip the ']'
             index = ((start + index + 1) < authLen
-              && authSpec[start + index + 1] == chColon) ? index+1 : -1;
+              && authSpec[start + index + 1] == u':') ? index+1 : -1;
     	}
     }
     else
     {
-        index = XMLString::indexOf(&(authSpec[start]), chColon);
+        index = XMLString::indexOf(&(authSpec[start]), u':');
         if (index!=-1 && XMLSize_t(index) >= authLen)
             index = -1;
     }
@@ -2402,7 +2402,7 @@ bool XMLUri::processPath(const XMLCh* const pathStr,
     {
         XMLSize_t index = 0;
         XMLCh testChar = u'\0';
-        bool isOpaque = (!isSchemePresent || *pathStr == chForwardSlash);
+        bool isOpaque = (!isSchemePresent || *pathStr == u'/');
 
         // path - everything up to query string or fragment
         //
@@ -2410,17 +2410,17 @@ bool XMLUri::processPath(const XMLCh* const pathStr,
         while (index < pathStrLen)
         {
             testChar = pathStr[index];
-            if (testChar == chQuestion || testChar == chPound)
+            if (testChar == u'?' || testChar == u'#')
                 break;
 
-            if (testChar == chPercent)
+            if (testChar == u'%')
             {
                 if (index+2 >= pathStrLen ||
                     !XMLString::isHex(pathStr[index+1]) ||
                     !XMLString::isHex(pathStr[index+2]))
                         return false;
             }
-            else if (testChar==chSpace)
+            else if (testChar==u' ')
             {
                 if(!bAllowSpaces)
                     return false;
@@ -2437,27 +2437,27 @@ bool XMLUri::processPath(const XMLCh* const pathStr,
 
         // query - starts with ? and up to fragment or end
         // fragment - starts with #
-        bool isQuery = (testChar == chQuestion);
-        if (isQuery || testChar == chPound)
+        bool isQuery = (testChar == u'?');
+        if (isQuery || testChar == u'#')
         {
             index++;
             while (index < pathStrLen)
             {
                 testChar = pathStr[index];
-                if (testChar == chPound && isQuery) {
+                if (testChar == u'#' && isQuery) {
                     isQuery = false;
                     index++;
                     continue;
                 }
 
-                if (testChar == chPercent)
+                if (testChar == u'%')
                 {
                     if (index+2 >= pathStrLen ||
                         !XMLString::isHex(pathStr[index+1]) ||
                         !XMLString::isHex(pathStr[index+2]))
                         return false;
                 }
-                else if (testChar==chSpace)
+                else if (testChar==u' ')
                 {
                     if(!bAllowSpaces)
                         return false;
@@ -2490,12 +2490,12 @@ void XMLUri::normalizeURI(const XMLCh*     const systemURI,
 
     while (*pszSrc) {
 
-        if ((*(pszSrc) == chPercent)
+        if ((*(pszSrc) == u'%')
         &&  (*(pszSrc+1) == u'2')
         &&  (*(pszSrc+2) == u'0'))
         {
             pszSrc += 3;
-            normalizedURI.append(chSpace);
+            normalizedURI.append(u' ');
         }
         else
         {

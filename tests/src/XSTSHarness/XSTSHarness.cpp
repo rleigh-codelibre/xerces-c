@@ -134,14 +134,14 @@ void BaseErrorHandler::error(const SAXParseException& exc)
 {
     fSawErrors=true;
     fErrorText.append(exc.getMessage());
-    fErrorText.append(chLF);
+    fErrorText.append(u'\n');
 }
 
 void BaseErrorHandler::fatalError(const SAXParseException& exc)
 {
     fSawErrors=true;
     fErrorText.append(exc.getMessage());
-    fErrorText.append(chLF);
+    fErrorText.append(u'\n');
 }
 
 /////////////////////////////////////////////////////////////////////

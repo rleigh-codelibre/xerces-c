@@ -244,10 +244,10 @@ void PSVIWriterHandlers::error(const SAXParseException& e) {
 	XMLCh* temp2 = new XMLCh[10];
         XMLString::binToText((unsigned long)e.getLineNumber(), temp1, 9, 10);
 	XMLString::binToText((unsigned long)e.getColumnNumber(), temp2, 9, 10);
-	*fErrorFormatter << u"Error" << u" at file" << chSpace << e.getSystemId()
-		<< chComma << u" Line" << chSpace << temp1
-		<< chComma << u" Char" << chSpace << temp2
-		<< chLF << u"Message" << chColon << e.getMessage() << chLF;
+	*fErrorFormatter << u"Error" << u" at file" << u' ' << e.getSystemId()
+		<< u',' << u" Line" << u' ' << temp1
+		<< u',' << u" Char" << u' ' << temp2
+		<< u'\n' << u"Message" << u':' << e.getMessage() << u'\n';
 	delete[] temp1;
 	delete[] temp2;
 }
@@ -257,10 +257,10 @@ void PSVIWriterHandlers::fatalError(const SAXParseException& e) {
 	XMLCh* temp2 = new XMLCh[10];
         XMLString::binToText((unsigned long)e.getLineNumber(), temp1, 9, 10);
 	XMLString::binToText((unsigned long)e.getColumnNumber(), temp2, 9, 10);
-	*fErrorFormatter << u"Fatal Error" << u" at file" << chSpace << e.getSystemId()
-		<< chComma << u" Line" << chSpace << temp1
-		<< chComma << u" Char" << chSpace << temp2
-		<< chLF	<< u"Message" << chColon << e.getMessage() << chLF;
+	*fErrorFormatter << u"Fatal Error" << u" at file" << u' ' << e.getSystemId()
+		<< u',' << u" Line" << u' ' << temp1
+		<< u',' << u" Char" << u' ' << temp2
+		<< u'\n'	<< u"Message" << u':' << e.getMessage() << u'\n';
 	delete[] temp1;
 	delete[] temp2;
 	resetDocument();
@@ -271,10 +271,10 @@ void PSVIWriterHandlers::warning(const SAXParseException& e) {
 	XMLCh* temp2 = new XMLCh[10];
         XMLString::binToText((unsigned long)e.getLineNumber(), temp1, 9, 10);
 	XMLString::binToText((unsigned long)e.getColumnNumber(), temp2, 9, 10);
-	*fErrorFormatter << u"Warning" << u" at file" << chSpace << e.getSystemId()
-		<< chComma << u" Line" << chSpace << temp1
-		<< chComma << u" Char" << chSpace << temp2
-		<< chLF	<< u"Message" << chColon << e.getMessage() << chLF;
+	*fErrorFormatter << u"Warning" << u" at file" << u' ' << e.getSystemId()
+		<< u',' << u" Line" << u' ' << temp1
+		<< u',' << u" Char" << u' ' << temp2
+		<< u'\n'	<< u"Message" << u':' << e.getMessage() << u'\n';
 	delete[] temp1;
 	delete[] temp2;
 }
@@ -1224,17 +1224,17 @@ void PSVIWriterHandlers::sendUnindentedElement(const XMLCh* const elementName) {
 
 void PSVIWriterHandlers::writeOpen(const XMLCh* const elementName) {
 	*fFormatter
-		<< XMLFormatter::NoEscapes << fIndentChars << chOpenAngle << elementName << u">\n";
+		<< XMLFormatter::NoEscapes << fIndentChars << u'<' << elementName << u">\n";
 }
 
 void PSVIWriterHandlers::writeOpen(const XMLCh* const elementName, const StringList* const attrs) {
 	*fFormatter
-		<< XMLFormatter::NoEscapes << fIndentChars << chOpenAngle << elementName ;
+		<< XMLFormatter::NoEscapes << fIndentChars << u'<' << elementName ;
 	for (unsigned int i=0; i < attrs->size(); i+=2 ) {
 		*fFormatter
-			<< XMLFormatter::NoEscapes << chSpace << attrs->elementAt(i) << u"=\""
+			<< XMLFormatter::NoEscapes << u' ' << attrs->elementAt(i) << u"=\""
 			<< XMLFormatter::AttrEscapes << attrs->elementAt(i+1)
-			<< XMLFormatter::NoEscapes << chDoubleQuote ;
+			<< XMLFormatter::NoEscapes << u'"' ;
 	}
 	*fFormatter
 		<< XMLFormatter::NoEscapes << u">\n";
@@ -1247,17 +1247,17 @@ void PSVIWriterHandlers::writeClose(const XMLCh* const elementName) {
 
 void PSVIWriterHandlers::writeValue(const XMLCh* const elementName, const XMLCh* const value) {
 	*fFormatter
-		<< XMLFormatter::NoEscapes << fIndentChars << chOpenAngle << elementName << chCloseAngle
+		<< XMLFormatter::NoEscapes << fIndentChars << u'<' << elementName << u'>'
 		<< XMLFormatter::CharEscapes << value
 		<< XMLFormatter::NoEscapes << u"</" << elementName <<	u">\n" ;
 }
 
 void PSVIWriterHandlers::writeValue(const XMLCh* const elementName, const StringList* const values) {
 	*fFormatter
-		<< XMLFormatter::NoEscapes << fIndentChars << chOpenAngle << elementName << chCloseAngle;
+		<< XMLFormatter::NoEscapes << fIndentChars << u'<' << elementName << u'>';
 	for (unsigned int i=0; i < values->size(); i++) {
 		*fFormatter
-			<< XMLFormatter::CharEscapes << values->elementAt(i) << chSpace;
+			<< XMLFormatter::CharEscapes << values->elementAt(i) << u' ';
 	}
 	*fFormatter
 		<< XMLFormatter::NoEscapes << u"</" << elementName <<	u">\n" ;
@@ -1265,12 +1265,12 @@ void PSVIWriterHandlers::writeValue(const XMLCh* const elementName, const String
 
 void PSVIWriterHandlers::writeEmpty(const XMLCh* const elementName, const StringList* const attrs) {
 	*fFormatter
-		<< XMLFormatter::NoEscapes << fIndentChars << chOpenAngle << elementName ;
+		<< XMLFormatter::NoEscapes << fIndentChars << u'<' << elementName ;
 	for (unsigned int i=0; i < attrs->size(); i+=2 ) {
 		*fFormatter
-			<< XMLFormatter::NoEscapes << chSpace << attrs->elementAt(i) << u"=\""
+			<< XMLFormatter::NoEscapes << u' ' << attrs->elementAt(i) << u"=\""
 			<< XMLFormatter::AttrEscapes << attrs->elementAt(i+1)
-			<< XMLFormatter::NoEscapes << chDoubleQuote ;
+			<< XMLFormatter::NoEscapes << u'"' ;
 	}
 	*fFormatter
 		<< XMLFormatter::NoEscapes << u"/>\n" ;
@@ -1278,7 +1278,7 @@ void PSVIWriterHandlers::writeEmpty(const XMLCh* const elementName, const String
 
 void PSVIWriterHandlers::writeEmpty(const XMLCh* const elementName) {
 	*fFormatter
-		<< XMLFormatter::NoEscapes << fIndentChars << chOpenAngle << elementName << u"/>\n" ;
+		<< XMLFormatter::NoEscapes << fIndentChars << u'<' << elementName << u"/>\n" ;
 }
 
 void PSVIWriterHandlers::writeString(const XMLCh* const string) {

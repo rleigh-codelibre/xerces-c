@@ -508,9 +508,9 @@ IGXMLScanner::buildAttList(const  RefVectorOf<KVStringPair>&  providedAttrs
 
                     getURIText(uriId, bufURI);
 
-                    bufMsg.append(chOpenCurly);
+                    bufMsg.append(u'{');
                     bufMsg.append(bufURI.getRawBuffer());
-                    bufMsg.append(chCloseCurly);
+                    bufMsg.append(u'}');
                 }
                 bufMsg.append(suffPtr);
                 fValidator->emitError
@@ -1018,9 +1018,9 @@ bool IGXMLScanner::normalizeAttValue( const   XMLAttDef* const    attDef
                      // values are subject to normalisation
                      fValidator->emitError(XMLValid::NoAttNormForStandalone, attName);
                 }
-                nextCh = chSpace;
+                nextCh = u' ';
                 break;
-            case chOpenAngle:
+            case u'<':
                 //  If its not escaped, then make sure its not a < character, which is
                 //  not allowed in attribute values.
                 emitError(XMLErrs::BracketInAttrValue, attName);
@@ -1045,7 +1045,7 @@ bool IGXMLScanner::normalizeAttValue( const   XMLAttDef* const    attDef
             {
                 nextCh = *++srcPtr;
             }
-            else if (nextCh == chOpenAngle) {
+            else if (nextCh == u'<') {
                 //  If its not escaped, then make sure its not a < character, which is
                 //  not allowed in attribute values.
                 emitError(XMLErrs::BracketInAttrValue, attName);
@@ -1057,7 +1057,7 @@ bool IGXMLScanner::normalizeAttValue( const   XMLAttDef* const    attDef
                 if (!fReaderMgr.getCurrentReader()->isWhitespace(nextCh))
                 {
                     if (firstNonWS)
-                        toFill.append(chSpace);
+                        toFill.append(u' ');
                     curState = InContent;
                     firstNonWS = true;
                 }
@@ -1078,7 +1078,7 @@ bool IGXMLScanner::normalizeAttValue( const   XMLAttDef* const    attDef
                     // XML 1.0, Section 2.9
                     if (fStandalone && fValidate && isAttTokenizedExternal)
                     {
-                        if (!firstNonWS || (nextCh != chSpace && *srcPtr && fReaderMgr.getCurrentReader()->isWhitespace(*srcPtr)))
+                        if (!firstNonWS || (nextCh != u' ' && *srcPtr && fReaderMgr.getCurrentReader()->isWhitespace(*srcPtr)))
                         {
                             // Can't have a standalone document declaration of "yes" if  attribute
                             // values are subject to normalisation
@@ -1128,7 +1128,7 @@ bool IGXMLScanner::normalizeAttRawValue( const   XMLCh* const        attrName
 
         //  If its not escaped, then make sure its not a < character, which is
         //  not allowed in attribute values.
-        if (!escaped && (*srcPtr == chOpenAngle))
+        if (!escaped && (*srcPtr == u'<'))
         {
             emitError(XMLErrs::BracketInAttrValue, attrName);
             retVal = false;
@@ -1140,7 +1140,7 @@ bool IGXMLScanner::normalizeAttRawValue( const   XMLCh* const        attrName
             //  replaced with an 0x20. But its faster to do this (I think)
             //  than checking for 9, A, and D separately.
             if (fReaderMgr.getCurrentReader()->isWhitespace(nextCh))
-                nextCh = chSpace;
+                nextCh = u' ';
         }
 
         // Add this char to the target buffer
@@ -1532,7 +1532,7 @@ void IGXMLScanner::sendCharData(XMLBuffer& toSend)
 void IGXMLScanner::updateNSMap(const  XMLCh* const    attrName
                             , const XMLCh* const    attrValue)
 {
-    updateNSMap(attrName, attrValue, XMLString::indexOf(attrName, chColon));
+    updateNSMap(attrName, attrValue, XMLString::indexOf(attrName, u':'));
 }
 
 void IGXMLScanner::updateNSMap(const  XMLCh* const    attrName
@@ -2300,7 +2300,7 @@ bool IGXMLScanner::basicAttrValueScan(const XMLCh* const attrName, XMLBuffer& to
 
                 if (nextCh != quoteCh)
                 {
-                    if (nextCh != chAmpersand)
+                    if (nextCh != u'&')
                     {
                         if ((nextCh < 0xD800) || (nextCh > 0xDFFF))
                         {
@@ -2344,7 +2344,7 @@ bool IGXMLScanner::basicAttrValueScan(const XMLCh* const attrName, XMLBuffer& to
                                 emitError(XMLErrs::Unexpected2ndSurrogateChar);
                             }
                         }
-                    } else // its a chAmpersand
+                    } else // its a u'&'
                     {
                         //  Check for an entity ref . We ignore the empty flag in
                         //  this one.
@@ -2477,7 +2477,7 @@ bool IGXMLScanner::scanAttValue(  const   XMLAttDef* const    attDef
                 //  whitespace normalization logic below. We ignore the empty flag
                 //  in this one.
                 escaped = false;
-                if (nextCh == chAmpersand)
+                if (nextCh == u'&')
                 {
                     if (scanEntityRef(true, nextCh, secondCh, escaped) != EntityExp_Returned)
                     {
@@ -2534,7 +2534,7 @@ bool IGXMLScanner::scanAttValue(  const   XMLAttDef* const    attDef
 
                 //  If its not escaped, then make sure its not a < character, which
                 //  is not allowed in attribute values.
-                if (!escaped && (nextCh == chOpenAngle))
+                if (!escaped && (nextCh == u'<'))
                     emitError(XMLErrs::BracketInAttrValue, attrName);
 
                 //  If the attribute is a CDATA type we do simple replacement of
@@ -2558,7 +2558,7 @@ bool IGXMLScanner::scanAttValue(  const   XMLAttDef* const    attDef
                                 // values are subject to normalisation
                                 fValidator->emitError(XMLValid::NoAttNormForStandalone, attrName);
                             }
-                            nextCh = chSpace;
+                            nextCh = u' ';
                         }
                     }
                 }
@@ -2566,10 +2566,10 @@ bool IGXMLScanner::scanAttValue(  const   XMLAttDef* const    attDef
                 {
                     if (curState == InWhitespace)
                     {
-                        if ((escaped && nextCh != chSpace) || !fReaderMgr.getCurrentReader()->isWhitespace(nextCh))
+                        if ((escaped && nextCh != u' ') || !fReaderMgr.getCurrentReader()->isWhitespace(nextCh))
                         {
                             if (firstNonWS)
-                                toFill.append(chSpace);
+                                toFill.append(u' ');
                             curState = InContent;
                             firstNonWS = true;
                         }
@@ -2580,7 +2580,7 @@ bool IGXMLScanner::scanAttValue(  const   XMLAttDef* const    attDef
                     }
                     else if (curState == InContent)
                     {
-                        if ((nextCh == chSpace) ||
+                        if ((nextCh == u' ') ||
                             (fReaderMgr.getCurrentReader()->isWhitespace(nextCh) && !escaped))
                         {
                             curState = InWhitespace;
@@ -2589,7 +2589,7 @@ bool IGXMLScanner::scanAttValue(  const   XMLAttDef* const    attDef
                             // XML 1.0, Section 2.9
                             if (fStandalone && fValidate && isAttTokenizedExternal)
                             {
-                                if (!firstNonWS || (nextCh != chSpace && fReaderMgr.lookingAtSpace()))
+                                if (!firstNonWS || (nextCh != u' ' && fReaderMgr.lookingAtSpace()))
                                 {
                                      // Can't have a standalone document declaration of "yes" if  attribute
                                      // values are subject to normalisation
@@ -2632,13 +2632,13 @@ void IGXMLScanner::scanCDSection()
     //  The next character should be the opening square bracket. If not
     //  issue an error, but then try to recover by skipping any whitespace
     //  and checking again.
-    if (!fReaderMgr.skippedChar(chOpenSquare))
+    if (!fReaderMgr.skippedChar(u'['))
     {
         emitError(XMLErrs::ExpectedOpenSquareBracket);
         fReaderMgr.skipPastSpaces();
 
         // If we still don't find it, then give up, else keep going
-        if (!fReaderMgr.skippedChar(chOpenSquare))
+        if (!fReaderMgr.skippedChar(u'['))
             return;
     }
 
@@ -2707,7 +2707,7 @@ void IGXMLScanner::scanCDSection()
 
         //  If this is a close square bracket it could be our closing
         //  sequence.
-        if (nextCh == chCloseSquare && fReaderMgr.skippedString(u"]>"))
+        if (nextCh == u']' && fReaderMgr.skippedString(u"]>"))
         {
             //  make sure we were not expecting a trailing surrogate.
             if (gotLeadingSurrogate)
@@ -2880,7 +2880,7 @@ void IGXMLScanner::scanCharData(XMLBuffer& toUse)
 
                 // Try to get another char from the source
                 //   The code from here on down covers all contengencies,
-                if (!fReaderMgr.getNextCharIfNot(chOpenAngle, nextCh))
+                if (!fReaderMgr.getNextCharIfNot(u'<', nextCh))
                 {
                     // If we were waiting for a trailing surrogate, its an error
                     if (gotLeadingSurrogate)
@@ -2893,7 +2893,7 @@ void IGXMLScanner::scanCharData(XMLBuffer& toUse)
                 //  Watch for a reference. Note that the escapement mechanism
                 //  is ignored in this content.
                 escaped = false;
-                if (nextCh == chAmpersand)
+                if (nextCh == u'&')
                 {
                     sendCharData(toUse);
 
@@ -2961,14 +2961,14 @@ void IGXMLScanner::scanCharData(XMLBuffer& toUse)
                  // Keep the state machine up to date
                 if (!escaped)
                 {
-                    if (nextCh == chCloseSquare)
+                    if (nextCh == u']')
                     {
                         if (curState == State_Waiting)
                             curState = State_GotOne;
                         else if (curState == State_GotOne)
                             curState = State_GotTwo;
                     }
-                    else if (nextCh == chCloseAngle)
+                    else if (nextCh == u'>')
                     {
                         if (curState == State_GotTwo)
                             emitError(XMLErrs::BadSequenceInCharData);
@@ -3089,7 +3089,7 @@ IGXMLScanner::scanEntityRef(  const   bool    inAttVal
 
     //  If the next char is a pound, then its a character reference and we
     //  need to expand it always.
-    if (fReaderMgr.skippedChar(chPound))
+    if (fReaderMgr.skippedChar(u'#'))
     {
         //  Its a character reference, so scan it and get back the numeric
         //  value it represents.
@@ -3120,7 +3120,7 @@ IGXMLScanner::scanEntityRef(  const   bool    inAttVal
 
     //  Next char must be a semi-colon. But if its not, just emit
     //  an error and try to continue.
-    if (!fReaderMgr.skippedChar(chSemiColon))
+    if (!fReaderMgr.skippedChar(u';'))
         emitError(XMLErrs::UnterminatedEntityRef, bbName.getRawBuffer());
 
     // Make sure we ended up on the same entity reader as the & char
@@ -3283,7 +3283,7 @@ IGXMLScanner::scanEntityRef(  const   bool    inAttVal
         // If it starts with the XML string, then it's an error
         if (checkXMLDecl(true)) {
             emitError(XMLErrs::TextDeclNotLegalHere);
-            fReaderMgr.skipPastChar(chCloseAngle);
+            fReaderMgr.skipPastChar(u'>');
         }
     }
     return EntityExp_Pushed;

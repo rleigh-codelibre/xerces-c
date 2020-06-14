@@ -58,7 +58,7 @@ static ContentSpecNode* makeRepNode(const XMLCh testCh,
                                     ContentSpecNode* const prevNode,
                                     MemoryManager* const manager)
 {
-    if (testCh == chQuestion)
+    if (testCh == u'?')
     {
         return new (manager) ContentSpecNode
         (
@@ -70,7 +70,7 @@ static ContentSpecNode* makeRepNode(const XMLCh testCh,
             , manager
         );
     }
-     else if (testCh == chPlus)
+     else if (testCh == u'+')
     {
         return new (manager) ContentSpecNode
         (
@@ -82,7 +82,7 @@ static ContentSpecNode* makeRepNode(const XMLCh testCh,
             , manager
         );
     }
-     else if (testCh == chAsterisk)
+     else if (testCh == u'*')
     {
         return new (manager) ContentSpecNode
         (
@@ -173,7 +173,7 @@ bool DTDScanner::checkForPERef(   const bool    inLiteral
     }
 
     // If the next char is a percent, then expand the PERef
-    if (!fReaderMgr->skippedChar(chPercent))
+    if (!fReaderMgr->skippedChar(u'%'))
        return gotSpace;
 
     while (true)
@@ -186,7 +186,7 @@ bool DTDScanner::checkForPERef(   const bool    inLiteral
           fReaderMgr->skipPastSpaces();
           gotSpace = true;
        }
-       if (!fReaderMgr->skippedChar(chPercent))
+       if (!fReaderMgr->skippedChar(u'%'))
           break;
     }
     return gotSpace;
@@ -213,12 +213,12 @@ bool DTDScanner::expandPERef( const   bool    scanExternal
         fScanner->emitError(XMLErrs::ExpectedPEName);
 
         // Skip the semicolon if that's what we ended up on
-        fReaderMgr->skippedChar(chSemiColon);
+        fReaderMgr->skippedChar(u';');
         return false;
     }
 
     // If no terminating semicolon, emit an error but try to keep going
-    if (!fReaderMgr->skippedChar(chSemiColon))
+    if (!fReaderMgr->skippedChar(u';'))
         fScanner->emitError(XMLErrs::UnterminatedEntityRef, bbName.getRawBuffer());
 
     //
@@ -519,7 +519,7 @@ DTDScanner::scanAttDef(DTDElementDecl& parentElem, XMLBuffer& bufToUse)
         // Set the value as the enumeration for this decl
         decl->setEnumeration(bufToUse.getRawBuffer());
     }
-     else if (fReaderMgr->skippedChar(chOpenParen))
+     else if (fReaderMgr->skippedChar(u'('))
     {
         decl->setType(XMLAttDef::Enumeration);
         if (!scanEnumeration(*decl, bufToUse, false))
@@ -597,7 +597,7 @@ void DTDScanner::scanAttListDecl()
     if (!checkForPERef(false, true))
     {
         fScanner->emitError(XMLErrs::ExpectedWhitespace);
-        fReaderMgr->skipPastChar(chCloseAngle);
+        fReaderMgr->skipPastChar(u'>');
         return;
     }
 
@@ -609,7 +609,7 @@ void DTDScanner::scanAttListDecl()
     if (!fReaderMgr->getName(bbName.getBuffer()))
     {
         fScanner->emitError(XMLErrs::ExpectedElementName);
-        fReaderMgr->skipPastChar(chCloseAngle);
+        fReaderMgr->skipPastChar(u'>');
         return;
     }
 
@@ -657,7 +657,7 @@ void DTDScanner::scanAttListDecl()
         if (!nextCh)
             ThrowXMLwithMemMgr(UnexpectedEOFException, XMLExcepts::Gen_UnexpectedEOF, fMemoryManager);
 
-        if (nextCh == chCloseAngle)
+        if (nextCh == u'>')
         {
             // We are done with this attribute list
             fReaderMgr->getNextChar();
@@ -685,7 +685,7 @@ void DTDScanner::scanAttListDecl()
                 fReaderMgr->skipPastSpaces();
             }
         }
-         else if (nextCh == chPercent)
+         else if (nextCh == u'%')
         {
             // Eat the percent and expand the ref
             fReaderMgr->getNextChar();
@@ -701,7 +701,7 @@ void DTDScanner::scanAttListDecl()
 
             if (!attDef)
             {
-                fReaderMgr->skipPastChar(chCloseAngle);
+                fReaderMgr->skipPastChar(u'>');
                 break;
             }
 
@@ -806,7 +806,7 @@ bool DTDScanner::scanAttValue(const   XMLCh* const        attrName
             //  in this one.
             //
             escaped = false;
-            if (nextCh == chAmpersand)
+            if (nextCh == u'&')
             {
                 if (scanEntityRef(nextCh, secondCh, escaped) != EntityExp_Returned)
                 {
@@ -856,7 +856,7 @@ bool DTDScanner::scanAttValue(const   XMLCh* const        attrName
             //  If its not escaped, then make sure its not a < character, which
             //  is not allowed in attribute values.
             //
-            if (!escaped && (nextCh == chOpenAngle))
+            if (!escaped && (nextCh == u'<'))
                 fScanner->emitError(XMLErrs::BracketInAttrValue, attrName);
 
             //
@@ -873,7 +873,7 @@ bool DTDScanner::scanAttValue(const   XMLCh* const        attrName
                 if (!escaped)
                 {
                     if ((nextCh == 0x09) || (nextCh == 0x0A) || (nextCh == 0x0D))
-                        nextCh = chSpace;
+                        nextCh = u' ';
                 }
             }
              else
@@ -883,7 +883,7 @@ bool DTDScanner::scanAttValue(const   XMLCh* const        attrName
                     if (!fReaderMgr->getCurrentReader()->isWhitespace(nextCh))
                     {
                         if (firstNonWS)
-                            toFill.append(chSpace);
+                            toFill.append(u' ');
                         curState = InContent;
                         firstNonWS = true;
                     }
@@ -956,7 +956,7 @@ bool DTDScanner::scanCharRef(XMLCh& first, XMLCh& second)
             ThrowXMLwithMemMgr(UnexpectedEOFException, XMLExcepts::Gen_UnexpectedEOF, fMemoryManager);
 
         // Break out on the terminating semicolon
-        if (nextCh == chSemiColon)
+        if (nextCh == u';')
         {
             fReaderMgr->getNextChar();
             break;
@@ -1060,7 +1060,7 @@ DTDScanner::scanChildren(const DTDElementDecl& elemDecl, XMLBuffer& bufToUse, un
     //  (((a)*)) etc...
     //
     ContentSpecNode* curNode = 0;
-    while(fReaderMgr->skippedChar(chOpenParen))
+    while(fReaderMgr->skippedChar(u'('))
     {
         // to check entity nesting
         const XMLSize_t curReader = fReaderMgr->getCurrentReaderNum();
@@ -1137,9 +1137,9 @@ DTDScanner::scanChildren(const DTDElementDecl& elemDecl, XMLBuffer& bufToUse, un
         //
         const XMLCh opCh = fReaderMgr->peekNextChar();
 
-        if ((opCh != chComma)
-        &&  (opCh != chPipe)
-        &&  (opCh != chCloseParen))
+        if ((opCh != u',')
+        &&  (opCh != u'|')
+        &&  (opCh != u')'))
         {
             // Not a legal char, so delete our node and return failure
             delete curNode;
@@ -1155,7 +1155,7 @@ DTDScanner::scanChildren(const DTDElementDecl& elemDecl, XMLBuffer& bufToUse, un
         //
         ContentSpecNode* headNode = 0;
         ContentSpecNode::NodeTypes curType = ContentSpecNode::UnknownType;
-        if (opCh == chComma)
+        if (opCh == u',')
         {
             curType = ContentSpecNode::Sequence;
             headNode = new (fGrammarPoolMemoryManager) ContentSpecNode
@@ -1169,7 +1169,7 @@ DTDScanner::scanChildren(const DTDElementDecl& elemDecl, XMLBuffer& bufToUse, un
             );
             curNode = headNode;
         }
-         else if (opCh == chPipe)
+         else if (opCh == u'|')
         {
             curType = ContentSpecNode::Choice;
             headNode = new (fGrammarPoolMemoryManager) ContentSpecNode
@@ -1195,7 +1195,7 @@ DTDScanner::scanChildren(const DTDElementDecl& elemDecl, XMLBuffer& bufToUse, un
         //  right child of the current node, and making that new node the current
         //  node.
         //
-        if ((opCh == chComma) || (opCh == chPipe))
+        if ((opCh == u',') || (opCh == u'|'))
         {
             ContentSpecNode* lastNode = 0;
             while (true)
@@ -1205,7 +1205,7 @@ DTDScanner::scanChildren(const DTDElementDecl& elemDecl, XMLBuffer& bufToUse, un
                 //  by another leaf or subexpression, or a closing parenthesis, or a
                 //  PE ref.
                 //
-                if (fReaderMgr->lookingAtChar(chPercent))
+                if (fReaderMgr->lookingAtChar(u'%'))
                 {
                     checkForPERef(false, true);
                 }
@@ -1214,7 +1214,7 @@ DTDScanner::scanChildren(const DTDElementDecl& elemDecl, XMLBuffer& bufToUse, un
                     // Just skip whitespace
                     fReaderMgr->skipPastSpaces();
                 }
-                 else if (fReaderMgr->skippedChar(chCloseParen))
+                 else if (fReaderMgr->skippedChar(u')'))
                 {
                     //
                     //  We've hit the end of this section, so break out. But, we
@@ -1240,7 +1240,7 @@ DTDScanner::scanChildren(const DTDElementDecl& elemDecl, XMLBuffer& bufToUse, un
                     // Check for a PE ref here, but don't require spaces
                     checkForPERef(false, true);
 
-                    if (fReaderMgr->skippedChar(chOpenParen))
+                    if (fReaderMgr->skippedChar(u'('))
                     {
                         const XMLSize_t curReader = fReaderMgr->getCurrentReaderNum();
 
@@ -1349,7 +1349,7 @@ DTDScanner::scanChildren(const DTDElementDecl& elemDecl, XMLBuffer& bufToUse, un
                 {
                     // Cannot be valid
                     delete headNode;  // emitError may do a throw so need to clean-up first
-                    if (opCh == chComma)
+                    if (opCh == u',')
                     {
                         fScanner->emitError(XMLErrs::ExpectedChoiceOrCloseParen);
                     }
@@ -1475,7 +1475,7 @@ void DTDScanner::scanComment()
         if (curState == InText)
         {
             // If its a dash, go to OneDash state. Otherwise take as text
-            if (nextCh == chDash)
+            if (nextCh == u'-')
                 curState = OneDash;
             else
                 bbComment.append(nextCh);
@@ -1487,13 +1487,13 @@ void DTDScanner::scanComment()
             //  Otherwise, we have to put in the deficit dash and the new
             //  character and go back to InText.
             //
-            if (nextCh == chDash)
+            if (nextCh == u'-')
             {
                 curState = TwoDashes;
             }
             else
             {
-                bbComment.append(chDash);
+                bbComment.append(u'-');
                 bbComment.append(nextCh);
                 curState = InText;
             }
@@ -1501,10 +1501,10 @@ void DTDScanner::scanComment()
         else if (curState == TwoDashes)
         {
             // The next character must be the closing bracket
-            if (nextCh != chCloseAngle)
+            if (nextCh != u'>')
             {
                 fScanner->emitError(XMLErrs::IllegalSequenceInComment);
-                fReaderMgr->skipPastChar(chCloseAngle);
+                fReaderMgr->skipPastChar(u'>');
                 return;
             }
             break;
@@ -1537,7 +1537,7 @@ bool DTDScanner::scanContentSpec(DTDElementDecl& toFill)
     }
 
     // Its got to be a parenthesized regular expression
-    if (!fReaderMgr->skippedChar(chOpenParen))
+    if (!fReaderMgr->skippedChar(u'('))
     {
         fScanner->emitError
         (
@@ -1666,7 +1666,7 @@ void DTDScanner::scanElementDecl()
     if (!fReaderMgr->getName(bbName.getBuffer()))
     {
         fScanner->emitError(XMLErrs::ExpectedElementName);
-        fReaderMgr->skipPastChar(chCloseAngle);
+        fReaderMgr->skipPastChar(u'>');
         return;
     }
 
@@ -1730,7 +1730,7 @@ void DTDScanner::scanElementDecl()
     // And now scan the content model for this guy.
     if (!scanContentSpec(*decl))
     {
-        fReaderMgr->skipPastChar(chCloseAngle);
+        fReaderMgr->skipPastChar(u'>');
         return;
     }
 
@@ -1738,10 +1738,10 @@ void DTDScanner::scanElementDecl()
     checkForPERef(false, true);
 
     // And we should have the ending angle bracket
-    if (!fReaderMgr->skippedChar(chCloseAngle))
+    if (!fReaderMgr->skippedChar(u'>'))
     {
         fScanner->emitError(XMLErrs::UnterminatedElementDecl, bbName.getRawBuffer());
-        fReaderMgr->skipPastChar(chCloseAngle);
+        fReaderMgr->skipPastChar(u'>');
     }
 
     //
@@ -1774,7 +1774,7 @@ void DTDScanner::scanEntityDecl()
         fScanner->emitError(XMLErrs::ExpectedWhitespace);
     else
         fReaderMgr->skipPastSpaces();
-    bool isPEDecl = fReaderMgr->skippedChar(chPercent);
+    bool isPEDecl = fReaderMgr->skippedChar(u'%');
 
     //
     //  If a PE decl, then check if it is followed by a space; if it is so, 
@@ -1793,7 +1793,7 @@ void DTDScanner::scanEntityDecl()
                // And skip any more spaces in the expanded value
                if (fReaderMgr->skippedSpace())
                   fReaderMgr->skipPastSpaces();
-               if (!fReaderMgr->skippedChar(chPercent))
+               if (!fReaderMgr->skippedChar(u'%'))
                   break;
             }
         }
@@ -1809,14 +1809,14 @@ void DTDScanner::scanEntityDecl()
     if (!fReaderMgr->getName(bbName.getBuffer()))
     {
         fScanner->emitError(XMLErrs::ExpectedPEName);
-        fReaderMgr->skipPastChar(chCloseAngle);
+        fReaderMgr->skipPastChar(u'>');
         return;
     }
 
     // If namespaces are enabled, then no colons allowed
     if (fScanner->getDoNamespaces())
     {
-        if (XMLString::indexOf(bbName.getRawBuffer(), chColon) != -1)
+        if (XMLString::indexOf(bbName.getRawBuffer(), u':') != -1)
             fScanner->emitError(XMLErrs::ColonNotLegalWithNS);
     }
 
@@ -1879,7 +1879,7 @@ void DTDScanner::scanEntityDecl()
     // According to the type call the value scanning method
     if (!scanEntityDef(*entityDecl, isPEDecl))
     {
-        fReaderMgr->skipPastChar(chCloseAngle);
+        fReaderMgr->skipPastChar(u'>');
         fScanner->setHasNoDTD(true);
         fScanner->emitError(XMLErrs::ExpectedEntityValue);
         return;
@@ -1891,10 +1891,10 @@ void DTDScanner::scanEntityDecl()
     checkForPERef(false, true);
 
     // And then we have to have the closing angle bracket
-    if (!fReaderMgr->skippedChar(chCloseAngle))
+    if (!fReaderMgr->skippedChar(u'>'))
     {
         fScanner->emitError(XMLErrs::UnterminatedEntityDecl, entityDecl->getName());
-        fReaderMgr->skipPastChar(chCloseAngle);
+        fReaderMgr->skipPastChar(u'>');
     }
 
     //
@@ -1936,7 +1936,7 @@ DTDScanner::scanEntityRef(XMLCh& firstCh, XMLCh& secondCh, bool& escaped)
     //  If the next char is a pound, then its a character reference and we
     //  need to expand it always.
     //
-    if (fReaderMgr->skippedChar(chPound))
+    if (fReaderMgr->skippedChar(u'#'))
     {
         //
         //  Its a character reference, so scan it and get back the numeric
@@ -1965,7 +1965,7 @@ DTDScanner::scanEntityRef(XMLCh& firstCh, XMLCh& secondCh, bool& escaped)
     //  Next char must be a semi-colon. But if its not, just emit
     //  an error and try to continue.
     //
-    if (!fReaderMgr->skippedChar(chSemiColon))
+    if (!fReaderMgr->skippedChar(u';'))
         fScanner->emitError(XMLErrs::UnterminatedEntityRef, bbName.getRawBuffer());
 
     // Make sure it was all in one entity reader
@@ -2151,7 +2151,7 @@ bool DTDScanner::scanEntityLiteral(XMLBuffer& toFill)
             break;
         }
 
-        if (nextCh == chPercent)
+        if (nextCh == u'%')
         {
             //
             //  Put the PE's value on the reader stack and then jump back
@@ -2169,7 +2169,7 @@ bool DTDScanner::scanEntityLiteral(XMLBuffer& toFill)
         //  and will only expand numerical char refs or the intrinsic char
         //  refs. Others will be left alone.
         //
-        if (nextCh == chAmpersand)
+        if (nextCh == u'&')
         {
             //
             //  Here, we only expand numeric char refs, but not any general
@@ -2177,7 +2177,7 @@ bool DTDScanner::scanEntityLiteral(XMLBuffer& toFill)
             //  and make sure it does refer to a general entity if its not
             //  a char ref (i.e. no naked '&' chars.)
             //
-            if (fReaderMgr->skippedChar(chPound))
+            if (fReaderMgr->skippedChar(u'#'))
             {
                 // If it failed, then just jump back to the top and try to pick up
                 if (!scanCharRef(nextCh, secondCh))
@@ -2198,11 +2198,11 @@ bool DTDScanner::scanEntityLiteral(XMLBuffer& toFill)
                     //  Since we are not expanding any of this, we have to
                     //  put the amp and name into the target buffer as data.
                     //
-                    toFill.append(chAmpersand);
+                    toFill.append(u'&');
                     toFill.append(nameBuf.getRawBuffer());
 
                     // Make sure we skipped a trailing semicolon
-                    if (!fReaderMgr->skippedChar(chSemiColon))
+                    if (!fReaderMgr->skippedChar(u';'))
                     {
                         fScanner->emitError
                         (
@@ -2212,7 +2212,7 @@ bool DTDScanner::scanEntityLiteral(XMLBuffer& toFill)
                     }
 
                     // And make the new character the semicolon
-                    nextCh = chSemiColon;
+                    nextCh = u';';
                 }
 
                 // Either way here we reset the surrogate flag
@@ -2281,8 +2281,8 @@ bool DTDScanner::scanEntityLiteral(XMLBuffer& toFill)
 bool DTDScanner::scanEntityDef(DTDEntityDecl& decl, const bool isPEDecl)
 {
     // Its got to be an entity literal
-    if (fReaderMgr->lookingAtChar(chSingleQuote)
-    ||  fReaderMgr->lookingAtChar(chDoubleQuote))
+    if (fReaderMgr->lookingAtChar(u'\'')
+    ||  fReaderMgr->lookingAtChar(u'"'))
     {
         // Get a buffer for the literal
         XMLBufBid bbValue(fBufMgr);
@@ -2336,7 +2336,7 @@ bool DTDScanner::scanEntityDef(DTDEntityDecl& decl, const bool isPEDecl)
     }
 
     // If looking at close angle now, we are done
-    if (fReaderMgr->lookingAtChar(chCloseAngle))
+    if (fReaderMgr->lookingAtChar(u'>'))
         return true;
 
     // Else we had to have seem the whitespace
@@ -2387,7 +2387,7 @@ bool DTDScanner::scanEnumeration( const   DTDAttDef&  attDef
     // If this is a notation, we need an opening paren
     if (notation)
     {
-        if (!fReaderMgr->skippedChar(chOpenParen))
+        if (!fReaderMgr->skippedChar(u'('))
             fScanner->emitError(XMLErrs::ExpectedOpenParen);
     }
 
@@ -2423,14 +2423,14 @@ bool DTDScanner::scanEnumeration( const   DTDAttDef&  attDef
         checkForPERef(false, true);
 
         // Check for the terminating paren
-        if (fReaderMgr->skippedChar(chCloseParen))
+        if (fReaderMgr->skippedChar(u')'))
             break;
 
         // And append a space separator
-        toFill.append(chSpace);
+        toFill.append(u' ');
 
         // Check for the pipe character separator
-        if (!fReaderMgr->skippedChar(chPipe))
+        if (!fReaderMgr->skippedChar(u'|'))
         {
             fScanner->emitError(XMLErrs::ExpectedEnumSepOrParen);
             return false;
@@ -2443,7 +2443,7 @@ bool DTDScanner::scanEnumeration( const   DTDAttDef&  attDef
 bool DTDScanner::scanEq()
 {
     fReaderMgr->skipPastSpaces();
-    if (fReaderMgr->skippedChar(chEqual))
+    if (fReaderMgr->skippedChar(u'='))
     {
         fReaderMgr->skipPastSpaces();
         return true;
@@ -2495,7 +2495,7 @@ void DTDScanner::scanExtSubsetDecl(const bool inIncludeSect, const bool isDTD)
                 bAcceptDecl = false;
 
                 // <TBD> Figure out how to do this
-                // fReaderMgr->unGet(chSpace);
+                // fReaderMgr->unGet(u' ');
             }
         }
     }
@@ -2531,7 +2531,7 @@ void DTDScanner::scanExtSubsetDecl(const bool inIncludeSect, const bool isDTD)
                 {
                     return; // nothing left
                 }
-                else if (nextCh == chOpenAngle)
+                else if (nextCh == u'<')
                 {
                     // Get the reader we started this on
                     // XML 1.0 P28a Well-formedness constraint: PE Between Declarations
@@ -2588,7 +2588,7 @@ void DTDScanner::scanExtSubsetDecl(const bool inIncludeSect, const bool isDTD)
                         fReaderMgr->skipPastSpaces();
                     }
                 }
-                else if (nextCh == chPercent)
+                else if (nextCh == u'%')
                 {
                     //
                     //  Expand (and scan if external) the reference value. Tell
@@ -2598,22 +2598,22 @@ void DTDScanner::scanExtSubsetDecl(const bool inIncludeSect, const bool isDTD)
                     fReaderMgr->getNextChar();
                     expandPERef(true, false, false, true);
                 }
-                else if (inIncludeSect && (nextCh == chCloseSquare))
+                else if (inIncludeSect && (nextCh == u']'))
                 {
                     //
                     //  Its the end of a conditional include section. So scan it and
                     //  decrement the include depth counter.
                     //
                     fReaderMgr->getNextChar();
-                    if (!fReaderMgr->skippedChar(chCloseSquare))
+                    if (!fReaderMgr->skippedChar(u']'))
                     {
                         fScanner->emitError(XMLErrs::ExpectedEndOfConditional);
-                        fReaderMgr->skipPastChar(chCloseAngle);
+                        fReaderMgr->skipPastChar(u'>');
                     }
-                    else if (!fReaderMgr->skippedChar(chCloseAngle))
+                    else if (!fReaderMgr->skippedChar(u'>'))
                     {
                         fScanner->emitError(XMLErrs::ExpectedEndOfConditional);
-                        fReaderMgr->skipPastChar(chCloseAngle);
+                        fReaderMgr->skipPastChar(u'>');
                     }
                     return;
                 }
@@ -2757,7 +2757,7 @@ bool DTDScanner::scanId(          XMLBuffer&  pubIdToFill
         //  is a single or double quote, then keep going.
         //
         const XMLCh chPeek = fReaderMgr->peekNextChar();
-        if ((chPeek != chDoubleQuote) && (chPeek != chSingleQuote))
+        if ((chPeek != u'"') && (chPeek != u'\''))
             return false;
     }
 
@@ -2777,8 +2777,8 @@ bool DTDScanner::scanId(          XMLBuffer&  pubIdToFill
     //  the next thing is a quote or not
     //
     const XMLCh chPeek = fReaderMgr->peekNextChar();
-    const bool bIsQuote =  ((chPeek == chDoubleQuote)
-                         || (chPeek == chSingleQuote));
+    const bool bIsQuote =  ((chPeek == u'"')
+                         || (chPeek == u'\''));
 
     if (!hasSpace)
     {
@@ -2847,24 +2847,24 @@ void DTDScanner::scanIgnoredSection()
         if (!nextCh)
             ThrowXMLwithMemMgr(UnexpectedEOFException, XMLExcepts::Gen_UnexpectedEOF, fMemoryManager);
 
-        if (nextCh == chOpenAngle)
+        if (nextCh == u'<')
         {
-            if (fReaderMgr->skippedChar(chBang)
-            &&  fReaderMgr->skippedChar(chOpenSquare))
+            if (fReaderMgr->skippedChar(u'!')
+            &&  fReaderMgr->skippedChar(u'['))
             {
                 depth++;
             }
         }
-         else if (nextCh == chCloseSquare)
+         else if (nextCh == u']')
         {
-            if (fReaderMgr->skippedChar(chCloseSquare))
+            if (fReaderMgr->skippedChar(u']'))
             {
-                while (fReaderMgr->skippedChar(chCloseSquare))
+                while (fReaderMgr->skippedChar(u']'))
                 {
                     // Do nothing, just skip them
                 }
 
-                if (fReaderMgr->skippedChar(chCloseAngle))
+                if (fReaderMgr->skippedChar(u'>'))
                 {
                     depth--;
                     if (!depth)
@@ -2955,13 +2955,13 @@ bool DTDScanner::scanInternalSubset()
             return false;
 
         // Watch for the end of internal subset marker
-        if (nextCh == chCloseSquare)
+        if (nextCh == u']')
         {
             fReaderMgr->getNextChar();
             break;
         }
 
-        if (nextCh == chPercent)
+        if (nextCh == u'%')
         {
             //
             //  Expand (and scan if external) the reference value. Tell
@@ -2972,7 +2972,7 @@ bool DTDScanner::scanInternalSubset()
             fReaderMgr->getNextChar();
             expandPERef(true, false, false, true);
         }
-         else if (nextCh == chOpenAngle)
+         else if (nextCh == u'<')
         {
             // Remember this reader before we start the scan, for checking
             // XML 1.0 P28a Well-formedness constraint: PE Between Declarations
@@ -3034,7 +3034,7 @@ bool DTDScanner::scanInternalSubset()
             //  If an '>', then probably an abnormally terminated
             //  internal subset so just return.
             //
-            if (nextCh == chCloseAngle)
+            if (nextCh == u'>')
             {
                 noErrors = false;
                 break;
@@ -3070,21 +3070,21 @@ void DTDScanner::scanMarkupDecl(const bool parseTextDecl)
     //
     const XMLCh nextCh = fReaderMgr->getNextChar();
 
-    if (nextCh == chBang)
+    if (nextCh == u'!')
     {
-        if (fReaderMgr->skippedChar(chDash))
+        if (fReaderMgr->skippedChar(u'-'))
         {
-            if (fReaderMgr->skippedChar(chDash))
+            if (fReaderMgr->skippedChar(u'-'))
             {
                 scanComment();
             }
              else
             {
                 fScanner->emitError(XMLErrs::CommentsMustStartWith);
-                fReaderMgr->skipPastChar(chCloseAngle);
+                fReaderMgr->skipPastChar(u'>');
             }
         }
-         else if (fReaderMgr->skippedChar(chOpenSquare))
+         else if (fReaderMgr->skippedChar(u'['))
         {
             //
             //  Its a conditional section. This is only valid in the external
@@ -3093,7 +3093,7 @@ void DTDScanner::scanMarkupDecl(const bool parseTextDecl)
             if (fInternalSubset)
             {
                 fScanner->emitError(XMLErrs::ConditionalSectInIntSubset);
-                fReaderMgr->skipPastChar(chCloseAngle);
+                fReaderMgr->skipPastChar(u'>');
                 return;
             }
 
@@ -3105,7 +3105,7 @@ void DTDScanner::scanMarkupDecl(const bool parseTextDecl)
                 checkForPERef(false, true);
 
                 // Check for the following open square bracket
-                if (!fReaderMgr->skippedChar(chOpenSquare))
+                if (!fReaderMgr->skippedChar(u'['))
                     fScanner->emitError(XMLErrs::ExpectedINCLUDEBracket);
 
                 // Get the reader we started this on
@@ -3132,7 +3132,7 @@ void DTDScanner::scanMarkupDecl(const bool parseTextDecl)
                 checkForPERef(false, true);
 
                 // Check for the following open square bracket
-                if (!fReaderMgr->skippedChar(chOpenSquare))
+                if (!fReaderMgr->skippedChar(u'['))
                     fScanner->emitError(XMLErrs::ExpectedINCLUDEBracket);
 
                 // Get the reader we started this on
@@ -3152,7 +3152,7 @@ void DTDScanner::scanMarkupDecl(const bool parseTextDecl)
              else
             {
                 fScanner->emitError(XMLErrs::ExpectedIncOrIgn);
-                fReaderMgr->skipPastChar(chCloseAngle);
+                fReaderMgr->skipPastChar(u'>');
             }
         }
          else if (fReaderMgr->skippedString(XMLUni::fgAttListString))
@@ -3174,10 +3174,10 @@ void DTDScanner::scanMarkupDecl(const bool parseTextDecl)
          else
         {
             fScanner->emitError(XMLErrs::ExpectedMarkupDecl);
-            fReaderMgr->skipPastChar(chCloseAngle);
+            fReaderMgr->skipPastChar(u'>');
         }
     }
-     else if (nextCh == chQuestion)
+     else if (nextCh == u'?')
     {
         // It could be a PI or the XML declaration. Check for Decl
         if (fScanner->checkXMLDecl(false))
@@ -3191,7 +3191,7 @@ void DTDScanner::scanMarkupDecl(const bool parseTextDecl)
             {
                 // Emit the error and skip past this markup
                 fScanner->emitError(XMLErrs::TextDeclNotLegalHere);
-                fReaderMgr->skipPastChar(chCloseAngle);
+                fReaderMgr->skipPastChar(u'>');
             }
         }
          else
@@ -3204,7 +3204,7 @@ void DTDScanner::scanMarkupDecl(const bool parseTextDecl)
     {
         // Can't be valid so emit error and try to skip past end of this decl
         fScanner->emitError(XMLErrs::ExpectedMarkupDecl);
-        fReaderMgr->skipPastChar(chCloseAngle);
+        fReaderMgr->skipPastChar(u'>');
     }
 }
 
@@ -3267,12 +3267,12 @@ bool DTDScanner::scanMixed(DTDElementDecl& toFill)
         //  First of all we check for some grunt work details of skipping
         //  whitespace, expand PE refs, and catching invalid reps.
         //
-        if (fReaderMgr->lookingAtChar(chPercent))
+        if (fReaderMgr->lookingAtChar(u'%'))
         {
             // Expand it and continue
             checkForPERef(false, true);
         }
-         else if (fReaderMgr->skippedChar(chAsterisk))
+         else if (fReaderMgr->skippedChar(u'*'))
         {
             //
             //  Tell them they can't have reps in mixed model, but eat
@@ -3291,10 +3291,10 @@ bool DTDScanner::scanMixed(DTDElementDecl& toFill)
         }
          else
         {
-            if (!fReaderMgr->skippedChar(chPipe))
+            if (!fReaderMgr->skippedChar(u'|'))
             {
                 // Has to be the closing paren now.
-                if (!fReaderMgr->skippedChar(chCloseParen))
+                if (!fReaderMgr->skippedChar(u')'))
                 {
                     delete headNode;
                     fScanner->emitError(XMLErrs::UnterminatedContentModel, toFill.getElementName()->getLocalPart());                     
@@ -3302,7 +3302,7 @@ bool DTDScanner::scanMixed(DTDElementDecl& toFill)
                 }
 
                 bool starSkipped = true;
-                if (!fReaderMgr->skippedChar(chAsterisk)) {
+                if (!fReaderMgr->skippedChar(u'*')) {
 
                     starSkipped = false;
 
@@ -3440,7 +3440,7 @@ void DTDScanner::scanNotationDecl()
     if (!checkForPERef(false, true))
     {
         fScanner->emitError(XMLErrs::ExpectedWhitespace);
-        fReaderMgr->skipPastChar(chCloseAngle);
+        fReaderMgr->skipPastChar(u'>');
         return;
     }
 
@@ -3452,14 +3452,14 @@ void DTDScanner::scanNotationDecl()
     if (!fReaderMgr->getName(bbName.getBuffer()))
     {
         fScanner->emitError(XMLErrs::ExpectedNotationName);
-        fReaderMgr->skipPastChar(chCloseAngle);
+        fReaderMgr->skipPastChar(u'>');
         return;
     }
 
     // If namespaces are enabled, then no colons allowed
     if (fScanner->getDoNamespaces())
     {
-        if (XMLString::indexOf(bbName.getRawBuffer(), chColon) != -1)
+        if (XMLString::indexOf(bbName.getRawBuffer(), u':') != -1)
             fScanner->emitError(XMLErrs::ColonNotLegalWithNS);
     }
 
@@ -3467,7 +3467,7 @@ void DTDScanner::scanNotationDecl()
     if (!checkForPERef(false, true))
     {
         fScanner->emitError(XMLErrs::ExpectedWhitespace);
-        fReaderMgr->skipPastChar(chCloseAngle);
+        fReaderMgr->skipPastChar(u'>');
         return;
     }
 
@@ -3479,7 +3479,7 @@ void DTDScanner::scanNotationDecl()
     XMLBufBid bbSysId(fBufMgr);
     if (!scanId(bbPubId.getBuffer(), bbSysId.getBuffer(), IDType_Either))
     {
-        fReaderMgr->skipPastChar(chCloseAngle);
+        fReaderMgr->skipPastChar(u'>');
         return;
     }
 
@@ -3533,7 +3533,7 @@ void DTDScanner::scanNotationDecl()
     checkForPERef(false, true);
 
     // And skip the terminating bracket
-    if (!fReaderMgr->skippedChar(chCloseAngle))
+    if (!fReaderMgr->skippedChar(u'>'))
         fScanner->emitError(XMLErrs::UnterminatedNotationDecl);
 }
 
@@ -3567,7 +3567,7 @@ void DTDScanner::scanPI()
     if (!fReaderMgr->getName(bbName.getBuffer()))
     {
         fScanner->emitError(XMLErrs::PINameExpected);
-        fReaderMgr->skipPastChar(chCloseAngle);
+        fReaderMgr->skipPastChar(u'>');
         return;
     }
 
@@ -3585,7 +3585,7 @@ void DTDScanner::scanPI()
     // If namespaces are enabled, then no colons allowed
     if (fScanner->getDoNamespaces())
     {
-        if (XMLString::indexOf(namePtr, chColon) != -1)
+        if (XMLString::indexOf(namePtr, u':') != -1)
             fScanner->emitError(XMLErrs::ColonNotLegalWithNS);
     }
 
@@ -3614,10 +3614,10 @@ void DTDScanner::scanPI()
             }
 
             // Watch for potential terminating character
-            if (nextCh == chQuestion)
+            if (nextCh == u'?')
             {
                 // It must be followed by '>' to be a termination of the target
-                if (fReaderMgr->skippedChar(chCloseAngle))
+                if (fReaderMgr->skippedChar(u'>'))
                     break;
             }
 
@@ -3659,17 +3659,17 @@ void DTDScanner::scanPI()
      else
     {
         // No target, but make sure its terminated ok
-        if (!fReaderMgr->skippedChar(chQuestion))
+        if (!fReaderMgr->skippedChar(u'?'))
         {
             fScanner->emitError(XMLErrs::UnterminatedPI);
-            fReaderMgr->skipPastChar(chCloseAngle);
+            fReaderMgr->skipPastChar(u'>');
             return;
         }
 
-        if (!fReaderMgr->skippedChar(chCloseAngle))
+        if (!fReaderMgr->skippedChar(u'>'))
         {
             fScanner->emitError(XMLErrs::UnterminatedPI);
-            fReaderMgr->skipPastChar(chCloseAngle);
+            fReaderMgr->skipPastChar(u'>');
             return;
         }
     }
@@ -3792,7 +3792,7 @@ void DTDScanner::scanTextDecl()
         if (!scanEq())
         {
             fScanner->emitError(XMLErrs::ExpectedEqSign);
-            fReaderMgr->skipPastChar(chCloseAngle);
+            fReaderMgr->skipPastChar(u'>');
             return;
         }
 
@@ -3803,7 +3803,7 @@ void DTDScanner::scanTextDecl()
         if (!getQuotedString(bbVersion.getBuffer()))
         {
             fScanner->emitError(XMLErrs::BadXMLVersion);
-            fReaderMgr->skipPastChar(chCloseAngle);
+            fReaderMgr->skipPastChar(u'>');
             return;
         }
 
@@ -3826,7 +3826,7 @@ void DTDScanner::scanTextDecl()
         if (!scanEq())
         {
             fScanner->emitError(XMLErrs::ExpectedEqSign);
-            fReaderMgr->skipPastChar(chCloseAngle);
+            fReaderMgr->skipPastChar(u'>');
             return;
         }
 
@@ -3835,7 +3835,7 @@ void DTDScanner::scanTextDecl()
         if (bbEncoding.isEmpty() || !XMLString::isValidEncName(bbEncoding.getRawBuffer()))
         {
             fScanner->emitError(XMLErrs::BadXMLEncoding, bbEncoding.getRawBuffer());
-            fReaderMgr->skipPastChar(chCloseAngle);
+            fReaderMgr->skipPastChar(u'>');
             return;
         }
 
@@ -3850,21 +3850,21 @@ void DTDScanner::scanTextDecl()
     if (!gotEncoding)
     {
       fScanner->emitError(XMLErrs::EncodingRequired);
-      fReaderMgr->skipPastChar(chCloseAngle);
+      fReaderMgr->skipPastChar(u'>');
       return;
 
     }
 
     fReaderMgr->skipPastSpaces();
-    if (!fReaderMgr->skippedChar(chQuestion))
+    if (!fReaderMgr->skippedChar(u'?'))
     {
         fScanner->emitError(XMLErrs::UnterminatedXMLDecl);
-        fReaderMgr->skipPastChar(chCloseAngle);
+        fReaderMgr->skipPastChar(u'>');
     }
-     else if (!fReaderMgr->skippedChar(chCloseAngle))
+     else if (!fReaderMgr->skippedChar(u'>'))
     {
         fScanner->emitError(XMLErrs::UnterminatedXMLDecl);
-        fReaderMgr->skipPastChar(chCloseAngle);
+        fReaderMgr->skipPastChar(u'>');
     }
 
     //

@@ -841,9 +841,9 @@ void TestParser::error( const   unsigned int                errCode
         //  against previous runs potentitally on other machines.
         //
         const XMLCh* entName = systemId;
-        int ofs = XMLString::lastIndexOf(systemId, chForwardSlash);
+        int ofs = XMLString::lastIndexOf(systemId, u'/');
         if (ofs == -1)
-            ofs = XMLString::lastIndexOf(systemId, chBackSlash);
+            ofs = XMLString::lastIndexOf(systemId, u'\\');
         if (ofs != -1)
             entName = &systemId[ofs + 1];
 
@@ -979,21 +979,21 @@ void TestParser::showChar(const char toShow, const bool doCan)
 {
     if (doCan)
     {
-        if (toShow == chLF)
+        if (toShow == u'\n')
             std::cout << "&#10;";
-        else if (toShow == chHTab)
+        else if (toShow == u'\t')
             std::cout << "&#9;";
-        else if (toShow == chCR)
+        else if (toShow == u'\r')
             std::cout << "&#13;";
-        else if (toShow == chSingleQuote)
+        else if (toShow == u'\'')
             std::cout << "&apos;";
-        else if (toShow == chAmpersand)
+        else if (toShow == u'&')
             std::cout << "&amp;";
-        else if (toShow == chDoubleQuote)
+        else if (toShow == u'"')
             std::cout << "&quot;";
-        else if (toShow == chOpenAngle)
+        else if (toShow == u'<')
             std::cout << "&lt;";
-        else if (toShow == chCloseAngle)
+        else if (toShow == u'>')
             std::cout << "&gt;";
         else
             std::cout << toShow;

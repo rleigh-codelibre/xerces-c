@@ -428,27 +428,27 @@ XMLFormatter::formatBuf(const   XMLCh* const    toFormat
                 //
                 const XMLByte * theChars;
                 switch (*srcPtr) {
-                    case chAmpersand :
+                    case u'&' :
                         theChars = getCharRef(fAmpLen, fAmpRef, gAmpRef);
                         fTarget->writeChars(theChars, fAmpLen, this);
                         break;
 
-                    case chSingleQuote :
+                    case u'\'' :
                         theChars = getCharRef(fAposLen, fAposRef, gAposRef);
                         fTarget->writeChars(theChars, fAposLen, this);
                         break;
 
-                    case chDoubleQuote :
+                    case u'"' :
                         theChars = getCharRef(fQuoteLen, fQuoteRef, gQuoteRef);
                         fTarget->writeChars(theChars, fQuoteLen, this);
                         break;
 
-                    case chCloseAngle :
+                    case u'>' :
                         theChars = getCharRef(fGTLen, fGTRef, gGTRef);
                         fTarget->writeChars(theChars, fGTLen, this);
                         break;
 
-                    case chOpenAngle :
+                    case u'<' :
                         theChars = getCharRef(fLTLen, fLTRef, gLTRef);
                         fTarget->writeChars(theChars, fLTLen, this);
                         break;
@@ -542,14 +542,14 @@ void XMLFormatter::writeBOM(const XMLByte* const toFormat
 void XMLFormatter::writeCharRef(const XMLCh &toWrite)
 {
     XMLCh tmpBuf[32];
-    tmpBuf[0] = chAmpersand;
-    tmpBuf[1] = chPound;
+    tmpBuf[0] = u'&';
+    tmpBuf[1] = u'#';
     tmpBuf[2] = u'x';
 
     // Build a char ref for the current char
     XMLString::binToText(toWrite, &tmpBuf[3], 8, 16, fMemoryManager);
     const XMLSize_t bufLen = XMLString::stringLen(tmpBuf);
-    tmpBuf[bufLen] = chSemiColon;
+    tmpBuf[bufLen] = u';';
     tmpBuf[bufLen+1] = '\0';
 
     // write it out
@@ -563,14 +563,14 @@ void XMLFormatter::writeCharRef(const XMLCh &toWrite)
 void XMLFormatter::writeCharRef(XMLSize_t toWrite)
 {
     XMLCh tmpBuf[64];
-    tmpBuf[0] = chAmpersand;
-    tmpBuf[1] = chPound;
+    tmpBuf[0] = u'&';
+    tmpBuf[1] = u'#';
     tmpBuf[2] = u'x';
 
     // Build a char ref for the current char
     XMLString::sizeToText(toWrite, &tmpBuf[3], 32, 16, fMemoryManager);
     const XMLSize_t bufLen = XMLString::stringLen(tmpBuf);
-    tmpBuf[bufLen] = chSemiColon;
+    tmpBuf[bufLen] = u';';
     tmpBuf[bufLen+1] = u'\0';
 
     // write it out

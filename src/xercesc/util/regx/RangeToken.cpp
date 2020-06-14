@@ -165,12 +165,12 @@ RangeToken* RangeToken::getCaseInsensitiveToken(TokenFactory* const tokFactory) 
         UChar* rangeStr=(UChar*)fMemoryManager->allocate(40*fElemCount*sizeof(UChar));
         ArrayJanitor<UChar> janRange(rangeStr, fMemoryManager);
         int c=0;
-        rangeStr[c++] = chOpenSquare;
+        rangeStr[c++] = u'[';
         for (unsigned int i = 0;  i < fElemCount - 1;  i += 2) {
             XMLCh buffer[10];
             XMLSize_t len, j;
 
-            rangeStr[c++] = chBackSlash;
+            rangeStr[c++] = u'\\';
             rangeStr[c++] = u'U';
             XMLString::binToText(fRanges[i], buffer, 10, 16, fMemoryManager);
             len = XMLString::stringLen(buffer);
@@ -181,8 +181,8 @@ RangeToken* RangeToken::getCaseInsensitiveToken(TokenFactory* const tokFactory) 
                 rangeStr[c++] = *p++;
             if(fRanges[i+1]!=fRanges[i])
             {
-                rangeStr[c++] = chDash;
-                rangeStr[c++] = chBackSlash;
+                rangeStr[c++] = u'-';
+                rangeStr[c++] = u'\\';
                 rangeStr[c++] = u'U';
                 XMLString::binToText(fRanges[i+1], buffer, 10, 16, fMemoryManager);
                 len = XMLString::stringLen(buffer);
@@ -193,7 +193,7 @@ RangeToken* RangeToken::getCaseInsensitiveToken(TokenFactory* const tokFactory) 
                     rangeStr[c++] = *p++;
             }
         }
-        rangeStr[c++] = chCloseSquare;
+        rangeStr[c++] = u']';
         rangeStr[c++] = u'\0';
         UErrorCode ec=U_ZERO_ERROR;
         USet* range=uset_openPatternOptions(rangeStr, -1, USET_CASE_INSENSITIVE, &ec);

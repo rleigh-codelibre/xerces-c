@@ -703,7 +703,7 @@ startElement(   const   XMLElementDecl&         elemDecl
         else
         {
             fTempQName->set(elemPrefix);
-            fTempQName->append(chColon);
+            fTempQName->append(u':');
             fTempQName->append(baseName);
             elemQName=fTempQName->getRawBuffer();
         }
@@ -853,7 +853,7 @@ void SAX2XMLReaderImpl::endElement( const   XMLElementDecl& elemDecl
         else
         {
             fTempQName->set(elemPrefix);
-            fTempQName->append(chColon);
+            fTempQName->append(u':');
             fTempQName->append(baseName);
             elemQName=fTempQName->getRawBuffer();
         }
@@ -947,19 +947,19 @@ void SAX2XMLReaderImpl::attDef( const   DTDElementDecl& elemDecl
             if (attType == XMLAttDef::Notation) {
 
                 enumBuf.set(XMLUni::fgNotationString);
-                enumBuf.append(chSpace);
+                enumBuf.append(u' ');
             }
 
-            enumBuf.append(chOpenParen);
+            enumBuf.append(u'(');
 
             for (XMLSize_t i=0; i<enumLen; i++) {
-                if (enumString[i] == chSpace)
-                    enumBuf.append(chPipe);
+                if (enumString[i] == u' ')
+                    enumBuf.append(u'|');
                 else
                     enumBuf.append(enumString[i]);
             }
 
-            enumBuf.append(chCloseParen);
+            enumBuf.append(u')');
         }
 
         fDeclHandler->attributeDecl(elemDecl.getFullName(),
@@ -1087,7 +1087,7 @@ void SAX2XMLReaderImpl::entityDecl( const   DTDEntityDecl&  entityDecl
                 );//new XMLCh[nameLen + 2];
 
                 tmpNameJan.reset(tmpName, fMemoryManager);
-                tmpName[0] = chPercent;
+                tmpName[0] = u'%';
                 XMLString::copyString(tmpName + 1, entityName);
                 entityName = tmpName;
             }

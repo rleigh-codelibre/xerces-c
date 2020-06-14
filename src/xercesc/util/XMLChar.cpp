@@ -85,7 +85,7 @@ bool XMLChar1_0::isValidNCName(const   XMLCh* const    toCheck
 
     const XMLCh* curCh = toCheck;
     const XMLCh* endPtr = toCheck + count;
-    if (*curCh== chColon || !(fgCharCharsTable1_0[*curCh++] & gFirstNameCharMask))
+    if (*curCh== u':' || !(fgCharCharsTable1_0[*curCh++] & gFirstNameCharMask))
         return false;
 
     while (curCh < endPtr)
@@ -166,7 +166,7 @@ bool XMLChar1_0::isValidQName(const   XMLCh* const    toCheck
         return false;
     XMLSize_t colonPos=0;
     // don't use XMLString::indexOf, we must stop after 'count' chars
-    while(colonPos<count && toCheck[colonPos]!=chColon)
+    while(colonPos<count && toCheck[colonPos]!=u':')
         colonPos++;
     if ((colonPos == 0) ||        // ":abcd"
         (colonPos+1 == count))    // "abcd:"
@@ -230,10 +230,10 @@ void XMLChar1_0::enableNELWS() {
     if (!enableNEL) {
         enableNEL = true;
         // When option is on, treat NEL same as LF
-        fgCharCharsTable1_0[chNEL] = fgCharCharsTable1_0[chLF];
+        fgCharCharsTable1_0[chNEL] = fgCharCharsTable1_0[u'\n'];
 
         // For simplicity, also treat 0x2028 same as LF
-        fgCharCharsTable1_0[chLineSeparator] = fgCharCharsTable1_0[chLF];
+        fgCharCharsTable1_0[chLineSeparator] = fgCharCharsTable1_0[u'\n'];
     }
 }
 
@@ -4397,7 +4397,7 @@ bool XMLChar1_1::isValidNCName(const   XMLCh* const    toCheck
         if ((nextCh < 0xDC00) || (nextCh > 0xDFFF))
             return false;
     }
-    else if (nextCh== chColon || !(fgCharCharsTable1_1[nextCh] & gFirstNameCharMask))
+    else if (nextCh== u':' || !(fgCharCharsTable1_1[nextCh] & gFirstNameCharMask))
             return false;
 
     bool    gotLeadingSurrogate = false;
@@ -4657,7 +4657,7 @@ bool XMLChar1_1::isValidQName(const   XMLCh* const    toCheck
         return false;
 
     XMLSize_t length = count;
-    int colonPos = XMLString::indexOf(toCheck, chColon);
+    int colonPos = XMLString::indexOf(toCheck, u':');
     if ((colonPos == 0) ||         // ":abcd"
         (colonPos == ((int)length)-1))    // "abcd:"
         return false;
@@ -8883,7 +8883,7 @@ static void initCharFlagTable()
     //  Then do the NCName table as Name minus colon
     //
     initOneTable(gNameChars, gNCNameCharMask);
-    gTmpCharTable[chColon] &= ~gNCNameCharMask;
+    gTmpCharTable[u':'] &= ~gNCNameCharMask;
 
     //
     //  Then do the first name char
@@ -8903,11 +8903,11 @@ static void initCharFlagTable()
     //  chars, etc...
     //
     gTmpCharTable[chNull] |= gSpecialStartTagCharMask;
-    gTmpCharTable[chForwardSlash] |= gSpecialStartTagCharMask;
-    gTmpCharTable[chCloseAngle] |= gSpecialStartTagCharMask;
-    gTmpCharTable[chOpenAngle] |= gSpecialStartTagCharMask;
-    gTmpCharTable[chSingleQuote] |= gSpecialStartTagCharMask;
-    gTmpCharTable[chDoubleQuote] |= gSpecialStartTagCharMask;
+    gTmpCharTable[u'/'] |= gSpecialStartTagCharMask;
+    gTmpCharTable[u'>'] |= gSpecialStartTagCharMask;
+    gTmpCharTable[u'<'] |= gSpecialStartTagCharMask;
+    gTmpCharTable[u'\''] |= gSpecialStartTagCharMask;
+    gTmpCharTable[u'"'] |= gSpecialStartTagCharMask;
     initOneTable(gWhitespaceChars, gSpecialStartTagCharMask);
 
     //
@@ -8917,11 +8917,11 @@ static void initCharFlagTable()
     //    are markup or require some sort of special case handling.
     //
     initOneTable(gXMLChars, gPlainContentCharMask);
-    gTmpCharTable[chCR]          &= ~gPlainContentCharMask;
-    gTmpCharTable[chLF]          &= ~gPlainContentCharMask;
-    gTmpCharTable[chOpenAngle]   &= ~gPlainContentCharMask;
-    gTmpCharTable[chAmpersand]   &= ~gPlainContentCharMask;
-    gTmpCharTable[chCloseSquare] &= ~gPlainContentCharMask;
+    gTmpCharTable[u'\r']          &= ~gPlainContentCharMask;
+    gTmpCharTable[u'\n']          &= ~gPlainContentCharMask;
+    gTmpCharTable[u'<']   &= ~gPlainContentCharMask;
+    gTmpCharTable[u'&']   &= ~gPlainContentCharMask;
+    gTmpCharTable[u']'] &= ~gPlainContentCharMask;
 
 
     //
@@ -8973,7 +8973,7 @@ static void initCharFlagTable1_1()
     //  Then do the NCName table as Name minus colon
     //
     initOneTable(gNameChars, gNCNameCharMask);
-    gTmpCharTable[chColon] &= ~gNCNameCharMask;
+    gTmpCharTable[u':'] &= ~gNCNameCharMask;
 
     //
     //  Then do the first name char
@@ -8998,11 +8998,11 @@ static void initCharFlagTable1_1()
     //  chars, etc...
     //
     gTmpCharTable[chNull] |= gSpecialStartTagCharMask;
-    gTmpCharTable[chForwardSlash] |= gSpecialStartTagCharMask;
-    gTmpCharTable[chCloseAngle] |= gSpecialStartTagCharMask;
-    gTmpCharTable[chOpenAngle] |= gSpecialStartTagCharMask;
-    gTmpCharTable[chSingleQuote] |= gSpecialStartTagCharMask;
-    gTmpCharTable[chDoubleQuote] |= gSpecialStartTagCharMask;
+    gTmpCharTable[u'/'] |= gSpecialStartTagCharMask;
+    gTmpCharTable[u'>'] |= gSpecialStartTagCharMask;
+    gTmpCharTable[u'<'] |= gSpecialStartTagCharMask;
+    gTmpCharTable[u'\''] |= gSpecialStartTagCharMask;
+    gTmpCharTable[u'"'] |= gSpecialStartTagCharMask;
     initOneTable(gWhitespaceChars1_1, gSpecialStartTagCharMask);
 
     //
@@ -9012,11 +9012,11 @@ static void initCharFlagTable1_1()
     //    are markup or require some sort of special case handling.
     //
     initOneTable(gXMLChars1_1, gPlainContentCharMask);
-    gTmpCharTable[chCR]          &= ~gPlainContentCharMask;
-    gTmpCharTable[chLF]          &= ~gPlainContentCharMask;
-    gTmpCharTable[chOpenAngle]   &= ~gPlainContentCharMask;
-    gTmpCharTable[chAmpersand]   &= ~gPlainContentCharMask;
-    gTmpCharTable[chCloseSquare] &= ~gPlainContentCharMask;
+    gTmpCharTable[u'\r']          &= ~gPlainContentCharMask;
+    gTmpCharTable[u'\n']          &= ~gPlainContentCharMask;
+    gTmpCharTable[u'<']   &= ~gPlainContentCharMask;
+    gTmpCharTable[u'&']   &= ~gPlainContentCharMask;
+    gTmpCharTable[u']'] &= ~gPlainContentCharMask;
     gTmpCharTable[chLineSeparator] &= ~gPlainContentCharMask;
     gTmpCharTable[chNEL] &= ~gPlainContentCharMask;
 

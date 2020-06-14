@@ -116,9 +116,9 @@ void XMLAbstractDoubleFloat::init(const XMLCh* const strValue)
         while ((curChar = tmpStrValue[lenTempStrValue])!=0) {
             if (!((curChar >= u'0' &&
                    curChar <= u'9') ||
-                  curChar == chPeriod  ||
-                  curChar == chDash    ||
-                  curChar == chPlus    ||
+                  curChar == u'.'  ||
+                  curChar == u'-'    ||
+                  curChar == u'+'    ||
                   curChar == u'E' ||
                   curChar == u'e')) {                
                 ThrowXMLwithMemMgr(
@@ -209,8 +209,8 @@ void XMLAbstractDoubleFloat::formatString()
 
     XMLString::copyString(fFormattedString, fRawData);
 
-    fFormattedString[rawDataLen] = chSpace;
-    fFormattedString[rawDataLen + 1] = chOpenParen;
+    fFormattedString[rawDataLen] = u' ';
+    fFormattedString[rawDataLen + 1] = u'(';
 
     switch (fType)
     {
@@ -229,7 +229,7 @@ void XMLAbstractDoubleFloat::formatString()
         break;
     }
 
-    fFormattedString[XMLString::stringLen(fFormattedString)] = chCloseParen;
+    fFormattedString[XMLString::stringLen(fFormattedString)] = u')';
 
 }
 
@@ -363,7 +363,7 @@ void XMLAbstractDoubleFloat::normalizeZero(XMLCh* const inData)
     bool     dotSeen = false;
 
 	// process sign if any
-	if (*srcStr == chDash)
+	if (*srcStr == u'-')
 	{
 		minusSeen = true;
 		srcStr++;
@@ -372,7 +372,7 @@ void XMLAbstractDoubleFloat::normalizeZero(XMLCh* const inData)
             ThrowXMLwithMemMgr(NumberFormatException, XMLExcepts::XMLNUM_Inv_chars, getMemoryManager());
         }
 	}
-	else if (*srcStr == chPlus)
+	else if (*srcStr == u'+')
 	{
 		srcStr++;
         if (!*srcStr)
@@ -380,7 +380,7 @@ void XMLAbstractDoubleFloat::normalizeZero(XMLCh* const inData)
             ThrowXMLwithMemMgr(NumberFormatException, XMLExcepts::XMLNUM_Inv_chars, getMemoryManager());
         }
 	}
-    else if (*srcStr == chPeriod)
+    else if (*srcStr == u'.')
     {
         dotSeen = true;
         srcStr++;
@@ -396,9 +396,9 @@ void XMLAbstractDoubleFloat::normalizeZero(XMLCh* const inData)
     XMLCh theChar;
 	while ((theChar=*srcStr++)!=0 && isValidStr)
 	{
-		if ( theChar != chPeriod && theChar != u'0' )
+		if ( theChar != u'.' && theChar != u'0' )
 			isValidStr = false;           		// invalid char
-        else if (theChar == chPeriod)           // process dot
+        else if (theChar == u'.')           // process dot
 			dotSeen ? isValidStr = false : dotSeen = true;
 	}
 
@@ -572,7 +572,7 @@ XMLCh* XMLAbstractDoubleFloat::getCanonicalRepresentation(const XMLCh*         c
         if ( (sign == 0) || (totalDigits == 0) )
         {
             retBuffer[0] = u'0';
-            retBuffer[1] = chPeriod;
+            retBuffer[1] = u'.';
             retBuffer[2] = u'0';
             retBuffer[3] = u'E';
             retBuffer[4] = u'0';
@@ -584,11 +584,11 @@ XMLCh* XMLAbstractDoubleFloat::getCanonicalRepresentation(const XMLCh*         c
 
             if (sign == -1)
             {
-                *retPtr++ = chDash;
+                *retPtr++ = u'-';
             }
 
             *retPtr++ = manBuf[0];
-            *retPtr++ = chPeriod;
+            *retPtr++ = u'.';
 
             //XMLBigDecimal::parseDecimal() will eliminate trailing zeros
             // iff there is a decimal points

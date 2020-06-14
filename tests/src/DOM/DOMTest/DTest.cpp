@@ -4647,7 +4647,7 @@ bool DOMTest::testBaseURI(XercesDOMParser* parser) {
         //Create relative paths from document baseURI
 
         XMLCh *docBaseURIRoot = new XMLCh [ XMLString::stringLen(docBaseURI) ];
-        XMLString::copyNString(docBaseURIRoot, docBaseURI, XMLString::lastIndexOf(docBaseURI, chForwardSlash) + 1);
+        XMLString::copyNString(docBaseURIRoot, docBaseURI, XMLString::lastIndexOf(docBaseURI, u'/') + 1);
 
         XMLCh *base_foobar = new XMLCh [ XMLString::stringLen(docBaseURIRoot) + 8];
         XMLString::copyString(base_foobar, docBaseURIRoot);

@@ -858,7 +858,7 @@ bool XPathScanner::scanExpression(const XMLCh* const data,
 
             ch = data[currentOffset + 1];
 
-            if (ch == chPeriod) {            // '..'
+            if (ch == u'.') {            // '..'
                 addToken(tokens, XercesXPath::EXPRTOKEN_DOUBLE_PERIOD);
                 starIsMultiplyOperator = true;
                 currentOffset += 2;
@@ -866,11 +866,11 @@ bool XPathScanner::scanExpression(const XMLCh* const data,
                 addToken(tokens, XercesXPath::EXPRTOKEN_NUMBER);
                 starIsMultiplyOperator = true;
                 currentOffset = scanNumber(data, endOffset, currentOffset, tokens);
-            } else if (ch == chForwardSlash) {
+            } else if (ch == u'/') {
                 addToken(tokens, XercesXPath::EXPRTOKEN_PERIOD);
                 starIsMultiplyOperator = true;
                 currentOffset++;
-            } else if (ch == chPipe) { // '|'
+            } else if (ch == u'|') { // '|'
                 addToken(tokens, XercesXPath::EXPRTOKEN_PERIOD);
                 starIsMultiplyOperator = true;
                 currentOffset++;
@@ -882,7 +882,7 @@ bool XPathScanner::scanExpression(const XMLCh* const data,
                     ch = data[currentOffset];
                 } while (XMLChar1_0::isWhitespace(ch));
 
-                if (currentOffset == endOffset || ch == chPipe || ch == chForwardSlash) {
+                if (currentOffset == endOffset || ch == u'|' || ch == u'/') {
 				    addToken(tokens, XercesXPath::EXPRTOKEN_PERIOD);
                     starIsMultiplyOperator = true;
                     break;
@@ -909,7 +909,7 @@ bool XPathScanner::scanExpression(const XMLCh* const data,
             }
             ch = data[currentOffset];
 
-            if (ch != chColon) {
+            if (ch != u':') {
                 return false; // REVISIT
             }
             addToken(tokens, XercesXPath::EXPRTOKEN_DOUBLE_COLON);
@@ -925,7 +925,7 @@ bool XPathScanner::scanExpression(const XMLCh* const data,
 
             ch = data[currentOffset];
 
-            if (ch == chForwardSlash) { // '//'
+            if (ch == u'/') { // '//'
                 addToken(tokens, XercesXPath::EXPRTOKEN_OPERATOR_DOUBLE_SLASH);
                 starIsMultiplyOperator = false;
                 ++currentOffset;
@@ -961,7 +961,7 @@ bool XPathScanner::scanExpression(const XMLCh* const data,
 
             ch = data[currentOffset];
 
-            if (ch != chEqual) {
+            if (ch != u'=') {
                 return false; // REVISIT
             }
 
@@ -978,7 +978,7 @@ bool XPathScanner::scanExpression(const XMLCh* const data,
 
             ch = data[currentOffset];
 
-            if (ch == chEqual) { // '<='
+            if (ch == u'=') { // '<='
                 addToken(tokens, XercesXPath::EXPRTOKEN_OPERATOR_LESS_EQUAL);
                 starIsMultiplyOperator = false;
                 ++currentOffset;
@@ -996,7 +996,7 @@ bool XPathScanner::scanExpression(const XMLCh* const data,
 
             ch = data[currentOffset];
 
-            if (ch == chEqual) { // '>='
+            if (ch == u'=') { // '>='
                 addToken(tokens, XercesXPath::EXPRTOKEN_OPERATOR_GREATER_EQUAL);
                 starIsMultiplyOperator = false;
                 ++currentOffset;
@@ -1068,7 +1068,7 @@ bool XPathScanner::scanExpression(const XMLCh* const data,
             nameHandle = fStringPool->addOrFind(dataBuffer.getRawBuffer());
             prefixHandle = -1;
 
-            if (ch == chColon) {
+            if (ch == u':') {
 
                 prefixHandle = nameHandle;
                 if (++currentOffset == endOffset) {
@@ -1166,7 +1166,7 @@ bool XPathScanner::scanExpression(const XMLCh* const data,
             bool isAxisName = false;
             prefixHandle = -1;
 
-            if (ch == chColon) {
+            if (ch == u':') {
 
                 if (++currentOffset == endOffset) {
                     return false; // REVISIT
@@ -1174,13 +1174,13 @@ bool XPathScanner::scanExpression(const XMLCh* const data,
 
                 ch = data[currentOffset];
 
-                if (ch == chAsterisk) {
+                if (ch == u'*') {
                     if (++currentOffset < endOffset) {
                         ch = data[currentOffset];
                     }
 
                     isNameTestNCName = true;
-                } else if (ch == chColon) {
+                } else if (ch == u':') {
                     if (++currentOffset < endOffset) {
                         ch = data[currentOffset];
                     }
@@ -1246,7 +1246,7 @@ bool XPathScanner::scanExpression(const XMLCh* const data,
             //  If the character following an NCName (possibly after intervening ExprWhitespace) is (,
             //  then the token must be recognized as a NodeType or a FunctionName.
             //
-            if (ch == chOpenParen && !isNameTestNCName && !isAxisName) {
+            if (ch == u'(' && !isNameTestNCName && !isAxisName) {
                 if (nameHandle == fCommentSymbol) {
                     addToken(tokens, XercesXPath::EXPRTOKEN_NODETYPE_COMMENT);
                 } else if (nameHandle == fTextSymbol) {
@@ -1271,8 +1271,8 @@ bool XPathScanner::scanExpression(const XMLCh* const data,
             //  are ::, then the token must be recognized as an AxisName.
             //
             if (isAxisName ||
-                (ch == chColon && currentOffset + 1 < endOffset &&
-                 data[currentOffset + 1] == chColon)) {
+                (ch == u':' && currentOffset + 1 < endOffset &&
+                 data[currentOffset + 1] == u':')) {
 
                 if (nameHandle == fAncestorSymbol) {
                     addToken(tokens, XercesXPath::EXPRTOKEN_AXISNAME_ANCESTOR);
@@ -1387,7 +1387,7 @@ XMLSize_t XPathScanner::scanNumber(const XMLCh* const data,
         ch = data[currentOffset];
     }
 
-    if (ch == chPeriod) {
+    if (ch == u'.') {
 
         if (++currentOffset < endOffset) {
 

@@ -94,7 +94,7 @@ CurlURLInputStream::CurlURLInputStream(const XMLURL& urlSource, const XMLNetHTTP
     if(username && password) {
         XMLBuffer userPassBuf(256, fMemoryManager);
         userPassBuf.append(username);
-        userPassBuf.append(chColon);
+        userPassBuf.append(u':');
         userPassBuf.append(password);
 
         TranscodeToStr userPass(userPassBuf.getRawBuffer(), "ISO8859-1", fMemoryManager);

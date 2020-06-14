@@ -62,7 +62,7 @@ private:
 
 inline bool RegxUtil::isEOLChar(const XMLCh ch) {
 
-    return (ch == chLF || ch == chCR || ch == chLineSeparator
+    return (ch == u'\n' || ch == u'\r' || ch == chLineSeparator
            || ch == chParagraphSeparator);
 }
 
@@ -91,7 +91,7 @@ inline void RegxUtil::decomposeToSurrogates(XMLInt32 ch, XMLCh& high, XMLCh& low
 
 inline bool RegxUtil::isWordChar(const XMLCh ch) {
 
-    if ((ch == chUnderscore)
+    if ((ch == u'_')
         || (ch >= u'0' && ch <= u'9')
         || (ch >= u'A' && ch <= u'Z')
         || (ch >= u'a' && ch <= u'z'))

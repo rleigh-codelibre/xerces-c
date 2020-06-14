@@ -139,7 +139,7 @@ void DOMAttrNSImpl::setPrefix(const XMLCh *prefix)
             !XMLString::equals(fNamespaceURI, xmlnsURI)))
         throw DOMException(DOMException::NAMESPACE_ERR, 0, GetDOMNodeMemoryManager);
 
-    if (XMLString::indexOf(prefix, chColon) != -1) {
+    if (XMLString::indexOf(prefix, u':') != -1) {
         throw DOMException(DOMException::NAMESPACE_ERR, 0, GetDOMNodeMemoryManager);
     }
 
@@ -157,9 +157,9 @@ void DOMAttrNSImpl::setPrefix(const XMLCh *prefix)
     else
         newName = temp;
 
-    // newName = prefix + chColon + fLocalName;
+    // newName = prefix + u':' + fLocalName;
     XMLString::copyString(newName, prefix);
-    newName[prefixLen] = chColon;
+    newName[prefixLen] = u':';
     XMLString::copyString(&newName[prefixLen+1], fLocalName);
 
     fName = doc->getPooledString(newName);

@@ -1289,7 +1289,7 @@ void XTemplateSerializer::storeObject(RefHashTableOf<XercesGroupInfo>* const obj
             unsigned int id  = serEng.getStringPool()->getId(key);
 
            // key = StringPool->getValueForId(XercesGroupInfo::getNameSpaceId())
-           //     + chComma
+           //     + u','
            //     + StringPool->getValueForId(XercesGroupInfo::getNameId())
            //
            // and the key is guranteed in the StringPool
@@ -1606,7 +1606,7 @@ void XTemplateSerializer::loadObject(RefHashTableOf<DatatypeValidator>** objToLo
                                      );
             // "typeuri,typeLocal"
             XMLString::moveChars(typeKey, typeUri, uriLen+1);
-            typeKey[uriLen] = chComma;
+            typeKey[uriLen] = u',';
             XMLString::moveChars(&typeKey[uriLen+1], typeLocal, localLen+1);
             typeKey[uriLen + localLen + 1] = u'\0';
             ArrayJanitor<XMLCh> janName(typeKey, serEng.getMemoryManager());

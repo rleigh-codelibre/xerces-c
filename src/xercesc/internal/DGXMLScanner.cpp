@@ -348,7 +348,7 @@ bool DGXMLScanner::scanNext(XMLPScanToken& token)
                     break;
 
                 default :
-                    fReaderMgr.skipToChar(chOpenAngle);
+                    fReaderMgr.skipToChar(u'<');
                     break;
             }
 
@@ -544,7 +544,7 @@ bool DGXMLScanner::scanContent()
                         break;
 
                     default :
-                        fReaderMgr.skipToChar(chOpenAngle);
+                        fReaderMgr.skipToChar(u'<');
                         break;
                 }
 
@@ -587,7 +587,7 @@ void DGXMLScanner::scanEndTag(bool& gotData)
     if (fElemStack.isEmpty())
     {
         emitError(XMLErrs::MoreEndThanStartTags);
-        fReaderMgr.skipPastChar(chCloseAngle);
+        fReaderMgr.skipPastChar(u'>');
         ThrowXMLwithMemMgr(RuntimeException, XMLExcepts::Scan_UnbalancedStartEnd, fMemoryManager);
     }
 
@@ -612,7 +612,7 @@ void DGXMLScanner::scanEndTag(bool& gotData)
             XMLErrs::ExpectedEndOfTagX
             , tempElement->getFullName()
         );
-        fReaderMgr.skipPastChar(chCloseAngle);
+        fReaderMgr.skipPastChar(u'>');
         return;
     }
 
@@ -624,7 +624,7 @@ void DGXMLScanner::scanEndTag(bool& gotData)
     fReaderMgr.skipPastSpaces();
 
     // Make sure we find the closing bracket
-    if (!fReaderMgr.skippedChar(chCloseAngle))
+    if (!fReaderMgr.skippedChar(u'>'))
     {
         emitError
         (
@@ -767,7 +767,7 @@ void DGXMLScanner::scanDocTypeDecl()
         emitError(XMLErrs::ExpectedWhitespace);
 
         // Just skip the Doctype declaration and return
-        fReaderMgr.skipPastChar(chCloseAngle);
+        fReaderMgr.skipPastChar(u'>');
         return;
     }
 
@@ -785,7 +785,7 @@ void DGXMLScanner::scanDocTypeDecl()
             emitError(XMLErrs::NoRootElemInDOCTYPE);
         else
             emitError(XMLErrs::InvalidRootElemInDOCTYPE, bbRootName.getRawBuffer());
-        fReaderMgr.skipPastChar(chCloseAngle);
+        fReaderMgr.skipPastChar(u'>');
         return;
     }
 
@@ -838,7 +838,7 @@ void DGXMLScanner::scanDocTypeDecl()
     //  And now if we are looking at a >, then we are done. It is not
     //  required to have an internal or external subset, though why you
     //  would not escapes me.
-    if (fReaderMgr.skippedChar(chCloseAngle)) {
+    if (fReaderMgr.skippedChar(u'>')) {
 
         //  If we have a doc type handler and advanced callbacks are enabled,
         //  call the doctype event.
@@ -870,7 +870,7 @@ void DGXMLScanner::scanDocTypeDecl()
     //  subset. Else, has to be an id.
     //
     // Just look at the next char, don't eat it.
-    if (fReaderMgr.peekNextChar() == chOpenSquare)
+    if (fReaderMgr.peekNextChar() == u'[')
     {
         hasIntSubset = true;
     }
@@ -887,7 +887,7 @@ void DGXMLScanner::scanDocTypeDecl()
         // Get the external subset id
         if (!dtdScanner.scanId(bbPubId.getBuffer(), bbSysId.getBuffer(), DTDScanner::IDType_External))
         {
-            fReaderMgr.skipPastChar(chCloseAngle);
+            fReaderMgr.skipPastChar(u'>');
             return;
         }
 
@@ -899,7 +899,7 @@ void DGXMLScanner::scanDocTypeDecl()
         fReaderMgr.skipPastSpaces();
 
         // Just look at the next char, don't eat it.
-        if (fReaderMgr.peekNextChar() == chOpenSquare) {
+        if (fReaderMgr.peekNextChar() == u'[') {
             hasIntSubset = true;
         }
     }
@@ -926,7 +926,7 @@ void DGXMLScanner::scanDocTypeDecl()
         //  by skipping forward tot he close angle and returning.
         if (!dtdScanner.scanInternalSubset())
         {
-            fReaderMgr.skipPastChar(chCloseAngle);
+            fReaderMgr.skipPastChar(u'>');
             return;
         }
 
@@ -945,19 +945,19 @@ void DGXMLScanner::scanDocTypeDecl()
     }
 
     // And that should leave us at the closing > of the DOCTYPE line
-    if (!fReaderMgr.skippedChar(chCloseAngle))
+    if (!fReaderMgr.skippedChar(u'>'))
     {
         //  Do a special check for the common scenario of an extra ] char at
         //  the end. This is easy to recover from.
-        if (fReaderMgr.skippedChar(chCloseSquare)
-        &&  fReaderMgr.skippedChar(chCloseAngle))
+        if (fReaderMgr.skippedChar(u']')
+        &&  fReaderMgr.skippedChar(u'>'))
         {
             emitError(XMLErrs::ExtraCloseSquare);
         }
          else
         {
             emitError(XMLErrs::UnterminatedDOCTYPE);
-            fReaderMgr.skipPastChar(chCloseAngle);
+            fReaderMgr.skipPastChar(u'>');
         }
     }
 
@@ -1081,7 +1081,7 @@ bool DGXMLScanner::scanStartTag(bool& gotData)
             emitError(XMLErrs::ExpectedElementName);
         else
             emitError(XMLErrs::InvalidElementName, fQNameBuf.getRawBuffer());
-        fReaderMgr.skipToChar(chOpenAngle);
+        fReaderMgr.skipToChar(u'<');
         return false;
     }
 
@@ -1199,7 +1199,7 @@ bool DGXMLScanner::scanStartTag(bool& gotData)
         //  one.
         if (attCount)
         {
-            if ((nextCh != chForwardSlash) && (nextCh != chCloseAngle))
+            if ((nextCh != u'/') && (nextCh != u'>'))
             {
                 if (fReaderMgr.getCurrentReader()->isWhitespace(nextCh))
                 {
@@ -1231,7 +1231,7 @@ bool DGXMLScanner::scanStartTag(bool& gotData)
                     emitError(XMLErrs::ExpectedAttrName);
                 else
                     emitError(XMLErrs::InvalidAttrName, fAttNameBuf.getRawBuffer());
-                fReaderMgr.skipPastChar(chCloseAngle);
+                fReaderMgr.skipPastChar(u'>');
                 return false;
             }
 
@@ -1244,18 +1244,18 @@ bool DGXMLScanner::scanStartTag(bool& gotData)
                 //  hit something meaningful.
                 const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"'\"></");
 
-                if ((chFound == chCloseAngle) || (chFound == chForwardSlash))
+                if ((chFound == u'>') || (chFound == u'/'))
                 {
                     // Jump back to top for normal processing of these
                     continue;
                 }
-                else if ((chFound == chSingleQuote)
-                      ||  (chFound == chDoubleQuote)
+                else if ((chFound == u'\'')
+                      ||  (chFound == u'"')
                       ||  fReaderMgr.getCurrentReader()->isWhitespace(chFound))
                 {
                     // Just fall through assuming that the value is to follow
                 }
-                else if (chFound == chOpenAngle)
+                else if (chFound == u'<')
                 {
                     // Assume a malformed tag and that new one is starting
                     emitError(XMLErrs::UnterminatedStartTag, elemDecl->getFullName());
@@ -1287,14 +1287,14 @@ bool DGXMLScanner::scanStartTag(bool& gotData)
                 //  chars in our list.
                 const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"></");
 
-                if ((chFound == chCloseAngle)
-                ||  (chFound == chForwardSlash)
+                if ((chFound == u'>')
+                ||  (chFound == u'/')
                 ||  fReaderMgr.getCurrentReader()->isWhitespace(chFound))
                 {
                     //  Just fall through and process this attribute, though
                     //  the value will be "".
                 }
-                else if (chFound == chOpenAngle)
+                else if (chFound == u'<')
                 {
                     // Assume a malformed tag and that new one is starting
                     emitError(XMLErrs::UnterminatedStartTag, elemDecl->getFullName());
@@ -1398,20 +1398,20 @@ bool DGXMLScanner::scanStartTag(bool& gotData)
         if (!nextCh)
             ThrowXMLwithMemMgr(UnexpectedEOFException, XMLExcepts::Gen_UnexpectedEOF, fMemoryManager);
 
-        if (nextCh == chForwardSlash)
+        if (nextCh == u'/')
         {
             fReaderMgr.getNextChar();
             isEmpty = true;
-            if (!fReaderMgr.skippedChar(chCloseAngle))
+            if (!fReaderMgr.skippedChar(u'>'))
                 emitError(XMLErrs::UnterminatedStartTag, elemDecl->getFullName());
             break;
         }
-        else if (nextCh == chCloseAngle)
+        else if (nextCh == u'>')
         {
             fReaderMgr.getNextChar();
             break;
         }
-        else if (nextCh == chOpenAngle)
+        else if (nextCh == u'<')
         {
             //  Check for this one specially, since its going to be common
             //  and it is kind of auto-recovering since we've already hit the
@@ -1420,7 +1420,7 @@ bool DGXMLScanner::scanStartTag(bool& gotData)
             emitError(XMLErrs::UnterminatedStartTag, elemDecl->getFullName());
             break;
         }
-        else if ((nextCh == chSingleQuote) || (nextCh == chDoubleQuote))
+        else if ((nextCh == u'\'') || (nextCh == u'"'))
         {
             //  Check for this one specially, which is probably a missing
             //  attribute name, e.g. ="value". Just issue expected name
@@ -1518,7 +1518,7 @@ bool DGXMLScanner::scanStartTagNS(bool& gotData)
             emitError(XMLErrs::ExpectedElementName);
         else
             emitError(XMLErrs::InvalidElementName, fQNameBuf.getRawBuffer());
-        fReaderMgr.skipToChar(chOpenAngle);
+        fReaderMgr.skipToChar(u'<');
         return false;
     }
 
@@ -1636,7 +1636,7 @@ bool DGXMLScanner::scanStartTagNS(bool& gotData)
         //  one.
         if (attCount)
         {
-            if ((nextCh != chForwardSlash) && (nextCh != chCloseAngle))
+            if ((nextCh != u'/') && (nextCh != u'>'))
             {
                 if (fReaderMgr.getCurrentReader()->isWhitespace(nextCh))
                 {
@@ -1668,7 +1668,7 @@ bool DGXMLScanner::scanStartTagNS(bool& gotData)
                     emitError(XMLErrs::ExpectedAttrName);
                 else
                     emitError(XMLErrs::InvalidAttrName, fAttNameBuf.getRawBuffer());
-                fReaderMgr.skipPastChar(chCloseAngle);
+                fReaderMgr.skipPastChar(u'>');
                 return false;
             }
 
@@ -1681,18 +1681,18 @@ bool DGXMLScanner::scanStartTagNS(bool& gotData)
                 //  hit something meaningful.
                 const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"'\"></");
 
-                if ((chFound == chCloseAngle) || (chFound == chForwardSlash))
+                if ((chFound == u'>') || (chFound == u'/'))
                 {
                     // Jump back to top for normal processing of these
                     continue;
                 }
-                else if ((chFound == chSingleQuote)
-                      ||  (chFound == chDoubleQuote)
+                else if ((chFound == u'\'')
+                      ||  (chFound == u'"')
                       ||  fReaderMgr.getCurrentReader()->isWhitespace(chFound))
                 {
                     // Just fall through assuming that the value is to follow
                 }
-                else if (chFound == chOpenAngle)
+                else if (chFound == u'<')
                 {
                     // Assume a malformed tag and that new one is starting
                     emitError(XMLErrs::UnterminatedStartTag, elemDecl->getFullName());
@@ -1724,14 +1724,14 @@ bool DGXMLScanner::scanStartTagNS(bool& gotData)
                 //  chars in our list.
                 const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"></");
 
-                if ((chFound == chCloseAngle)
-                ||  (chFound == chForwardSlash)
+                if ((chFound == u'>')
+                ||  (chFound == u'/')
                 ||  fReaderMgr.getCurrentReader()->isWhitespace(chFound))
                 {
                     //  Just fall through and process this attribute, though
                     //  the value will be "".
                 }
-                else if (chFound == chOpenAngle)
+                else if (chFound == u'<')
                 {
                     // Assume a malformed tag and that new one is starting
                     emitError(XMLErrs::UnterminatedStartTag, elemDecl->getFullName());
@@ -1838,20 +1838,20 @@ bool DGXMLScanner::scanStartTagNS(bool& gotData)
         if (!nextCh)
             ThrowXMLwithMemMgr(UnexpectedEOFException, XMLExcepts::Gen_UnexpectedEOF, fMemoryManager);
 
-        if (nextCh == chForwardSlash)
+        if (nextCh == u'/')
         {
             fReaderMgr.getNextChar();
             isEmpty = true;
-            if (!fReaderMgr.skippedChar(chCloseAngle))
+            if (!fReaderMgr.skippedChar(u'>'))
                 emitError(XMLErrs::UnterminatedStartTag, elemDecl->getFullName());
             break;
         }
-        else if (nextCh == chCloseAngle)
+        else if (nextCh == u'>')
         {
             fReaderMgr.getNextChar();
             break;
         }
-        else if (nextCh == chOpenAngle)
+        else if (nextCh == u'<')
         {
             //  Check for this one specially, since its going to be common
             //  and it is kind of auto-recovering since we've already hit the
@@ -1860,7 +1860,7 @@ bool DGXMLScanner::scanStartTagNS(bool& gotData)
             emitError(XMLErrs::UnterminatedStartTag, elemDecl->getFullName());
             break;
         }
-        else if ((nextCh == chSingleQuote) || (nextCh == chDoubleQuote))
+        else if ((nextCh == u'\'') || (nextCh == u'"'))
         {
             //  Check for this one specially, which is probably a missing
             //  attribute name, e.g. ="value". Just issue expected name
@@ -2815,7 +2815,7 @@ bool DGXMLScanner::scanAttValue(  const   XMLAttDef* const    attDef
             //  whitespace normalization logic below. We ignore the empty flag
             //  in this one.
             escaped = false;
-            if (nextCh == chAmpersand)
+            if (nextCh == u'&')
             {
                 if (scanEntityRef(true, nextCh, secondCh, escaped) != EntityExp_Returned)
                 {
@@ -2872,7 +2872,7 @@ bool DGXMLScanner::scanAttValue(  const   XMLAttDef* const    attDef
 
             //  If its not escaped, then make sure its not a < character, which
             //  is not allowed in attribute values.
-            if (!escaped && (nextCh == chOpenAngle))
+            if (!escaped && (nextCh == u'<'))
                 emitError(XMLErrs::BracketInAttrValue, attrName);
 
             //  If the attribute is a CDATA type we do simple replacement of
@@ -2896,7 +2896,7 @@ bool DGXMLScanner::scanAttValue(  const   XMLAttDef* const    attDef
                              // values are subject to normalisation
                              fValidator->emitError(XMLValid::NoAttNormForStandalone, attrName);
                         }
-                        nextCh = chSpace;
+                        nextCh = u' ';
                     }
                 }
             }
@@ -2904,10 +2904,10 @@ bool DGXMLScanner::scanAttValue(  const   XMLAttDef* const    attDef
             {
                 if (curState == InWhitespace)
                 {
-                    if ((escaped && nextCh != chSpace) || !fReaderMgr.getCurrentReader()->isWhitespace(nextCh))
+                    if ((escaped && nextCh != u' ') || !fReaderMgr.getCurrentReader()->isWhitespace(nextCh))
                     {
                         if (firstNonWS)
-                            toFill.append(chSpace);
+                            toFill.append(u' ');
                         curState = InContent;
                         firstNonWS = true;
                     }
@@ -2918,7 +2918,7 @@ bool DGXMLScanner::scanAttValue(  const   XMLAttDef* const    attDef
                 }
                 else if (curState == InContent)
                 {
-                    if ((nextCh == chSpace) ||
+                    if ((nextCh == u' ') ||
                         (fReaderMgr.getCurrentReader()->isWhitespace(nextCh) && !escaped))
                     {
                         curState = InWhitespace;
@@ -2927,7 +2927,7 @@ bool DGXMLScanner::scanAttValue(  const   XMLAttDef* const    attDef
                         // XML 1.0, Section 2.9
                         if (fStandalone && fValidate && isAttTokenizedExternal)
                         {
-                            if (!firstNonWS || (nextCh != chSpace && fReaderMgr.lookingAtSpace()))
+                            if (!firstNonWS || (nextCh != u' ' && fReaderMgr.lookingAtSpace()))
                             {
                                  // Can't have a standalone document declaration of "yes" if  attribute
                                  // values are subject to normalisation
@@ -2970,13 +2970,13 @@ void DGXMLScanner::scanCDSection()
     //  The next character should be the opening square bracket. If not
     //  issue an error, but then try to recover by skipping any whitespace
     //  and checking again.
-    if (!fReaderMgr.skippedChar(chOpenSquare))
+    if (!fReaderMgr.skippedChar(u'['))
     {
         emitError(XMLErrs::ExpectedOpenSquareBracket);
         fReaderMgr.skipPastSpaces();
 
         // If we still don't find it, then give up, else keep going
-        if (!fReaderMgr.skippedChar(chOpenSquare))
+        if (!fReaderMgr.skippedChar(u'['))
             return;
     }
 
@@ -3022,7 +3022,7 @@ void DGXMLScanner::scanCDSection()
 
         //  If this is a close square bracket it could be our closing
         //  sequence.
-        if (nextCh == chCloseSquare && fReaderMgr.skippedString(u"]>"))
+        if (nextCh == u']' && fReaderMgr.skippedString(u"]>"))
         {
             //  make sure we were not expecting a trailing surrogate.
             if (gotLeadingSurrogate)
@@ -3158,7 +3158,7 @@ void DGXMLScanner::scanCharData(XMLBuffer& toUse)
 
                 // Try to get another char from the source
                 //   The code from here on down covers all contengencies,
-                if (!fReaderMgr.getNextCharIfNot(chOpenAngle, nextCh))
+                if (!fReaderMgr.getNextCharIfNot(u'<', nextCh))
                 {
                     // If we were waiting for a trailing surrogate, its an error
                     if (gotLeadingSurrogate)
@@ -3171,7 +3171,7 @@ void DGXMLScanner::scanCharData(XMLBuffer& toUse)
                 //  Watch for a reference. Note that the escapement mechanism
                 //  is ignored in this content.
                 escaped = false;
-                if (nextCh == chAmpersand)
+                if (nextCh == u'&')
                 {
                     sendCharData(toUse);
 
@@ -3239,14 +3239,14 @@ void DGXMLScanner::scanCharData(XMLBuffer& toUse)
                  // Keep the state machine up to date
                 if (!escaped)
                 {
-                    if (nextCh == chCloseSquare)
+                    if (nextCh == u']')
                     {
                         if (curState == State_Waiting)
                             curState = State_GotOne;
                         else if (curState == State_GotOne)
                             curState = State_GotTwo;
                     }
-                    else if (nextCh == chCloseAngle)
+                    else if (nextCh == u'>')
                     {
                         if (curState == State_GotTwo)
                             emitError(XMLErrs::BadSequenceInCharData);
@@ -3344,7 +3344,7 @@ DGXMLScanner::scanEntityRef(  const   bool    inAttVal
 
     //  If the next char is a pound, then its a character reference and we
     //  need to expand it always.
-    if (fReaderMgr.skippedChar(chPound))
+    if (fReaderMgr.skippedChar(u'#'))
     {
         //  Its a character reference, so scan it and get back the numeric
         //  value it represents.
@@ -3376,7 +3376,7 @@ DGXMLScanner::scanEntityRef(  const   bool    inAttVal
 
     //  Next char must be a semi-colon. But if its not, just emit
     //  an error and try to continue.
-    if (!fReaderMgr.skippedChar(chSemiColon))
+    if (!fReaderMgr.skippedChar(u';'))
         emitError(XMLErrs::UnterminatedEntityRef, bbName.getRawBuffer());
 
     // Make sure we ended up on the same entity reader as the & char
@@ -3539,7 +3539,7 @@ DGXMLScanner::scanEntityRef(  const   bool    inAttVal
         // If it starts with the XML string, then it's an error
         if (checkXMLDecl(true)) {
             emitError(XMLErrs::TextDeclNotLegalHere);
-            fReaderMgr.skipPastChar(chCloseAngle);
+            fReaderMgr.skipPastChar(u'>');
         }
     }
     return EntityExp_Pushed;

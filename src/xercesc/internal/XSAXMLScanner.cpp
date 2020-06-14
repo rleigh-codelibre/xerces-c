@@ -68,7 +68,7 @@ void XSAXMLScanner::scanEndTag(bool& gotData)
     if (fElemStack.isEmpty())
     {
         emitError(XMLErrs::MoreEndThanStartTags);
-        fReaderMgr.skipPastChar(chCloseAngle);
+        fReaderMgr.skipPastChar(u'>');
         ThrowXMLwithMemMgr(RuntimeException, XMLExcepts::Scan_UnbalancedStartEnd, fMemoryManager);
     }
 
@@ -85,7 +85,7 @@ void XSAXMLScanner::scanEndTag(bool& gotData)
         (
             XMLErrs::ExpectedEndOfTagX, elemName
         );
-        fReaderMgr.skipPastChar(chCloseAngle);
+        fReaderMgr.skipPastChar(u'>');
         return;
     }
 
@@ -100,7 +100,7 @@ void XSAXMLScanner::scanEndTag(bool& gotData)
     fReaderMgr.skipPastSpaces();
 
     // Make sure we find the closing bracket
-    if (!fReaderMgr.skippedChar(chCloseAngle))
+    if (!fReaderMgr.skippedChar(u'>'))
     {
         emitError
         (
@@ -209,7 +209,7 @@ bool XSAXMLScanner::scanStartTag(bool& gotData)
             emitError(XMLErrs::ExpectedElementName);
         else
             emitError(XMLErrs::InvalidElementName, fQNameBuf.getRawBuffer());
-        fReaderMgr.skipToChar(chOpenAngle);
+        fReaderMgr.skipToChar(u'<');
         return false;
     }
 
@@ -395,7 +395,7 @@ bool XSAXMLScanner::scanStartTag(bool& gotData)
 
         // switch grammar if the typeinfo has a different grammar
         XMLCh* typeName = typeinfo->getTypeName();
-        int comma = XMLString::indexOf(typeName, chComma);
+        int comma = XMLString::indexOf(typeName, u',');
         if (comma > 0)
         {
             XMLBufBid bbPrefix(&fBufMgr);

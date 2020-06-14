@@ -995,7 +995,7 @@ void AbstractDOMParser::startElement(const XMLElementDecl&   elemDecl
                 XMLBufBid elemQName(&fBufMgr);
 
                 elemQName.set(elemPrefix);
-                elemQName.append(chColon);
+                elemQName.append(u':');
                 elemQName.append(localName);
 
                 elem = createElementNS (
@@ -1264,58 +1264,58 @@ void AbstractDOMParser::attDef
             switch(type)
             {
             case XMLAttDef::CData :
-                fInternalSubset.append(chSpace);
+                fInternalSubset.append(u' ');
                 fInternalSubset.append(XMLUni::fgCDATAString);
                 break;
             case XMLAttDef::ID :
-                fInternalSubset.append(chSpace);
+                fInternalSubset.append(u' ');
                 fInternalSubset.append(XMLUni::fgIDString);
                 break;
             case XMLAttDef::IDRef :
-                fInternalSubset.append(chSpace);
+                fInternalSubset.append(u' ');
                 fInternalSubset.append(XMLUni::fgIDRefString);
                 break;
             case XMLAttDef::IDRefs :
-                fInternalSubset.append(chSpace);
+                fInternalSubset.append(u' ');
                 fInternalSubset.append(XMLUni::fgIDRefsString);
                 break;
             case XMLAttDef::Entity :
-                fInternalSubset.append(chSpace);
+                fInternalSubset.append(u' ');
                 fInternalSubset.append(XMLUni::fgEntityString);
                 break;
             case XMLAttDef::Entities :
-                fInternalSubset.append(chSpace);
+                fInternalSubset.append(u' ');
                 fInternalSubset.append(XMLUni::fgEntitiesString);
                 break;
             case XMLAttDef::NmToken :
-                fInternalSubset.append(chSpace);
+                fInternalSubset.append(u' ');
                 fInternalSubset.append(XMLUni::fgNmTokenString);
                 break;
             case XMLAttDef::NmTokens :
-                fInternalSubset.append(chSpace);
+                fInternalSubset.append(u' ');
                 fInternalSubset.append(XMLUni::fgNmTokensString);
                 break;
 
             case XMLAttDef::Notation :
-                fInternalSubset.append(chSpace);
+                fInternalSubset.append(u' ');
                 fInternalSubset.append(XMLUni::fgNotationString);
                 break;
 
             case XMLAttDef::Enumeration :
                 {
-                    fInternalSubset.append(chSpace);
+                    fInternalSubset.append(u' ');
                     const XMLCh* enumString = attDef.getEnumeration();
                     XMLSize_t length = XMLString::stringLen(enumString);
                     if (length > 0) {
 
-                        fInternalSubset.append(chOpenParen );
+                        fInternalSubset.append(u'(' );
                         for(XMLSize_t i=0; i<length; i++) {
-                            if (enumString[i] == chSpace)
-                                fInternalSubset.append(chPipe);
+                            if (enumString[i] == u' ')
+                                fInternalSubset.append(u'|');
                             else
                                 fInternalSubset.append(enumString[i]);
                         }
-                        fInternalSubset.append(chCloseParen);
+                        fInternalSubset.append(u')');
                     }
                 }
                 break;
@@ -1328,15 +1328,15 @@ void AbstractDOMParser::attDef
             switch(def)
             {
             case XMLAttDef::Required :
-                fInternalSubset.append(chSpace);
+                fInternalSubset.append(u' ');
                 fInternalSubset.append(XMLUni::fgRequiredString);
                 break;
             case XMLAttDef::Implied :
-                fInternalSubset.append(chSpace);
+                fInternalSubset.append(u' ');
                 fInternalSubset.append(XMLUni::fgImpliedString);
                 break;
             case XMLAttDef::Fixed :
-                fInternalSubset.append(chSpace);
+                fInternalSubset.append(u' ');
                 fInternalSubset.append(XMLUni::fgFixedString);
                 break;
             default:
@@ -1346,10 +1346,10 @@ void AbstractDOMParser::attDef
 
             const XMLCh* defaultValue = attDef.getValue();
             if (defaultValue != 0) {
-                fInternalSubset.append(chSpace);
-                fInternalSubset.append(chDoubleQuote);
+                fInternalSubset.append(u' ');
+                fInternalSubset.append(u'"');
                 fInternalSubset.append(defaultValue);
-                fInternalSubset.append(chDoubleQuote);
+                fInternalSubset.append(u'"');
             }
         }
     }
@@ -1365,12 +1365,12 @@ void AbstractDOMParser::doctypeComment
         if (comment != 0)
         {
             fInternalSubset.append(XMLUni::fgCommentString);
-            fInternalSubset.append(chSpace);
+            fInternalSubset.append(u' ');
             fInternalSubset.append(comment);
-            fInternalSubset.append(chSpace);
-            fInternalSubset.append(chDash);
-            fInternalSubset.append(chDash);
-            fInternalSubset.append(chCloseAngle);
+            fInternalSubset.append(u' ');
+            fInternalSubset.append(u'-');
+            fInternalSubset.append(u'-');
+            fInternalSubset.append(u'>');
         }
     }
 }
@@ -1398,13 +1398,13 @@ void AbstractDOMParser::doctypePI
     if (fDocumentType->isIntSubsetReading())
     {
         //add these chars to internalSubset variable
-        fInternalSubset.append(chOpenAngle);
-        fInternalSubset.append(chQuestion);
+        fInternalSubset.append(u'<');
+        fInternalSubset.append(u'?');
         fInternalSubset.append(target);
-        fInternalSubset.append(chSpace);
+        fInternalSubset.append(u' ');
         fInternalSubset.append(data);
-        fInternalSubset.append(chQuestion);
-        fInternalSubset.append(chCloseAngle);
+        fInternalSubset.append(u'?');
+        fInternalSubset.append(u'>');
     }
 }
 
@@ -1427,20 +1427,20 @@ void AbstractDOMParser::elementDecl
 {
     if (fDocumentType->isIntSubsetReading())
     {
-        fInternalSubset.append(chOpenAngle);
-        fInternalSubset.append(chBang);
+        fInternalSubset.append(u'<');
+        fInternalSubset.append(u'!');
         fInternalSubset.append(XMLUni::fgElemString);
-        fInternalSubset.append(chSpace);
+        fInternalSubset.append(u' ');
         fInternalSubset.append(decl.getFullName());
 
         //get the ContentSpec information
         const XMLCh* contentModel = decl.getFormattedContentModel();
         if (contentModel != 0) {
-            fInternalSubset.append(chSpace);
+            fInternalSubset.append(u' ');
             fInternalSubset.append(contentModel);
         }
 
-        fInternalSubset.append(chCloseAngle);
+        fInternalSubset.append(u'>');
     }
 }
 
@@ -1452,7 +1452,7 @@ void AbstractDOMParser::endAttList
     if (fDocumentType->isIntSubsetReading())
     {
         //print the closing angle
-        fInternalSubset.append(chCloseAngle);
+        fInternalSubset.append(u'>');
     }
 
 	// this section sets up default attributes.
@@ -1580,48 +1580,48 @@ void AbstractDOMParser::entityDecl
     if (fDocumentType->isIntSubsetReading())
     {
         //add thes chars to internalSubset variable
-        fInternalSubset.append(chOpenAngle);
-        fInternalSubset.append(chBang);
+        fInternalSubset.append(u'<');
+        fInternalSubset.append(u'!');
         fInternalSubset.append(XMLUni::fgEntityString);
-        fInternalSubset.append(chSpace);
+        fInternalSubset.append(u' ');
 
         fInternalSubset.append(entityDecl.getName());
 
         const XMLCh* id = entity->getPublicId();
         if (id != 0) {
-            fInternalSubset.append(chSpace);
+            fInternalSubset.append(u' ');
             fInternalSubset.append(XMLUni::fgPubIDString);
-            fInternalSubset.append(chSpace);
-            fInternalSubset.append(chDoubleQuote);
+            fInternalSubset.append(u' ');
+            fInternalSubset.append(u'"');
             fInternalSubset.append(id);
-            fInternalSubset.append(chDoubleQuote);
+            fInternalSubset.append(u'"');
         }
         id = entity->getSystemId();
         if (id != 0) {
-            fInternalSubset.append(chSpace);
+            fInternalSubset.append(u' ');
             fInternalSubset.append(XMLUni::fgSysIDString);
-            fInternalSubset.append(chSpace);
-            fInternalSubset.append(chDoubleQuote);
+            fInternalSubset.append(u' ');
+            fInternalSubset.append(u'"');
             fInternalSubset.append(id);
-            fInternalSubset.append(chDoubleQuote);
+            fInternalSubset.append(u'"');
 
         }
         id = entity->getNotationName();
         if (id != 0) {
-            fInternalSubset.append(chSpace);
+            fInternalSubset.append(u' ');
             fInternalSubset.append(XMLUni::fgNDATAString);
-            fInternalSubset.append(chSpace);
+            fInternalSubset.append(u' ');
             fInternalSubset.append(id);
         }
         id = entityDecl.getValue();
         if (id !=0) {
-            fInternalSubset.append(chSpace);
-            fInternalSubset.append(chDoubleQuote);
+            fInternalSubset.append(u' ');
+            fInternalSubset.append(u'"');
             fInternalSubset.append(id);
-            fInternalSubset.append(chDoubleQuote);
+            fInternalSubset.append(u'"');
         }
 
-        fInternalSubset.append(chCloseAngle);
+        fInternalSubset.append(u'>');
     }
 
 }
@@ -1649,10 +1649,10 @@ void AbstractDOMParser::notationDecl
     if (fDocumentType->isIntSubsetReading())
     {
         //add thes chars to internalSubset variable
-        fInternalSubset.append(chOpenAngle);
-        fInternalSubset.append(chBang);
+        fInternalSubset.append(u'<');
+        fInternalSubset.append(u'!');
         fInternalSubset.append(XMLUni::fgNotationString);
-        fInternalSubset.append(chSpace);
+        fInternalSubset.append(u' ');
 
         fInternalSubset.append(notDecl.getName());
 
@@ -1660,29 +1660,29 @@ void AbstractDOMParser::notationDecl
 
         const XMLCh* id = notation->getPublicId();
         if (id != 0) {
-            fInternalSubset.append(chSpace);
+            fInternalSubset.append(u' ');
             fInternalSubset.append(XMLUni::fgPubIDString);
-            fInternalSubset.append(chSpace);
-            fInternalSubset.append(chDoubleQuote);
+            fInternalSubset.append(u' ');
+            fInternalSubset.append(u'"');
             fInternalSubset.append(id);
-            fInternalSubset.append(chDoubleQuote);
+            fInternalSubset.append(u'"');
 
             publicKeywordPrinted = true;
         }
         id = notation->getSystemId();
         if (id != 0) {
-            fInternalSubset.append(chSpace);
+            fInternalSubset.append(u' ');
 
             if ( !publicKeywordPrinted ){
 				fInternalSubset.append(XMLUni::fgSysIDString);
-				fInternalSubset.append(chSpace);
+				fInternalSubset.append(u' ');
 			}
 
-            fInternalSubset.append(chDoubleQuote);
+            fInternalSubset.append(u'"');
             fInternalSubset.append(id);
-            fInternalSubset.append(chDoubleQuote);
+            fInternalSubset.append(u'"');
         }
-        fInternalSubset.append(chCloseAngle);
+        fInternalSubset.append(u'>');
     }
 }
 
@@ -1693,10 +1693,10 @@ void AbstractDOMParser::startAttList
 {
     if (fDocumentType->isIntSubsetReading())
     {
-        fInternalSubset.append(chOpenAngle);
-        fInternalSubset.append(chBang);
+        fInternalSubset.append(u'<');
+        fInternalSubset.append(u'!');
         fInternalSubset.append(XMLUni::fgAttListString);
-        fInternalSubset.append(chSpace);
+        fInternalSubset.append(u' ');
         fInternalSubset.append(elemDecl.getFullName());
     }
 }

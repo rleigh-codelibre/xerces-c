@@ -1016,13 +1016,13 @@ void XMLScanner::scanMiscellaneous()
             if (!nextCh)
                 break;
 
-            if (nextCh == chOpenAngle)
+            if (nextCh == u'<')
             {
                 if (checkXMLDecl(true))
                 {
                     // Can't have an XML decl here
                     emitError(XMLErrs::NotValidAfterContent);
-                    fReaderMgr.skipPastChar(chCloseAngle);
+                    fReaderMgr.skipPastChar(u'>');
                 }
                 else if (fReaderMgr.skippedString(XMLUni::fgPIString))
                 {
@@ -1036,7 +1036,7 @@ void XMLScanner::scanMiscellaneous()
                 {
                     // This can't be possible, so just give up
                     emitError(XMLErrs::ExpectedCommentOrPI);
-                    fReaderMgr.skipPastChar(chCloseAngle);
+                    fReaderMgr.skipPastChar(u'>');
                 }
             }
             else if (fReaderMgr.getCurrentReader()->isWhitespace(nextCh))
@@ -1061,7 +1061,7 @@ void XMLScanner::scanMiscellaneous()
             else
             {
                 emitError(XMLErrs::ExpectedCommentOrPI);
-                fReaderMgr.skipPastChar(chCloseAngle);
+                fReaderMgr.skipPastChar(u'>');
             }
         }
         catch(const EndOfEntityException&)
@@ -1095,7 +1095,7 @@ void XMLScanner::scanPI()
     if (!fReaderMgr.getName(bbName.getBuffer()))
     {
         emitError(XMLErrs::PINameExpected);
-        fReaderMgr.skipPastChar(chCloseAngle);
+        fReaderMgr.skipPastChar(u'>');
         return;
     }
 
@@ -1113,7 +1113,7 @@ void XMLScanner::scanPI()
     // If namespaces are enabled, then no colons allowed
     if (fDoNamespaces)
     {
-        if (XMLString::indexOf(namePtr, chColon) != -1)
+        if (XMLString::indexOf(namePtr, u':') != -1)
             emitError(XMLErrs::ColonNotLegalWithNS);
     }
 
@@ -1140,10 +1140,10 @@ void XMLScanner::scanPI()
             }
 
             // Watch for potential terminating character
-            if (nextCh == chQuestion)
+            if (nextCh == u'?')
             {
                 // It must be followed by '>' to be a termination of the target
-                if (fReaderMgr.skippedChar(chCloseAngle))
+                if (fReaderMgr.skippedChar(u'>'))
                     break;
             }
 
@@ -1186,17 +1186,17 @@ void XMLScanner::scanPI()
     else
     {
         // No target, but make sure its terminated ok
-        if (!fReaderMgr.skippedChar(chQuestion))
+        if (!fReaderMgr.skippedChar(u'?'))
         {
             emitError(XMLErrs::UnterminatedPI);
-            fReaderMgr.skipPastChar(chCloseAngle);
+            fReaderMgr.skipPastChar(u'>');
             return;
         }
 
-        if (!fReaderMgr.skippedChar(chCloseAngle))
+        if (!fReaderMgr.skippedChar(u'>'))
         {
             emitError(XMLErrs::UnterminatedPI);
-            fReaderMgr.skipPastChar(chCloseAngle);
+            fReaderMgr.skipPastChar(u'>');
             return;
         }
     }
@@ -1240,7 +1240,7 @@ void XMLScanner::scanProlog()
         {
             const XMLCh nextCh = fReaderMgr.peekNextChar();
 
-            if (nextCh == chOpenAngle)
+            if (nextCh == u'<')
             {
                 //  Ok, it could be the xml decl, a comment, the doc type line,
                 //  or the start of the root element.
@@ -1323,7 +1323,7 @@ void XMLScanner::scanProlog()
                 if (!nextCh)
                     break;
                 else
-                    fReaderMgr.skipPastChar(chCloseAngle);
+                    fReaderMgr.skipPastChar(u'>');
             }
 
         }
@@ -1398,7 +1398,7 @@ void XMLScanner::scanXMLDecl(const DeclTypes type)
         fReaderMgr.skipPastSpaces(skippedSomething, true);
 
         // If we are looking at a question mark, then break out
-        if (fReaderMgr.lookingAtChar(chQuestion))
+        if (fReaderMgr.lookingAtChar(u'?'))
             break;
 
         // If this is not the first string, then we require the spaces
@@ -1406,7 +1406,7 @@ void XMLScanner::scanXMLDecl(const DeclTypes type)
             emitError(XMLErrs::ExpectedWhitespace);
 
         //  Get characters up to the next whitespace or equal's sign.
-        if (!scanUpToWSOr(nameBuf, chEqual))
+        if (!scanUpToWSOr(nameBuf, u'='))
             emitError(XMLErrs::ExpectedDeclString);
 
         // See if it matches any of our expected strings
@@ -1438,7 +1438,7 @@ void XMLScanner::scanXMLDecl(const DeclTypes type)
         if (!getQuotedString(*buffers[curString]))
         {
             emitError(XMLErrs::ExpectedQuotedString);
-            fReaderMgr.skipPastChar(chCloseAngle);
+            fReaderMgr.skipPastChar(u'>');
             return;
         }
 
@@ -1528,15 +1528,15 @@ void XMLScanner::scanXMLDecl(const DeclTypes type)
             emitError(XMLErrs::EncodingRequired);
     }
 
-    if (!fReaderMgr.skippedChar(chQuestion))
+    if (!fReaderMgr.skippedChar(u'?'))
     {
         emitError(XMLErrs::UnterminatedXMLDecl);
-        fReaderMgr.skipPastChar(chCloseAngle);
+        fReaderMgr.skipPastChar(u'>');
     }
-     else if (!fReaderMgr.skippedChar(chCloseAngle))
+     else if (!fReaderMgr.skippedChar(u'>'))
     {
         emitError(XMLErrs::UnterminatedXMLDecl);
-        fReaderMgr.skipPastChar(chCloseAngle);
+        fReaderMgr.skipPastChar(u'>');
     }
 
     //  Do this before we possibly update the reader with the
@@ -1906,7 +1906,7 @@ XMLScanner::XMLTokens XMLScanner::senseNextToken(XMLSize_t& orgReader)
     //  This includes entity references '&' of some sort. These must
     //  be character data because that's the only place a reference can
     //  occur in content.
-    if (nextCh != chOpenAngle)
+    if (nextCh != u'<')
         return nextCh?Token_CharData:Token_EOF;
 
     //  Ok it had to have been a '<' character. So get it out of the reader
@@ -1919,12 +1919,12 @@ XMLScanner::XMLTokens XMLScanner::senseNextToken(XMLSize_t& orgReader)
     //  are all some form of markup.
     switch(fReaderMgr.peekNextChar())
     {
-    case chForwardSlash:
+    case u'/':
         {
             fReaderMgr.getNextChar();
             return Token_EndTag;
         }
-    case chBang:
+    case u'!':
         {
             if (fReaderMgr.skippedString(u"![CDATA"))
                 return Token_CData;
@@ -1935,7 +1935,7 @@ XMLScanner::XMLTokens XMLScanner::senseNextToken(XMLSize_t& orgReader)
             emitError(XMLErrs::ExpectedCommentOrCDATA);
             return Token_Unknown;
         }
-    case chQuestion:
+    case u'?':
         {
             // It must be a PI
             fReaderMgr.getNextChar();
@@ -2017,7 +2017,7 @@ bool XMLScanner::scanCharRef(XMLCh& toFill, XMLCh& second)
             ThrowXMLwithMemMgr(UnexpectedEOFException, XMLExcepts::Gen_UnexpectedEOF, fMemoryManager);
 
         // Break out on the terminating semicolon
-        if (nextCh == chSemiColon)
+        if (nextCh == u';')
         {
             fReaderMgr.getNextChar();
             break;
@@ -2173,7 +2173,7 @@ void XMLScanner::scanComment()
         if (curState == InText)
         {
             // If its a dash, go to OneDash state. Otherwise take as text
-            if (nextCh == chDash)
+            if (nextCh == u'-')
                 curState = OneDash;
             else
                 bbComment.append(nextCh);
@@ -2183,13 +2183,13 @@ void XMLScanner::scanComment()
             //  If its another dash, then we change to the two dashes states.
             //  Otherwise, we have to put in the deficit dash and the new
             //  character and go back to InText.
-            if (nextCh == chDash)
+            if (nextCh == u'-')
             {
                 curState = TwoDashes;
             }
             else
             {
-                bbComment.append(chDash);
+                bbComment.append(u'-');
                 bbComment.append(nextCh);
                 curState = InText;
             }
@@ -2197,10 +2197,10 @@ void XMLScanner::scanComment()
         else if (curState == TwoDashes)
         {
             // The next character must be the closing bracket
-            if (nextCh != chCloseAngle)
+            if (nextCh != u'>')
             {
                 emitError(XMLErrs::IllegalSequenceInComment);
-                fReaderMgr.skipPastChar(chCloseAngle);
+                fReaderMgr.skipPastChar(u'>');
                 return;
             }
             break;
@@ -2231,7 +2231,7 @@ bool XMLScanner::scanEq(bool inDecl)
     {
         bool skippedSomething;
         fReaderMgr.skipPastSpaces(skippedSomething, inDecl);
-        if (fReaderMgr.skippedChar(chEqual))
+        if (fReaderMgr.skippedChar(u'='))
         {
             fReaderMgr.skipPastSpaces(skippedSomething, inDecl);
             return true;
@@ -2240,7 +2240,7 @@ bool XMLScanner::scanEq(bool inDecl)
     else
     {
         fReaderMgr.skipPastSpaces();
-        if (fReaderMgr.skippedChar(chEqual))
+        if (fReaderMgr.skippedChar(u'='))
         {
             fReaderMgr.skipPastSpaces();
             return true;
@@ -2367,7 +2367,7 @@ XMLScanner::resolveQName(  const XMLCh* const           qName
                          , const ElemStack::MapModes    mode
                          ,       int&                   prefixColonPos)
 {
-    prefixColonPos = XMLString::indexOf(qName, chColon);
+    prefixColonPos = XMLString::indexOf(qName, u':');
     return resolveQNameWithColon(qName, prefixBuf, mode, prefixColonPos);
 }
 

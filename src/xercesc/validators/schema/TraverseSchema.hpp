@@ -791,7 +791,7 @@ private:
 // ---------------------------------------------------------------------------
 inline const XMLCh* TraverseSchema::getPrefix(const XMLCh* const rawName) {
 
-    int colonIndex = XMLString::indexOf(rawName, chColon);
+    int colonIndex = XMLString::indexOf(rawName, u':');
 
     if (colonIndex == -1 || colonIndex == 0) {
         return XMLUni::fgZeroLenString;
@@ -804,7 +804,7 @@ inline const XMLCh* TraverseSchema::getPrefix(const XMLCh* const rawName) {
 
 inline const XMLCh* TraverseSchema::getLocalPart(const XMLCh* const rawName) {
 
-    int    colonIndex = XMLString::indexOf(rawName, chColon);
+    int    colonIndex = XMLString::indexOf(rawName, u':');
     XMLSize_t rawNameLen = XMLString::stringLen(rawName);
 
     if (XMLSize_t(colonIndex + 1) == rawNameLen) {

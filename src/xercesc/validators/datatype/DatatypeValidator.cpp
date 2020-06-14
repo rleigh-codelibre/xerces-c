@@ -167,7 +167,7 @@ void DatatypeValidator::setTypeName(const XMLCh* const typeName)
     if (typeName)
     {
         XMLSize_t nameLen = XMLString::stringLen(typeName);
-        int commaOffset = XMLString::indexOf(typeName, chComma);
+        int commaOffset = XMLString::indexOf(typeName, u',');
 
         fTypeName = (XMLCh*) fMemoryManager->allocate
         (

@@ -30,14 +30,14 @@
  *  implementation was wrong.
  *  
  *  The only platform specific issue is slash character.
- *  On all platforms other than Windows, chForwardSlash and chBackSlash 
+ *  On all platforms other than Windows, u'/' and u'\\' 
  *  are considered slash, while on Windows, two additional characters, 
  *  chYenSign and chWonSign are slash as well.
  *
  *  The idea is to maintain a SINGLE copy of this method rather than
  *  each <OS>PlatformUtils.cpp has its own copy, we introduce a new
  *  method, XMLPlatformUtils::isAnySlash(), to replace the direct checking
- *  code ( if ( c == chForwardSlash || c == chBackSlash).
+ *  code ( if ( c == u'/' || c == u'\\').
  *
  *  With this approach, we might have a performance hit since isAnySlash() 
  *  is so frequently used in this implementation, so we intend to make it 
@@ -137,7 +137,7 @@ void XMLPlatformUtils::removeDotSlash(XMLCh* const path
         if ( 3 <= srcLen )
         {
             if ( (isAnySlash(*srcPtr))     &&
-                (chPeriod == *(srcPtr+1)) &&
+                (u'.' == *(srcPtr+1)) &&
                 (isAnySlash(*(srcPtr+2)))  )
             {
                 // "\.\x" seen
@@ -211,8 +211,8 @@ void XMLPlatformUtils::removeDotDotSlash(XMLCh* const path
 
         // Ensure <segment> exists and != ".."
         if (segIndex >= 0                 &&
-            (path[segIndex+1] != chPeriod ||
-             path[segIndex+2] != chPeriod ||
+            (path[segIndex+1] != u'.' ||
+             path[segIndex+2] != u'.' ||
              segIndex + 3 != index))
         {
 
@@ -248,8 +248,8 @@ int XMLPlatformUtils::searchSlashDotDotSlash(XMLCh* const srcPath)
         if ( 4 <= srcLen )
         {
             if ( (isAnySlash(*srcPtr))     &&
-                 (chPeriod == *(srcPtr+1)) &&
-                 (chPeriod == *(srcPtr+2)) &&
+                 (u'.' == *(srcPtr+1)) &&
+                 (u'.' == *(srcPtr+2)) &&
                  (isAnySlash(*(srcPtr+3)))  )
             {
                 retVal = (srcPtr - srcPath);

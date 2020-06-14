@@ -168,68 +168,68 @@ static void formatNode( const   ContentSpecNode* const      curNode
 					bufToFill.append(curNode->getElement()->getRawName());
 					// show the + and * modifiers also when we have a non-infinite number of repetitions
 					if(curNode->getMinOccurs()==0 && (curNode->getMaxOccurs()==-1 || curNode->getMaxOccurs()>1))
-						bufToFill.append(chAsterisk);
+						bufToFill.append(u'*');
 					else if(curNode->getMinOccurs()==0 && curNode->getMaxOccurs()==1)
-						bufToFill.append(chQuestion);
+						bufToFill.append(u'?');
 					else if(curNode->getMinOccurs()==1 && (curNode->getMaxOccurs()==-1 || curNode->getMaxOccurs()>1))
-						bufToFill.append(chPlus);
+						bufToFill.append(u'+');
 				}
 				break;
 
 			case ContentSpecNode::ZeroOrOne :
 				if (doRepParens)
-					bufToFill.append(chOpenParen);
+					bufToFill.append(u'(');
 
-				toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, chQuestion));
+				toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, u'?'));
 				if (doRepParens)
-					toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, chCloseParen));
+					toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, u')'));
 				toBeProcessed.push(formatNodeHolder(first, curType, 0));
 				break;
 
 			case ContentSpecNode::ZeroOrMore :
 				if (doRepParens)
-					bufToFill.append(chOpenParen);
+					bufToFill.append(u'(');
 
-				toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, chAsterisk));
+				toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, u'*'));
 				if (doRepParens)
-					toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, chCloseParen));
+					toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, u')'));
 				toBeProcessed.push(formatNodeHolder(first, curType, 0));
 				break;
 
 			case ContentSpecNode::OneOrMore :
 				if (doRepParens)
-					bufToFill.append(chOpenParen);
+					bufToFill.append(u'(');
 
-				toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, chPlus));
+				toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, u'+'));
 				if (doRepParens)
-					toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, chCloseParen));
+					toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, u')'));
 				toBeProcessed.push(formatNodeHolder(first, curType, 0));
 				break;
 
 			case ContentSpecNode::Choice :
 				if ((parentType & 0x0f) != (curType & 0x0f))
-					bufToFill.append(chOpenParen);
+					bufToFill.append(u'(');
 
 				if ((parentType & 0x0f) != (curType & 0x0f))
-					toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, chCloseParen));
+					toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, u')'));
 				if(second!=NULL)
 				{
 					toBeProcessed.push(formatNodeHolder(second, curType, 0));
-					toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, chPipe));
+					toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, u'|'));
 				}
 				toBeProcessed.push(formatNodeHolder(first, curType, 0));
 				break;
 
 			case ContentSpecNode::Sequence :
 				if ((parentType & 0x0f) != (curType & 0x0f))
-					bufToFill.append(chOpenParen);
+					bufToFill.append(u'(');
 
 				if ((parentType & 0x0f) != (curType & 0x0f))
-					toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, chCloseParen));
+					toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, u')'));
 				if(second!=NULL)
 				{
 					toBeProcessed.push(formatNodeHolder(second, curType, 0));
-					toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, chComma));
+					toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, u','));
 				}
 				toBeProcessed.push(formatNodeHolder(first, curType, 0));
 				break;
@@ -240,13 +240,13 @@ static void formatNode( const   ContentSpecNode* const      curNode
 					bufToFill.append(u'A');
 					bufToFill.append(u'l');
 					bufToFill.append(u'l');
-					bufToFill.append(chOpenParen);
+					bufToFill.append(u'(');
 				}
 
 				if ((parentType & 0x0f) != (curType & 0x0f))
-					toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, chCloseParen));
+					toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, u')'));
 				toBeProcessed.push(formatNodeHolder(second, curType, 0));
-				toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, chComma));
+				toBeProcessed.push(formatNodeHolder(0, ContentSpecNode::UnknownType, u','));
 				toBeProcessed.push(formatNodeHolder(first, curType, 0));
 				break;
 		}
@@ -263,7 +263,7 @@ void ContentSpecNode::formatSpec(XMLBuffer&      bufToFill) const
     bufToFill.reset();
 
     if (fType == ContentSpecNode::Leaf)
-        bufToFill.append(chOpenParen);
+        bufToFill.append(u'(');
     formatNode
     (
         this
@@ -271,7 +271,7 @@ void ContentSpecNode::formatSpec(XMLBuffer&      bufToFill) const
         , fMemoryManager
     );
     if (fType == ContentSpecNode::Leaf)
-        bufToFill.append(chCloseParen);
+        bufToFill.append(u')');
 }
 
 int ContentSpecNode::getMinTotalRange() const {

@@ -389,7 +389,7 @@ bool IGXMLScanner::scanNext(XMLPScanToken& token)
                     break;
 
                 default :
-                    fReaderMgr.skipToChar(chOpenAngle);
+                    fReaderMgr.skipToChar(u'<');
                     break;
             }
 
@@ -611,7 +611,7 @@ IGXMLScanner::rawAttrScan(const   XMLCh* const                elemName
         //
         if (attCount)
         {
-            if ((nextCh != chForwardSlash) && (nextCh != chCloseAngle))
+            if ((nextCh != u'/') && (nextCh != u'>'))
             {
                 bool bFoundSpace;
                 fReaderMgr.skipPastSpaces(bFoundSpace);
@@ -640,7 +640,7 @@ IGXMLScanner::rawAttrScan(const   XMLCh* const                elemName
                     emitError(XMLErrs::ExpectedAttrName);
                 else
                     emitError(XMLErrs::InvalidAttrName, fAttNameBuf.getRawBuffer());
-                fReaderMgr.skipPastChar(chCloseAngle);
+                fReaderMgr.skipPastChar(u'>');
                 return attCount;
             }
 
@@ -655,18 +655,18 @@ IGXMLScanner::rawAttrScan(const   XMLCh* const                elemName
                 //  hit something meaningful.
                 const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"'\"></");
 
-                if ((chFound == chCloseAngle) || (chFound == chForwardSlash))
+                if ((chFound == u'>') || (chFound == u'/'))
                 {
                     // Jump back to top for normal processing of these
                     continue;
                 }
-                else if ((chFound == chSingleQuote)
-                      ||  (chFound == chDoubleQuote)
+                else if ((chFound == u'\'')
+                      ||  (chFound == u'"')
                       ||  fReaderMgr.getCurrentReader()->isWhitespace(chFound))
                 {
                     // Just fall through assuming that the value is to follow
                 }
-                else if (chFound == chOpenAngle)
+                else if (chFound == u'<')
                 {
                     // Assume a malformed tag and that new one is starting
                     emitError(XMLErrs::UnterminatedStartTag, elemName);
@@ -691,14 +691,14 @@ IGXMLScanner::rawAttrScan(const   XMLCh* const                elemName
                 //  chars in our list.
                 const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"></");
 
-                if ((chFound == chCloseAngle)
-                ||  (chFound == chForwardSlash)
+                if ((chFound == u'>')
+                ||  (chFound == u'/')
                 ||  fReaderMgr.getCurrentReader()->isWhitespace(chFound))
                 {
                     //  Just fall through and process this attribute, though
                     //  the value will be "".
                 }
-                else if (chFound == chOpenAngle)
+                else if (chFound == u'<')
                 {
                     // Assume a malformed tag and that new one is starting
                     emitError(XMLErrs::UnterminatedStartTag, elemName);
@@ -754,20 +754,20 @@ IGXMLScanner::rawAttrScan(const   XMLCh* const                elemName
         if (!nextCh)
             ThrowXMLwithMemMgr(UnexpectedEOFException, XMLExcepts::Gen_UnexpectedEOF, fMemoryManager);
 
-        if (nextCh == chForwardSlash)
+        if (nextCh == u'/')
         {
             fReaderMgr.getNextChar();
             isEmpty = true;
-            if (!fReaderMgr.skippedChar(chCloseAngle))
+            if (!fReaderMgr.skippedChar(u'>'))
                 emitError(XMLErrs::UnterminatedStartTag, elemName);
             break;
         }
-        else if (nextCh == chCloseAngle)
+        else if (nextCh == u'>')
         {
             fReaderMgr.getNextChar();
             break;
         }
-        else if (nextCh == chOpenAngle)
+        else if (nextCh == u'<')
         {
             //  Check for this one specially, since its going to be common
             //  and it is kind of auto-recovering since we've already hit the
@@ -776,7 +776,7 @@ IGXMLScanner::rawAttrScan(const   XMLCh* const                elemName
             emitError(XMLErrs::UnterminatedStartTag, elemName);
             break;
         }
-        else if ((nextCh == chSingleQuote) || (nextCh == chDoubleQuote))
+        else if ((nextCh == u'\'') || (nextCh == u'"'))
         {
             //  Check for this one specially, which is probably a missing
             //  attribute name, e.g. ="value". Just issue expected name
@@ -882,7 +882,7 @@ bool IGXMLScanner::scanContent()
                         break;
 
                     default :
-                        fReaderMgr.skipToChar(chOpenAngle);
+                        fReaderMgr.skipToChar(u'<');
                         break;
                 }
 
@@ -925,7 +925,7 @@ void IGXMLScanner::scanEndTag(bool& gotData)
     if (fElemStack.isEmpty())
     {
         emitError(XMLErrs::MoreEndThanStartTags);
-        fReaderMgr.skipPastChar(chCloseAngle);
+        fReaderMgr.skipPastChar(u'>');
         ThrowXMLwithMemMgr(RuntimeException, XMLExcepts::Scan_UnbalancedStartEnd, fMemoryManager);
     }
 
@@ -958,7 +958,7 @@ void IGXMLScanner::scanEndTag(bool& gotData)
             XMLErrs::ExpectedEndOfTagX
             , elemName
         );
-        fReaderMgr.skipPastChar(chCloseAngle);
+        fReaderMgr.skipPastChar(u'>');
         fElemStack.popTop();
         return;
     }
@@ -971,7 +971,7 @@ void IGXMLScanner::scanEndTag(bool& gotData)
     fReaderMgr.skipPastSpaces();
 
     // Make sure we find the closing bracket
-    if (!fReaderMgr.skippedChar(chCloseAngle))
+    if (!fReaderMgr.skippedChar(u'>'))
     {
         emitError
         (
@@ -1236,7 +1236,7 @@ void IGXMLScanner::scanDocTypeDecl()
         emitError(XMLErrs::ExpectedWhitespace);
 
         // Just skip the Doctype declaration and return
-        fReaderMgr.skipPastChar(chCloseAngle);
+        fReaderMgr.skipPastChar(u'>');
         return;
     }
 
@@ -1254,7 +1254,7 @@ void IGXMLScanner::scanDocTypeDecl()
             emitError(XMLErrs::NoRootElemInDOCTYPE);
         else
             emitError(XMLErrs::InvalidRootElemInDOCTYPE, bbRootName.getRawBuffer());
-        fReaderMgr.skipPastChar(chCloseAngle);
+        fReaderMgr.skipPastChar(u'>');
         return;
     }
 
@@ -1307,7 +1307,7 @@ void IGXMLScanner::scanDocTypeDecl()
     //  And now if we are looking at a >, then we are done. It is not
     //  required to have an internal or external subset, though why you
     //  would not escapes me.
-    if (fReaderMgr.skippedChar(chCloseAngle)) {
+    if (fReaderMgr.skippedChar(u'>')) {
 
         //  If we have a doc type handler and advanced callbacks are enabled,
         //  call the doctype event.
@@ -1339,7 +1339,7 @@ void IGXMLScanner::scanDocTypeDecl()
     //  subset. Else, has to be an id.
     //
     // Just look at the next char, don't eat it.
-    if (fReaderMgr.peekNextChar() == chOpenSquare)
+    if (fReaderMgr.peekNextChar() == u'[')
     {
         hasIntSubset = true;
     }
@@ -1356,7 +1356,7 @@ void IGXMLScanner::scanDocTypeDecl()
         // Get the external subset id
         if (!dtdScanner.scanId(bbPubId.getBuffer(), bbSysId.getBuffer(), DTDScanner::IDType_External))
         {
-            fReaderMgr.skipPastChar(chCloseAngle);
+            fReaderMgr.skipPastChar(u'>');
             return;
         }
 
@@ -1368,7 +1368,7 @@ void IGXMLScanner::scanDocTypeDecl()
         fReaderMgr.skipPastSpaces();
 
         // Just look at the next char, don't eat it.
-        if (fReaderMgr.peekNextChar() == chOpenSquare) {
+        if (fReaderMgr.peekNextChar() == u'[') {
             hasIntSubset = true;
         }
     }
@@ -1395,7 +1395,7 @@ void IGXMLScanner::scanDocTypeDecl()
         //  by skipping forward tot he close angle and returning.
         if (!dtdScanner.scanInternalSubset())
         {
-            fReaderMgr.skipPastChar(chCloseAngle);
+            fReaderMgr.skipPastChar(u'>');
             return;
         }
 
@@ -1414,19 +1414,19 @@ void IGXMLScanner::scanDocTypeDecl()
     }
 
     // And that should leave us at the closing > of the DOCTYPE line
-    if (!fReaderMgr.skippedChar(chCloseAngle))
+    if (!fReaderMgr.skippedChar(u'>'))
     {
         //  Do a special check for the common scenario of an extra ] char at
         //  the end. This is easy to recover from.
-        if (fReaderMgr.skippedChar(chCloseSquare)
-        &&  fReaderMgr.skippedChar(chCloseAngle))
+        if (fReaderMgr.skippedChar(u']')
+        &&  fReaderMgr.skippedChar(u'>'))
         {
             emitError(XMLErrs::ExtraCloseSquare);
         }
          else
         {
             emitError(XMLErrs::UnterminatedDOCTYPE);
-            fReaderMgr.skipPastChar(chCloseAngle);
+            fReaderMgr.skipPastChar(u'>');
         }
     }
 
@@ -1545,7 +1545,7 @@ bool IGXMLScanner::scanStartTag(bool& gotData)
     if (!fReaderMgr.getName(fQNameBuf))
     {
         emitError(XMLErrs::ExpectedElementName);
-        fReaderMgr.skipToChar(chOpenAngle);
+        fReaderMgr.skipToChar(u'<');
         return false;
     }
 
@@ -1674,7 +1674,7 @@ bool IGXMLScanner::scanStartTag(bool& gotData)
         //  one.
         if (attCount)
         {
-            if ((nextCh != chForwardSlash) && (nextCh != chCloseAngle))
+            if ((nextCh != u'/') && (nextCh != u'>'))
             {
                 bool bFoundSpace;
                 fReaderMgr.skipPastSpaces(bFoundSpace);
@@ -1699,7 +1699,7 @@ bool IGXMLScanner::scanStartTag(bool& gotData)
             if (!fReaderMgr.getName(fAttNameBuf))
             {
                 emitError(XMLErrs::ExpectedAttrName);
-                fReaderMgr.skipPastChar(chCloseAngle);
+                fReaderMgr.skipPastChar(u'>');
                 return false;
             }
 
@@ -1712,18 +1712,18 @@ bool IGXMLScanner::scanStartTag(bool& gotData)
                 //  hit something meaningful.
                 const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"'\"></");
 
-                if ((chFound == chCloseAngle) || (chFound == chForwardSlash))
+                if ((chFound == u'>') || (chFound == u'/'))
                 {
                     // Jump back to top for normal processing of these
                     continue;
                 }
-                else if ((chFound == chSingleQuote)
-                      ||  (chFound == chDoubleQuote)
+                else if ((chFound == u'\'')
+                      ||  (chFound == u'"')
                       ||  fReaderMgr.getCurrentReader()->isWhitespace(chFound))
                 {
                     // Just fall through assuming that the value is to follow
                 }
-                else if (chFound == chOpenAngle)
+                else if (chFound == u'<')
                 {
                     // Assume a malformed tag and that new one is starting
                     emitError(XMLErrs::UnterminatedStartTag, elemDecl->getFullName());
@@ -1839,14 +1839,14 @@ bool IGXMLScanner::scanStartTag(bool& gotData)
                 //  chars in our list.
                 const XMLCh chFound = fReaderMgr.skipUntilInOrWS(u"></");
 
-                if ((chFound == chCloseAngle)
-                ||  (chFound == chForwardSlash)
+                if ((chFound == u'>')
+                ||  (chFound == u'/')
                 ||  fReaderMgr.getCurrentReader()->isWhitespace(chFound))
                 {
                     //  Just fall through and process this attribute, though
                     //  the value will be "".
                 }
-                else if (chFound == chOpenAngle)
+                else if (chFound == u'<')
                 {
                     // Assume a malformed tag and that new one is starting
                     emitError(XMLErrs::UnterminatedStartTag, elemDecl->getFullName());
@@ -1890,20 +1890,20 @@ bool IGXMLScanner::scanStartTag(bool& gotData)
         if (!nextCh)
             ThrowXMLwithMemMgr(UnexpectedEOFException, XMLExcepts::Gen_UnexpectedEOF, fMemoryManager);
 
-        if (nextCh == chForwardSlash)
+        if (nextCh == u'/')
         {
             fReaderMgr.getNextChar();
             isEmpty = true;
-            if (!fReaderMgr.skippedChar(chCloseAngle))
+            if (!fReaderMgr.skippedChar(u'>'))
                 emitError(XMLErrs::UnterminatedStartTag, elemDecl->getFullName());
             break;
         }
-        else if (nextCh == chCloseAngle)
+        else if (nextCh == u'>')
         {
             fReaderMgr.getNextChar();
             break;
         }
-        else if (nextCh == chOpenAngle)
+        else if (nextCh == u'<')
         {
             //  Check for this one specially, since its going to be common
             //  and it is kind of auto-recovering since we've already hit the
@@ -1912,7 +1912,7 @@ bool IGXMLScanner::scanStartTag(bool& gotData)
             emitError(XMLErrs::UnterminatedStartTag, elemDecl->getFullName());
             break;
         }
-        else if ((nextCh == chSingleQuote) || (nextCh == chDoubleQuote))
+        else if ((nextCh == u'\'') || (nextCh == u'"'))
         {
             //  Check for this one specially, which is probably a missing
             //  attribute name, e.g. ="value". Just issue expected name
@@ -2105,7 +2105,7 @@ bool IGXMLScanner::scanStartTagNS(bool& gotData)
             emitError(XMLErrs::ExpectedElementName);
         else
             emitError(XMLErrs::InvalidElementName, fQNameBuf.getRawBuffer());
-        fReaderMgr.skipToChar(chOpenAngle);
+        fReaderMgr.skipToChar(u'<');
         return false;
     }
 
@@ -2504,7 +2504,7 @@ bool IGXMLScanner::scanStartTagNS(bool& gotData)
 
             // switch grammar if the typeinfo has a different grammar (happens when there is xsi:type)
             XMLCh* typeName = typeinfo->getTypeName();
-            const int comma = XMLString::indexOf(typeName, chComma);
+            const int comma = XMLString::indexOf(typeName, u',');
             if (comma > 0) {
                 XMLBuffer prefixBuf(comma+1, fMemoryManager);
                 prefixBuf.append(typeName, comma);

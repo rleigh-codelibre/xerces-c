@@ -125,7 +125,7 @@ void QNameDatatypeValidator::checkContent( const XMLCh*             const conten
         jan.reset(prefix, manager);
         normalizeContent(prefix, manager);
 
-        colonPos = XMLString::indexOf(content, chColon);
+        colonPos = XMLString::indexOf(content, u':');
         if (colonPos > 0) {                        
             prefix[colonPos] = u'\0';
             if (context->isPrefixUnknown(prefix)) {
@@ -182,7 +182,7 @@ void QNameDatatypeValidator::checkContent( const XMLCh*             const conten
         {            
             enumPrefix = XMLString::replicate(getEnumeration()->elementAt(i), manager);
             ArrayJanitor<XMLCh>  janEnum(enumPrefix, manager);
-            colonPos = XMLString::indexOf(enumPrefix, chColon, 0, manager);
+            colonPos = XMLString::indexOf(enumPrefix, u':', 0, manager);
             
             if (colonPos != -1) {
                 enumLocalName = enumPrefix + colonPos + 1;

@@ -497,7 +497,7 @@ inline bool XMLReader::isFirstNameChar(const XMLCh toCheck) const
 inline bool XMLReader::isFirstNCNameChar(const XMLCh toCheck) const
 {
     return (((fgCharCharsTable[toCheck] & gFirstNameCharMask) != 0)
-            && (toCheck != chColon));
+            && (toCheck != u':'));
 }
 
 inline bool XMLReader::isSpecialStartTagChar(const XMLCh toCheck) const
@@ -513,7 +513,7 @@ inline bool XMLReader::isXMLChar(const XMLCh toCheck) const
 inline bool XMLReader::isXMLLetter(const XMLCh toCheck) const
 {
     return (((fgCharCharsTable[toCheck] & gFirstNameCharMask) != 0)
-            && (toCheck != chColon) && (toCheck != chUnderscore));
+            && (toCheck != u':') && (toCheck != u'_'));
 }
 
 inline bool XMLReader::isWhitespace(const XMLCh toCheck) const
@@ -678,20 +678,20 @@ inline bool XMLReader::getNextCharIfNot(const XMLCh chNotToGet, XMLCh& chGotten)
     // Handle end of line normalization and line/col member maintenance.
     //
     // we can have end-of-line combinations with a leading
-    // chCR(xD), chLF(xA), chNEL(x85), or chLineSeparator(x2028)
+    // u'\r'(xD), u'\n'(xA), chNEL(x85), or chLineSeparator(x2028)
     //
-    // 0000000000001101 chCR
-    // 0000000000001010 chLF
+    // 0000000000001101 u'\r'
+    // 0000000000001010 u'\n'
     // 0000000010000101 chNEL
     // 0010000000101000 chLineSeparator
     // -----------------------
-    // 1101111101010000 == ~(chCR|chLF|chNEL|chLineSeparator)
+    // 1101111101010000 == ~(u'\r'|u'\n'|chNEL|chLineSeparator)
     //
     // if the result of the logical-& operation is
-    // true  : 'curCh' can not be chCR, chLF, chNEL or chLineSeparator
-    // false : 'curCh' can be chCR, chLF, chNEL or chLineSeparator
+    // true  : 'curCh' can not be u'\r', u'\n', chNEL or chLineSeparator
+    // false : 'curCh' can be u'\r', u'\n', chNEL or chLineSeparator
     //
-    if ( chGotten & (XMLCh) ~(chCR|chLF|chNEL|chLineSeparator) )
+    if ( chGotten & (XMLCh) ~(u'\r'|u'\n'|chNEL|chLineSeparator) )
     {
         fCurCol++;
     } else
@@ -727,20 +727,20 @@ inline bool XMLReader::getNextChar(XMLCh& chGotten)
     // Handle end of line normalization and line/col member maintenance.
     //
     // we can have end-of-line combinations with a leading
-    // chCR(xD), chLF(xA), chNEL(x85), or chLineSeparator(x2028)
+    // u'\r'(xD), u'\n'(xA), chNEL(x85), or chLineSeparator(x2028)
     //
-    // 0000000000001101 chCR
-    // 0000000000001010 chLF
+    // 0000000000001101 u'\r'
+    // 0000000000001010 u'\n'
     // 0000000010000101 chNEL
     // 0010000000101000 chLineSeparator
     // -----------------------
-    // 1101111101010000 == ~(chCR|chLF|chNEL|chLineSeparator)
+    // 1101111101010000 == ~(u'\r'|u'\n'|chNEL|chLineSeparator)
     //
     // if the result of the logical-& operation is
-    // true  : 'curCh' can not be chCR, chLF, chNEL or chLineSeparator
-    // false : 'curCh' can be chCR, chLF, chNEL or chLineSeparator
+    // true  : 'curCh' can not be u'\r', u'\n', chNEL or chLineSeparator
+    // false : 'curCh' can be u'\r', u'\n', chNEL or chLineSeparator
     //
-    if ( chGotten & (XMLCh) ~(chCR|chLF|chNEL|chLineSeparator) )
+    if ( chGotten & (XMLCh) ~(u'\r'|u'\n'|chNEL|chLineSeparator) )
     {
         fCurCol++;
     } else
@@ -778,9 +778,9 @@ inline bool XMLReader::peekNextChar(XMLCh& chGotten)
     //  normal char get method in regards to newline normalization, though
     //  its not as complicated as the actual character getting method's.
     //
-    if ((chGotten == chCR || (fNEL && (chGotten == chNEL || chGotten == chLineSeparator)))
+    if ((chGotten == u'\r' || (fNEL && (chGotten == chNEL || chGotten == chLineSeparator)))
         && (fSource == Source_External))
-        chGotten = chLF;
+        chGotten = u'\n';
 
     return true;
 }

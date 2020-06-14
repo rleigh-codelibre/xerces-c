@@ -125,7 +125,7 @@ void ICUResBundFormatter::startDomain(const   XMLCh* const    domainName
     //           // an array
     //           domainName {
 	//
-	int index = XMLString::lastIndexOf(domainName, chForwardSlash);
+	int index = XMLString::lastIndexOf(domainName, u'/');
 
 #ifdef ICU_RESBUNDLE_IN_TABLE_FORM
     fwprintf(fOutFl, L"\n\t // a table \n");

@@ -158,7 +158,7 @@ RangeToken* TokenFactory::staticGetRange(const XMLCh* const keyword,
 Token* TokenFactory::getLineBegin() {
 
     if (fLineBegin == 0)
-        fLineBegin = createChar(chCaret, true);
+        fLineBegin = createChar(u'^', true);
 
     return fLineBegin;
 }
@@ -166,7 +166,7 @@ Token* TokenFactory::getLineBegin() {
 Token* TokenFactory::getLineEnd() {
 
     if (fLineEnd == 0)
-        fLineEnd = createChar(chDollarSign, true);
+        fLineEnd = createChar(u'$', true);
 
     return fLineEnd;
 }

@@ -155,7 +155,7 @@ void SAXPrintHandlers::endDocument()
 void SAXPrintHandlers::endElement(const XMLCh* const name)
 {
     // No escapes are legal here
-    fFormatter << XMLFormatter::NoEscapes << gEndElement << name << chCloseAngle;
+    fFormatter << XMLFormatter::NoEscapes << gEndElement << name << u'>';
 }
 
 
@@ -171,7 +171,7 @@ void SAXPrintHandlers::processingInstruction(const  XMLCh* const target
 {
     fFormatter << XMLFormatter::NoEscapes << gStartPI  << target;
     if (data)
-        fFormatter << chSpace << data;
+        fFormatter << u' ' << data;
     fFormatter << XMLFormatter::NoEscapes << gEndPI;
 }
 
@@ -186,7 +186,7 @@ void SAXPrintHandlers::startElement(const   XMLCh* const    name
 {
     // The name has to be representable without any escapes
     fFormatter  << XMLFormatter::NoEscapes
-                << chOpenAngle << name;
+                << u'<' << name;
 
     XMLSize_t len = attributes.getLength();
     for (XMLSize_t index = 0; index < len; index++)
@@ -197,12 +197,12 @@ void SAXPrintHandlers::startElement(const   XMLCh* const    name
         //  escaping.
         //
         fFormatter  << XMLFormatter::NoEscapes
-                    << chSpace << attributes.getName(index)
-                    << chEqual << chDoubleQuote
+                    << u' ' << attributes.getName(index)
+                    << u'=' << u'"'
                     << XMLFormatter::AttrEscapes
 		            << attributes.getValue(index)
                     << XMLFormatter::NoEscapes
-                    << chDoubleQuote;
+                    << u'"';
     }
-    fFormatter << chCloseAngle;
+    fFormatter << u'>';
 }

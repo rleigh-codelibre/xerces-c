@@ -860,7 +860,7 @@ void SAXParser::endElement( const   XMLElementDecl& elemDecl
             if (elemPrefix && *elemPrefix) {
 
                 fElemQNameBuf.set(elemPrefix);
-                fElemQNameBuf.append(chColon);
+                fElemQNameBuf.append(u':');
                 fElemQNameBuf.append(elemDecl.getBaseName());
                 fDocHandler->endElement(fElemQNameBuf.getRawBuffer());
             }
@@ -977,7 +977,7 @@ startElement(   const   XMLElementDecl&         elemDecl
             if (elemPrefix && *elemPrefix) {
 
                 fElemQNameBuf.set(elemPrefix);
-                fElemQNameBuf.append(chColon);
+                fElemQNameBuf.append(u':');
                 fElemQNameBuf.append(elemDecl.getBaseName());
                 fDocHandler->startElement(fElemQNameBuf.getRawBuffer(), fAttrList);
 

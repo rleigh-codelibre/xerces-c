@@ -55,15 +55,15 @@ static const XMLCh DURATION_D           = u'D';
 static const XMLCh DURATION_H           = u'H';
 static const XMLCh DURATION_S           = u'S';
 
-static const XMLCh DATE_SEPARATOR       = chDash;                 // '-'
-static const XMLCh TIME_SEPARATOR       = chColon;                // ':'
-static const XMLCh TIMEZONE_SEPARATOR   = chColon;                // ':'
+static const XMLCh DATE_SEPARATOR       = u'-';
+static const XMLCh TIME_SEPARATOR       = u':';
+static const XMLCh TIMEZONE_SEPARATOR   = u':';
 static const XMLCh DATETIME_SEPARATOR   = u'T';
-static const XMLCh MILISECOND_SEPARATOR = chPeriod;               // '.'
+static const XMLCh MILISECOND_SEPARATOR = u'.';
 
 static const XMLCh UTC_STD_CHAR         = u'Z';
-static const XMLCh UTC_POS_CHAR         = chPlus;                 // '+'
-static const XMLCh UTC_NEG_CHAR         = chDash;                 // '-'
+static const XMLCh UTC_POS_CHAR         = u'+';
+static const XMLCh UTC_NEG_CHAR         = u'-';
 
 static const XMLCh UTC_SET[]            = {UTC_STD_CHAR           // "Z+-"
                                          , UTC_POS_CHAR
@@ -775,7 +775,7 @@ void XMLDateTime::parseYear()
 
     // skip the first '-' and search for timezone
     //
-    int sign = findUTCSign((fBuffer[0] == chDash) ? 1 : 0);
+    int sign = findUTCSign((fBuffer[0] == u'-') ? 1 : 0);
 
     if (sign == NOT_FOUND)
     {
@@ -881,7 +881,7 @@ void XMLDateTime::parseDuration()
     //
     XMLCh c = fBuffer[fStart++];
     if ( (c != DURATION_STARTER) &&
-         (c != chDash)            )
+         (c != u'-')            )
     {
         ThrowXMLwithMemMgr1(SchemaDateTimeException
                 , XMLExcepts::DateTime_dur_Start_dashP
@@ -890,7 +890,7 @@ void XMLDateTime::parseDuration()
     }
 
     // 'P' must ALWAYS be present in either case
-    if ( (c == chDash) &&
+    if ( (c == u'-') &&
          (fBuffer[fStart++]!= DURATION_STARTER ))
     {
         ThrowXMLwithMemMgr1(SchemaDateTimeException
@@ -902,16 +902,16 @@ void XMLDateTime::parseDuration()
     // java code
     //date[utc]=(c=='-')?'-':0;
     //fValue[utc] = UTC_STD;
-    fValue[utc] = (fBuffer[0] == chDash? UTC_NEG : UTC_STD);
+    fValue[utc] = (fBuffer[0] == u'-'? UTC_NEG : UTC_STD);
 
-    int negate = ( fBuffer[0] == chDash ? -1 : 1);
+    int negate = ( fBuffer[0] == u'-' ? -1 : 1);
 
     //
     // No negative value is allowed after 'P'
     //
     // eg P-1234, invalid
     //
-    if (indexOf(fStart, fEnd, chDash) != NOT_FOUND)
+    if (indexOf(fStart, fEnd, u'-') != NOT_FOUND)
     {
         ThrowXMLwithMemMgr1(SchemaDateTimeException
                 , XMLExcepts::DateTime_dur_DashNotFirst
@@ -1193,7 +1193,7 @@ void XMLDateTime::getYearMonth()
         //"Imcomplete YearMonth Format";
 
     // skip the first leading '-'
-    XMLSize_t start = ( fBuffer[0] == chDash ) ? fStart + 1 : fStart;
+    XMLSize_t start = ( fBuffer[0] == u'-' ) ? fStart + 1 : fStart;
 
     //
     // search for year separator '-'
@@ -1560,7 +1560,7 @@ double XMLDateTime::parseMiliSecond(const XMLSize_t start, const XMLSize_t end) 
 int XMLDateTime::parseIntYear(const XMLSize_t end) const
 {
     // skip the first leading '-'
-    XMLSize_t start = ( fBuffer[0] == chDash ) ? fStart + 1 : fStart;
+    XMLSize_t start = ( fBuffer[0] == u'-' ) ? fStart + 1 : fStart;
 
     XMLSize_t length = end - start;
     if (length < 4)
@@ -1582,7 +1582,7 @@ int XMLDateTime::parseIntYear(const XMLSize_t end) const
         // otherwise they are forbidden");
     }
 
-    bool negative = (fBuffer[0] == chDash);
+    bool negative = (fBuffer[0] == u'-');
     int  yearVal = parseInt((negative ? 1 : 0), end);
     return ( negative ? (-1) * yearVal : yearVal );
 }
@@ -1649,7 +1649,7 @@ XMLCh* XMLDateTime::getDateTimeCanonicalRepresentation(MemoryManager* const memM
 
     if (miliSecondsLen)
     {
-        *retPtr++ = chPeriod;
+        *retPtr++ = u'.';
         XMLString::copyNString(retPtr, miliStartPtr, miliSecondsLen);
         retPtr += miliSecondsLen;
     }
@@ -1847,7 +1847,7 @@ XMLCh* XMLDateTime::getTimeCanonicalRepresentation(MemoryManager* const memMgr) 
 
     if (miliSecondsLen)
     {
-        *retPtr++ = chPeriod;
+        *retPtr++ = u'.';
         XMLString::copyNString(retPtr, miliStartPtr, miliSecondsLen);
         retPtr += miliSecondsLen;
     }
@@ -1887,7 +1887,7 @@ int XMLDateTime::fillYearString(XMLCh*& ptr, int value) const
     XMLSize_t actualLen = XMLString::stringLen(strBuffer);
     // don't forget that years can be negative...
     XMLSize_t negativeYear = 0;
-    if(strBuffer[0] == chDash)
+    if(strBuffer[0] == u'-')
     {
         *ptr++ = strBuffer[0];
         negativeYear = 1;

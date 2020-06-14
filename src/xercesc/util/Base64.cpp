@@ -74,7 +74,7 @@ const XMLByte Base64::base64Inverse[BASELENGTH] =
     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 };
 
-const XMLByte Base64::base64Padding = chEqual;
+const XMLByte Base64::base64Padding = u'=';
 
 /***
  *
@@ -181,7 +181,7 @@ XMLByte* Base64::encode(const XMLByte* const inputData
         encodedData[ outputIndex++ ] = base64Alphabet[ b4 ];
 
         if (( quad % quadsPerLine ) == 0 )
-            encodedData[ outputIndex++ ] = chLF;
+            encodedData[ outputIndex++ ] = u'\n';
     }
 
     //
@@ -223,7 +223,7 @@ XMLByte* Base64::encode(const XMLByte* const inputData
     }
 
     // write out end of the last line
-    encodedData[ outputIndex++ ] = chLF;
+    encodedData[ outputIndex++ ] = u'\n';
     // write out end of string
     encodedData[ outputIndex ] = 0;
 
@@ -474,12 +474,12 @@ XMLByte* Base64::decode (   const XMLByte*        const   inputData
         break;
     case Conf_Schema:
         // no leading #x20
-        if (chSpace == inputData[inputIndex])
+        if (u' ' == inputData[inputIndex])
             return 0;
 
         while ( inputIndex < inputLength )
         {
-            if (chSpace != inputData[inputIndex])
+            if (u' ' != inputData[inputIndex])
             {
                 rawInputData[ rawInputLength++ ] = inputData[ inputIndex ];
                 inWhiteSpace = false;

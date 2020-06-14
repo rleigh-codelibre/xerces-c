@@ -140,7 +140,7 @@ void RegxParser::processNext() {
     if (fParseContext == regexParserStateInBrackets) {
 
         switch (ch) {
-        case chBackSlash:
+        case u'\\':
             nextState = REGX_T_BACKSOLIDUS;
 
             if (fOffset >= fStringLen) {
@@ -149,8 +149,8 @@ void RegxParser::processNext() {
 
             fCharData = fString[fOffset++];
             break;
-        case chDash:
-            if (fOffset < fStringLen && fString[fOffset] == chOpenSquare) {
+        case u'-':
+            if (fOffset < fStringLen && fString[fOffset] == u'[') {
 
                 fOffset++;
                 nextState = REGX_T_XMLSCHEMA_CC_SUBTRACTION;
@@ -181,37 +181,37 @@ void RegxParser::processNext() {
 
     switch (ch) {
 
-    case chPipe:
+    case u'|':
         nextState = REGX_T_OR;
         break;
-    case chAsterisk:
+    case u'*':
         nextState = REGX_T_STAR;
         break;
-    case chPlus:
+    case u'+':
         nextState = REGX_T_PLUS;
         break;
-    case chQuestion:
+    case u'?':
         nextState = REGX_T_QUESTION;
         break;
-    case chCloseParen:
+    case u')':
         nextState = REGX_T_RPAREN;
         break;
-    case chPeriod:
+    case u'.':
         nextState = REGX_T_DOT;
         break;
-    case chOpenSquare:
+    case u'[':
         nextState = REGX_T_LBRACKET;
         break;
-    case chCaret:
+    case u'^':
         nextState = REGX_T_CARET;
         break;
-    case chDollarSign:
+    case u'$':
         nextState = REGX_T_DOLLAR;
         break;
-    case chOpenParen:
+    case u'(':
         nextState = REGX_T_LPAREN;
         break;
-    case chBackSlash:
+    case u'\\':
         nextState = REGX_T_BACKSOLIDUS;
         if (fOffset >= fStringLen) {
             ThrowXMLwithMemMgr(ParseException,XMLExcepts::Parser_Next1, fMemoryManager);
@@ -409,7 +409,7 @@ Token* RegxParser::parseFactor() {
     case REGX_T_QUESTION:
         return processQuestion(tok);
     case REGX_T_CHAR:
-        if (fCharData == chOpenCurly && fOffset < fStringLen) {
+        if (fCharData == u'{' && fOffset < fStringLen) {
 
             int min = 0;
             int max = -1;
@@ -434,7 +434,7 @@ Token* RegxParser::parseFactor() {
 
             max = min;
 
-            if (ch == chComma) {
+            if (ch == u',') {
 
                 if (fOffset >= fStringLen) {
                     ThrowXMLwithMemMgr1(ParseException, XMLExcepts::Parser_Quantifier3, fString, fMemoryManager);
@@ -459,7 +459,7 @@ Token* RegxParser::parseFactor() {
                 }
             }
 
-            if (ch != chCloseCurly)  {
+            if (ch != u'}')  {
                 ThrowXMLwithMemMgr1(ParseException, XMLExcepts::Parser_Quantifier2, fString, fMemoryManager);
             }
 
@@ -558,9 +558,9 @@ Token* RegxParser::parseAtom() {
         processNext();
         break;
     case REGX_T_CHAR:
-        if (fCharData == chOpenCurly
-            || fCharData == chCloseCurly
-            || fCharData == chCloseSquare)
+        if (fCharData == u'{'
+            || fCharData == u'}'
+            || fCharData == u']')
             ThrowXMLwithMemMgr(ParseException,XMLExcepts::Parser_Atom4, fMemoryManager);
 
         tok = fTokenFactory->createChar(fCharData);
@@ -578,11 +578,11 @@ RangeToken* RegxParser::processBacksolidus_pP(const XMLInt32 ch) {
 
     processNext();
 
-    if (fState != REGX_T_CHAR || fCharData != chOpenCurly)
+    if (fState != REGX_T_CHAR || fCharData != u'{')
         ThrowXMLwithMemMgr(ParseException,XMLExcepts::Parser_Atom2, fMemoryManager);
 
     XMLSize_t nameStart = fOffset;
-    int nameEnd = XMLString::indexOf(fString,chCloseCurly,nameStart, fMemoryManager);
+    int nameEnd = XMLString::indexOf(fString,u'}',nameStart, fMemoryManager);
 
     if (nameEnd < 0)
         ThrowXMLwithMemMgr(ParseException,XMLExcepts::Parser_Atom3, fMemoryManager);
@@ -606,7 +606,7 @@ RangeToken* RegxParser::parseCharacterClass(const bool useNRange) {
     RangeToken* tok = 0;
     bool isNRange = false;
 
-    if (getState() == REGX_T_CHAR && getCharData() == chCaret) {
+    if (getState() == REGX_T_CHAR && getCharData() == u'^') {
         isNRange = true;
         processNext();
     }
@@ -621,7 +621,7 @@ RangeToken* RegxParser::parseCharacterClass(const bool useNRange) {
         wasDecoded = false;
 
         // single range | from-to-range | subtraction
-        if (type == REGX_T_CHAR && getCharData() == chCloseSquare && !firstLoop)
+        if (type == REGX_T_CHAR && getCharData() == u']' && !firstLoop)
             break;
 
         XMLInt32 ch = getCharData();
@@ -658,7 +658,7 @@ RangeToken* RegxParser::parseCharacterClass(const bool useNRange) {
                     end = true;
                 }
                 break;
-            case chDash:
+            case u'-':
                 wasDecoded = true;
                 // fall thru to default.
             default:
@@ -675,7 +675,7 @@ RangeToken* RegxParser::parseCharacterClass(const bool useNRange) {
             RangeToken* rangeTok = parseCharacterClass(false);
             tok->subtractRanges(rangeTok);
 
-            if (getState() != REGX_T_CHAR || getCharData() != chCloseSquare) {
+            if (getState() != REGX_T_CHAR || getCharData() != u']') {
                 ThrowXMLwithMemMgr(ParseException,XMLExcepts::Parser_CC5, getMemoryManager());
             }
             break;
@@ -686,20 +686,20 @@ RangeToken* RegxParser::parseCharacterClass(const bool useNRange) {
         if (!end) {
 
             if (type == REGX_T_CHAR
-                && (ch == chOpenSquare
-                    || ch == chCloseSquare
-                    || (ch == chDash && getCharData() == chCloseSquare && firstLoop))) {
+                && (ch == u'['
+                    || ch == u']'
+                    || (ch == u'-' && getCharData() == u']' && firstLoop))) {
                 // if regex = [-] then invalid...
                 // '[', ']', '-' not allowed and should be escaped
                 XMLCh chStr[] = { (XMLCh)ch, u'\0' };
                 ThrowXMLwithMemMgr2(ParseException,XMLExcepts::Parser_CC6, chStr, chStr, getMemoryManager());
             }
-            if (ch == chDash && getCharData() == chDash && getState() != REGX_T_BACKSOLIDUS && !wasDecoded) {
+            if (ch == u'-' && getCharData() == u'-' && getState() != REGX_T_BACKSOLIDUS && !wasDecoded) {
                 XMLCh chStr[] = { (XMLCh)ch, u'\0' };
                 ThrowXMLwithMemMgr2(ParseException,XMLExcepts::Parser_CC6, chStr, chStr, getMemoryManager());
             }
 
-            if (getState() != REGX_T_CHAR || getCharData() != chDash) {
+            if (getState() != REGX_T_CHAR || getCharData() != u'-') {
                 tok->addRange(ch, ch);
             }
             else {
@@ -708,13 +708,13 @@ RangeToken* RegxParser::parseCharacterClass(const bool useNRange) {
                 if ((type = getState()) == REGX_T_EOF)
                     ThrowXMLwithMemMgr(ParseException,XMLExcepts::Parser_CC2, getMemoryManager());
 
-                if (type == REGX_T_CHAR && getCharData() == chCloseSquare) {
+                if (type == REGX_T_CHAR && getCharData() == u']') {
                     tok->addRange(ch, ch);
-                    tok->addRange(chDash, chDash);
+                    tok->addRange(u'-', u'-');
                 }
                 else if (type == REGX_T_XMLSCHEMA_CC_SUBTRACTION) {
 
-                    static const XMLCh dashStr[] = { chDash, u'\0'};
+                    static const XMLCh dashStr[] = { u'-', u'\0'};
                     ThrowXMLwithMemMgr2(ParseException, XMLExcepts::Parser_CC6, dashStr, dashStr, getMemoryManager());
                 }
                 else {
@@ -724,9 +724,9 @@ RangeToken* RegxParser::parseCharacterClass(const bool useNRange) {
 
                     if (type == REGX_T_CHAR) {
 
-                        if (rangeEnd == chOpenSquare
-                            || rangeEnd == chCloseSquare
-                            || rangeEnd == chDash)
+                        if (rangeEnd == u'['
+                            || rangeEnd == u']'
+                            || rangeEnd == u'-')
                             // '[', ']', '-' not allowed and should be escaped
                             ThrowXMLwithMemMgr2(ParseException, XMLExcepts::Parser_CC6, rangeEndStr, rangeEndStr, getMemoryManager());
                     }
@@ -819,33 +819,33 @@ XMLInt32 RegxParser::decodeEscaped() {
 
     switch (ch) {
     case u'n':
-        ch = chLF;
+        ch = u'\n';
         break;
     case u'r':
-        ch = chCR;
+        ch = u'\r';
         break;
     case u't':
-        ch = chHTab;
+        ch = u'\t';
         break;
-    case chBackSlash:
-    case chPipe:
-    case chPeriod:
-    case chCaret:
-    case chDash:
-    case chQuestion:
-    case chAsterisk:
-    case chPlus:
-    case chOpenCurly:
-    case chCloseCurly:
-    case chOpenParen:
-    case chCloseParen:
-    case chOpenSquare:
-    case chCloseSquare:
-    case chDollarSign:
+    case u'\\':
+    case u'|':
+    case u'.':
+    case u'^':
+    case u'-':
+    case u'?':
+    case u'*':
+    case u'+':
+    case u'{':
+    case u'}':
+    case u'(':
+    case u')':
+    case u'[':
+    case u']':
+    case u'$':
         break;
     default:
     {
-        XMLCh chString[] = {chBackSlash, (XMLCh)ch, u'\0'};
+        XMLCh chString[] = {u'\\', (XMLCh)ch, u'\0'};
         ThrowXMLwithMemMgr1(ParseException,XMLExcepts::Parser_Process2, chString, getMemoryManager());
     }
     }
@@ -858,7 +858,7 @@ XMLInt32 RegxParser::decodeEscaped() {
 // ---------------------------------------------------------------------------
 bool RegxParser::checkQuestion(const XMLSize_t off) {
 
-    return ((off < fStringLen) && fString[off] == chQuestion);
+    return ((off < fStringLen) && fString[off] == u'?');
 }
 
 }

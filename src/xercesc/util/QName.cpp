@@ -196,7 +196,7 @@ const XMLCh* QName::getRawName() const
             const XMLSize_t prefixLen = XMLString::stringLen(fPrefix);
 
             XMLString::moveChars(fRawName, fPrefix, prefixLen);
-            fRawName[prefixLen] = chColon;
+            fRawName[prefixLen] = u':';
             XMLString::copyString(&fRawName[prefixLen+1], fLocalPart);
         }
          else
@@ -253,7 +253,7 @@ XMLCh* QName::getRawName()
             const XMLSize_t prefixLen = XMLString::stringLen(fPrefix);
 
             XMLString::moveChars(fRawName, fPrefix, prefixLen);
-            fRawName[prefixLen] = chColon;
+            fRawName[prefixLen] = u':';
             XMLString::copyString(&fRawName[prefixLen+1], fLocalPart);
         }
          else
@@ -288,7 +288,7 @@ void QName::setName(const XMLCh* const    rawName
     //set the rawName
     XMLSize_t newLen = XMLString::stringLen(rawName);
     //find out the prefix and localPart from the rawName
-    const int colonInd = XMLString::indexOf(rawName, chColon);
+    const int colonInd = XMLString::indexOf(rawName, u':');
 
     if (colonInd >= 0)
     {

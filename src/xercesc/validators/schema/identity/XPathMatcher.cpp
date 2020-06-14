@@ -264,13 +264,13 @@ void XPathMatcher::startElement(const XMLElementDecl& elemDecl,
                             // store QName using their Clark name
                             if(dv && dv->getType()==DatatypeValidator::QName)
                             {
-                                int index=XMLString::indexOf(value, chColon);
+                                int index=XMLString::indexOf(value, u':');
                                 if(index==-1)
                                     matched(value, dv, false);
                                 else
                                 {
                                     XMLBuffer buff(1023, fMemoryManager);
-                                    buff.append(chOpenCurly);
+                                    buff.append(u'{');
                                     if(validationContext)
                                     {
                                         XMLCh* prefix=(XMLCh*)fMemoryManager->allocate((index+1)*sizeof(XMLCh));
@@ -278,7 +278,7 @@ void XPathMatcher::startElement(const XMLElementDecl& elemDecl,
                                         XMLString::subString(prefix, value, 0, (XMLSize_t)index, fMemoryManager);
                                         buff.append(validationContext->getURIForPrefix(prefix));
                                     }
-                                    buff.append(chCloseCurly);
+                                    buff.append(u'}');
                                     buff.append(value+index+1);
                                     matched(buff.getRawBuffer(), dv, false);
                                 }
@@ -336,13 +336,13 @@ void XPathMatcher::endElement(const XMLElementDecl& elemDecl,
             // store QName using their Clark name
             if(dv && dv->getType()==DatatypeValidator::QName)
             {
-                int index=XMLString::indexOf(elemContent, chColon);
+                int index=XMLString::indexOf(elemContent, u':');
                 if(index==-1)
                     matched(elemContent, dv, isNillable);
                 else
                 {
                     XMLBuffer buff(1023, fMemoryManager);
-                    buff.append(chOpenCurly);
+                    buff.append(u'{');
                     if(validationContext)
                     {
                         XMLCh* prefix=(XMLCh*)fMemoryManager->allocate((index+1)*sizeof(XMLCh));
@@ -350,7 +350,7 @@ void XPathMatcher::endElement(const XMLElementDecl& elemDecl,
                         XMLString::subString(prefix, elemContent, 0, (XMLSize_t)index, fMemoryManager);
                         buff.append(validationContext->getURIForPrefix(prefix));
                     }
-                    buff.append(chCloseCurly);
+                    buff.append(u'}');
                     buff.append(elemContent+index+1);
                     matched(buff.getRawBuffer(), dv, isNillable);
                 }

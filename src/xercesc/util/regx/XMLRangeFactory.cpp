@@ -160,14 +160,14 @@ void XMLRangeFactory::buildRanges(RangeTokenMap *rangeTokMap) {
     memcpy(nameRange, wordRange, wordRangeLen * sizeof(XMLInt32));
     setupRange(nameRange, gCombiningChars, wordRangeLen);
     setupRange(nameRange, gExtenderChars, wordRangeLen + combTblLen);
-    nameRange[nameTblLen++] = chDash;
-    nameRange[nameTblLen++] = chDash;
-    nameRange[nameTblLen++] = chColon;
-    nameRange[nameTblLen++] = chColon;
-    nameRange[nameTblLen++] = chPeriod;
-    nameRange[nameTblLen++] = chPeriod;
-    nameRange[nameTblLen++] = chUnderscore;
-    nameRange[nameTblLen++] = chUnderscore;
+    nameRange[nameTblLen++] = u'-';
+    nameRange[nameTblLen++] = u'-';
+    nameRange[nameTblLen++] = u':';
+    nameRange[nameTblLen++] = u':';
+    nameRange[nameTblLen++] = u'.';
+    nameRange[nameTblLen++] = u'.';
+    nameRange[nameTblLen++] = u'_';
+    nameRange[nameTblLen++] = u'_';
     tok->sortRanges();
     tok->compactRanges();
     // Build the internal map.
@@ -189,10 +189,10 @@ void XMLRangeFactory::buildRanges(RangeTokenMap *rangeTokMap) {
 
     tok->setRangeValues(initialNameRange, initialNameTblLen + 4);
     memcpy(initialNameRange, wordRange, initialNameTblLen * sizeof(XMLInt32));
-    initialNameRange[initialNameTblLen++] = chColon;
-    initialNameRange[initialNameTblLen++] = chColon;
-    initialNameRange[initialNameTblLen++] = chUnderscore;
-    initialNameRange[initialNameTblLen++] = chUnderscore;
+    initialNameRange[initialNameTblLen++] = u':';
+    initialNameRange[initialNameTblLen++] = u':';
+    initialNameRange[initialNameTblLen++] = u'_';
+    initialNameRange[initialNameTblLen++] = u'_';
     tok->sortRanges();
     tok->compactRanges();
     // Build the internal map.
