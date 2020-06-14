@@ -1486,8 +1486,7 @@ void AbstractDOMParser::endAttList
 
                     XMLBufBid bbQName(&fBufMgr);
                     XMLBuffer& buf = bbQName.getBuffer();
-                    static const XMLCh XMLNS[] = {
-                        chLatin_x, chLatin_m, chLatin_l, chLatin_n, chLatin_s, chNull};
+                    static const XMLCh *XMLNS = u"xmlns";
 
                     if (index > 0) {
                         // there is prefix

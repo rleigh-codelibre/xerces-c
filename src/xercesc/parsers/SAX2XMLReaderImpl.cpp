@@ -52,10 +52,7 @@ SAX2XMLReader * XMLReaderFactory::createXMLReader(  MemoryManager* const  manage
 }
 
 
-const XMLCh gDTDEntityStr[] =
-{
-    chOpenSquare, chLatin_d, chLatin_t, chLatin_d, chCloseSquare, chNull
-};
+const XMLCh *gDTDEntityStr = u"[dtd]";
 
 
 
