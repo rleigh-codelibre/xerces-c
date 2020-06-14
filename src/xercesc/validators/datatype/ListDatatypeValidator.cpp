@@ -425,7 +425,7 @@ const XMLCh* ListDatatypeValidator::getCanonicalRepresentation(const XMLCh*     
             XMLString::catString(retBufPtr, itemCanRep);
             retBufPtr = retBufPtr + itemLen;
             *(retBufPtr++) = chSpace;
-            *(retBufPtr) = chNull;
+            *(retBufPtr) = u'\0';
             toUse->deallocate(itemCanRep);
         }
 

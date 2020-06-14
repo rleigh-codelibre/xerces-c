@@ -880,7 +880,7 @@ void SchemaValidator::preContentValidation(bool,
                             if (!*listPtr)
                                 breakFlag = true;
                             else
-                                *listPtr = chNull;
+                                *listPtr = u'\0';
 
                             if (!sGrammar.getNotationDecl(lastPtr))
                             {

@@ -37,21 +37,9 @@ namespace XERCES_CPP_NAMESPACE {
 // ---------------------------------------------------------------------------
 //  Local const data
 // ---------------------------------------------------------------------------
-static const XMLCh fgValueZero[] =
-{
-    chDigit_0, chNull
-};
-
-static const XMLCh fgValueOne[] =
-{
-    chDigit_1, chNull
-};
-
-static const XMLCh fgUnbounded[] =
-{
-    chLatin_u, chLatin_n, chLatin_b, chLatin_o, chLatin_u, chLatin_n, chLatin_d,
-    chLatin_e, chLatin_d, chNull
-};
+static const XMLCh *fgValueZero = u"0";
+static const XMLCh *fgValueOne  = u"1";
+static const XMLCh *fgUnbounded = u"unbounded";
 
 // ---------------------------------------------------------------------------
 //  Static member data initialization

@@ -630,7 +630,7 @@ void DTDValidator::checkTokenList(const XMLAttDef&  curAttDef
         if (!*listPtr)
             breakFlag = true;
         else
-            *listPtr++ = chNull;
+            *listPtr++ = u'\0';
 
         //distinction check
         //there should be no same token found in the remaining list

@@ -143,12 +143,12 @@ void DatatypeValidator::setTypeName(const XMLCh* const name, const XMLCh* const 
         if (uri)
 			XMLString::moveChars(fTypeName, uri, uriLen+1);
         else
-			fTypeName[0] = chNull;
+			fTypeName[0] = u'\0';
 
         if (name)
             XMLString::moveChars(&fTypeName[uriLen+1], name, nameLen+1);
         else
-            fTypeName[uriLen+1] = chNull;
+            fTypeName[uriLen+1] = u'\0';
     }
     else
     {
@@ -182,7 +182,7 @@ void DatatypeValidator::setTypeName(const XMLCh* const typeName)
         else {
             fTypeUri = fTypeName;
             fTypeLocalName = &fTypeName[commaOffset+1];
-            fTypeName[commaOffset] = chNull;
+            fTypeName[commaOffset] = u'\0';
         }
     }
     else

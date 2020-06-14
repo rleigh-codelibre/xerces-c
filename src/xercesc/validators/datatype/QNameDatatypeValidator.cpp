@@ -127,7 +127,7 @@ void QNameDatatypeValidator::checkContent( const XMLCh*             const conten
 
         colonPos = XMLString::indexOf(content, chColon);
         if (colonPos > 0) {                        
-            prefix[colonPos] = chNull;                     
+            prefix[colonPos] = u'\0';
             if (context->isPrefixUnknown(prefix)) {
                 ThrowXMLwithMemMgr1(InvalidDatatypeValueException
                     , XMLExcepts::VALUE_QName_Invalid2
@@ -186,7 +186,7 @@ void QNameDatatypeValidator::checkContent( const XMLCh*             const conten
             
             if (colonPos != -1) {
                 enumLocalName = enumPrefix + colonPos + 1;
-                enumPrefix[colonPos] = chNull;
+                enumPrefix[colonPos] = u'\0';
             }
             else {
                 enumLocalName = enumPrefix;

@@ -94,32 +94,11 @@ protected:
 // ---------------------------------------------------------------------------
 //  TraverseSchema: Local const data
 // ---------------------------------------------------------------------------
-static const XMLCh fgAnonSNamePrefix[] =
-{
-    chUnderscore, chUnderscore, chLatin_A, chLatin_n, chLatin_o, chLatin_n, chLatin_S, chNull
-};
-
-static const XMLCh fgAnonCNamePrefix[] =
-{
-    chUnderscore, chUnderscore, chLatin_A, chLatin_n, chLatin_o, chLatin_n, chLatin_C, chNull
-};
-
-static const XMLCh fgUnbounded[] =
-{
-    chLatin_u, chLatin_n, chLatin_b, chLatin_o, chLatin_u, chLatin_n, chLatin_d,
-    chLatin_e, chLatin_d, chNull
-};
-
-static const XMLCh fgValueOne[] =
-{
-    chDigit_1, chNull
-};
-
-static const XMLCh fgValueZero[] =
-{
-    chDigit_0, chNull
-};
-
+static const XMLCh *fgAnonSNamePrefix = u"__AnonS";
+static const XMLCh *fgAnonCNamePrefix = u"__AnonC";
+static const XMLCh *fgUnbounded =       u"unbounded";
+static const XMLCh *fgValueOne =        u"1";
+static const XMLCh *fgValueZero =       u"0";
 static const XMLCh* fgIdentityConstraints[] =
 {
     SchemaSymbols::fgELT_UNIQUE,
@@ -127,13 +106,7 @@ static const XMLCh* fgIdentityConstraints[] =
     SchemaSymbols::fgELT_KEYREF
 };
 
-static const XMLCh fgSynthetic_Annotation[] =
-{
-    chLatin_S, chLatin_y, chLatin_n, chLatin_t, chLatin_h, chLatin_e, chLatin_t
-    ,   chLatin_i, chLatin_c, chUnderscore
-    ,   chLatin_A, chLatin_n, chLatin_n, chLatin_o, chLatin_t, chLatin_a, chLatin_t
-    ,   chLatin_i, chLatin_o, chLatin_n, chNull
-};
+static const XMLCh fgSynthetic_Annotation[] = u"Synthetic_Annotation";
 
 
 // Flags for global declaration
@@ -8051,9 +8024,9 @@ bool TraverseSchema::wildcardAllowsNamespace(const SchemaAttDef* const wildCard,
     }
 
     // All of the following must be true:
-    //    2.1 The constraint is a pair of not and a namespace name or ·absent
-    //    2.2 The value must not be identical to the ·namespace test·.
-    //    2.3 The value must not be ·absent·.
+    //    2.1 The constraint is a pair of not and a namespace name or ï¿½absent
+    //    2.2 The value must not be identical to the ï¿½namespace testï¿½.
+    //    2.3 The value must not be ï¿½absentï¿½.
     if (wildCardType == XMLAttDef::Any_Other &&
         ((int) nameURI) != fEmptyNamespaceURI &&
         wildCard->getAttName()->getURI() != nameURI) {
@@ -8091,7 +8064,7 @@ bool TraverseSchema::isWildCardSubset(const SchemaAttDef* const baseAttWildCard,
     }
 
     // 2 All of the following must be true:
-    //     2.1 sub must be a pair of not and a namespace name or ·absent·.
+    //     2.1 sub must be a pair of not and a namespace name or ï¿½absentï¿½.
     //     2.2 super must be a pair of not and the same value.
     if (childWildCardType == XMLAttDef::Any_Other && baseWildCardType == XMLAttDef::Any_Other &&
         childAttWildCard->getAttName()->getURI() == baseAttWildCard->getAttName()->getURI()) {
@@ -8099,10 +8072,10 @@ bool TraverseSchema::isWildCardSubset(const SchemaAttDef* const baseAttWildCard,
     }
 
     // 3 All of the following must be true:
-    //     3.1 sub must be a set whose members are either namespace names or ·absent·.
+    //     3.1 sub must be a set whose members are either namespace names or ï¿½absentï¿½.
     //     3.2 One of the following must be true:
     //          3.2.1 super must be the same set or a superset thereof.
-    //          3.2.2 super must be a pair of not and a namespace name or ·absent· and
+    //          3.2.2 super must be a pair of not and a namespace name or ï¿½absentï¿½ and
     //                 that value must not be in sub's set.
     if (childWildCardType == XMLAttDef::Any_List) {
 

@@ -559,11 +559,11 @@ DTDScanner::scanAttDef(DTDElementDecl& parentElem, XMLBuffer& bufToUse)
         }
 
         // if attdef is xml:space, check correct enumeration (default|preserve)
-        const XMLCh fgXMLSpace[] = { chLatin_x, chLatin_m, chLatin_l, chColon, chLatin_s, chLatin_p, chLatin_a, chLatin_c, chLatin_e, chNull };
+        const XMLCh *fgXMLSpace = u"xml:space";
 
         if (XMLString::equals(decl->getFullName(),fgXMLSpace)) {
-            const XMLCh fgPreserve[] = { chLatin_p, chLatin_r, chLatin_e, chLatin_s, chLatin_e, chLatin_r, chLatin_v, chLatin_e, chNull };
-            const XMLCh fgDefault[] = { chLatin_d, chLatin_e, chLatin_f, chLatin_a, chLatin_u, chLatin_l, chLatin_t, chNull };
+            const XMLCh *fgPreserve = u"preserve";
+            const XMLCh *fgDefault = u"default";
             bool ok = false;
             if (decl->getType() == XMLAttDef::Enumeration) {
                 BaseRefVectorOf<XMLCh>* enumVector = XMLString::tokenizeString(decl->getEnumeration(), fMemoryManager);
@@ -996,7 +996,7 @@ bool DTDScanner::scanCharRef(XMLCh& first, XMLCh& second)
         {
             XMLCh tmpStr[2];
             tmpStr[0] = nextCh;
-            tmpStr[1] = chNull;
+            tmpStr[1] = u'\0';
             fScanner->emitError(XMLErrs::BadDigitForRadix, tmpStr);
         }
          else
@@ -2524,7 +2524,7 @@ void DTDScanner::scanExtSubsetDecl(const bool inIncludeSect, const bool isDTD)
                 }
                 catch (XMLException& ex) {
                     fScanner->emitError(XMLErrs::XMLException_Fatal, ex.getCode(), ex.getMessage(), NULL, NULL);
-                    nextCh = chNull;
+                    nextCh = u'\0';
                 }
 
                 if (!nextCh)
@@ -2639,11 +2639,7 @@ void DTDScanner::scanExtSubsetDecl(const bool inIncludeSect, const bool isDTD)
                     }
 
                     // Try to get realigned
-                    static const XMLCh toSkip[] =
-                    {
-                        chPercent, chCloseSquare, chOpenAngle, chNull
-                    };
-                    fReaderMgr->skipUntilInOrWS(toSkip);
+                    fReaderMgr->skipUntilInOrWS(u"%]<");
                 }
                 bAcceptDecl = false;
             }
@@ -3048,11 +3044,7 @@ bool DTDScanner::scanInternalSubset()
             //  Otherwise, try to sync back up by scanning forward for
             //  a reasonable start character.
             //
-            static const XMLCh toSkip[] =
-            {
-                chPercent, chCloseSquare, chOpenAngle, chNull
-            };
-            fReaderMgr->skipUntilInOrWS(toSkip);
+            fReaderMgr->skipUntilInOrWS(u"%]<");
         }
     }
 

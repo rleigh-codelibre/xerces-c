@@ -65,20 +65,11 @@ namespace XERCES_CPP_NAMESPACE {
 // ---------------------------------------------------------------------------
 //  DatatypeValidatorFactory: Local const data
 // ---------------------------------------------------------------------------
-const XMLCh fgTokPattern[] =
-{
-    chBackSlash, chLatin_c, chPlus, chNull
-};
+static const XMLCh *fgTokPattern = u"\\c+";
 
 //E2-43
 //[+\-]?[0-9]+
-const XMLCh fgIntegerPattern[] =
-{
-    chOpenSquare, chPlus, chBackSlash, chDash, chCloseSquare, chQuestion,
-    chOpenSquare, chDigit_0, chDash, chDigit_9, chCloseSquare, chPlus, chNull
-};
-
-
+static const XMLCh *fgIntegerPattern = u"[+\\-]?[0-9]+";
 
 
 // ---------------------------------------------------------------------------
