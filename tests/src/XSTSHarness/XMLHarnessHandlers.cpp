@@ -50,21 +50,21 @@ XMLHarnessHandlers::~XMLHarnessHandlers()
     delete fParser;
 }
 
-static XMLCh szTest[]={ chLatin_T, chLatin_E, chLatin_S, chLatin_T, chNull };
-static XMLCh szTestCases[]={ chLatin_T, chLatin_E, chLatin_S, chLatin_T, chLatin_C, chLatin_A, chLatin_S, chLatin_E, chLatin_S, chNull };
-static XMLCh szID[]={ chLatin_I, chLatin_D, chNull };
-static XMLCh szURI[]={ chLatin_U, chLatin_R, chLatin_I, chNull };
-static XMLCh szType[]={ chLatin_T, chLatin_Y, chLatin_P, chLatin_E, chNull };
-static XMLCh szValid[]={ chLatin_v, chLatin_a, chLatin_l, chLatin_i, chLatin_d, chNull };
-static XMLCh szInvalid[]={ chLatin_i, chLatin_n, chLatin_v, chLatin_a, chLatin_l, chLatin_i, chLatin_d, chNull };
-static XMLCh szNotWellFormed[]={ chLatin_n, chLatin_o, chLatin_t, chDash, chLatin_w, chLatin_f, chNull };
-static XMLCh szError[]={ chLatin_e, chLatin_r, chLatin_r, chLatin_o, chLatin_r, chNull };
-static XMLCh szBase[]={ chLatin_x, chLatin_m, chLatin_l, chColon, chLatin_b, chLatin_a, chLatin_s, chLatin_e, chNull };
-static XMLCh szNamespace[]={ chLatin_N, chLatin_A, chLatin_M, chLatin_E, chLatin_S, chLatin_P, chLatin_A, chLatin_C, chLatin_E, chNull };
-static XMLCh szNO[]={ chLatin_n, chLatin_o, chNull };
-static XMLCh szVersion[] = { chLatin_V, chLatin_E, chLatin_R, chLatin_S, chLatin_I, chLatin_O, chLatin_N, chNull };
-static XMLCh szEdition[] = { chLatin_E, chLatin_D, chLatin_I, chLatin_T, chLatin_I, chLatin_O, chLatin_N, chNull };
-static XMLCh szFive[]={ chDigit_5, chNull };
+static XMLCh szTest[]= u"TEST";
+static XMLCh szTestCases[]= u"TESTCASES";
+static XMLCh szID[]= u"ID";
+static XMLCh szURI[]= u"URI";
+static XMLCh szType[]= u"TYPE";
+static XMLCh szValid[]= u"valid";
+static XMLCh szInvalid[]= u"invalid";
+static XMLCh szNotWellFormed[]= u"not-wf";
+static XMLCh szError[]= u"error";
+static XMLCh szBase[]= u"xml:base";
+static XMLCh szNamespace[]= u"NAMESPACE";
+static XMLCh szNO[]= u"no";
+static XMLCh szVersion[] = u"VERSION";
+static XMLCh szEdition[] = u"EDITION";
+static XMLCh szFive[]= u"5";
 
 // ---------------------------------------------------------------------------
 //  XMLHarnessHandlers: Implementation of the SAX DocumentHandler interface

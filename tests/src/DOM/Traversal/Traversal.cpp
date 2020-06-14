@@ -221,8 +221,7 @@ int  main()
         E11->appendChild(cdataSec);
 
         XMLString::transcode("DocPI", tempStr, 3999);
-        XMLCh piStr[] = {chLatin_D, chLatin_o, chLatin_c, chLatin_P, chLatin_I, chNull};
-        DOMProcessingInstruction*  docPI = doc->createProcessingInstruction(piStr, tempStr);
+        DOMProcessingInstruction*  docPI = doc->createProcessingInstruction(u"DocPI", tempStr);
         E13->appendChild(docPI);
 
 

@@ -55,40 +55,26 @@ XSTSHarnessHandlers::~XSTSHarnessHandlers()
     delete fParser;
 }
 
-static XMLCh urlW3C[]={ chLatin_h, chLatin_t, chLatin_t, chLatin_p, chColon, chForwardSlash, chForwardSlash,
-                        chLatin_w, chLatin_w, chLatin_w, chPeriod, chLatin_w, chDigit_3, chPeriod, chLatin_o, chLatin_r, chLatin_g, chForwardSlash,
-                        chLatin_X, chLatin_M, chLatin_L, chForwardSlash,
-                        chLatin_S, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_a, chNull };
+static XMLCh urlW3C[] = u"http://www.w3.org/XML/Schema";
 
-static XMLCh szTestSuite[]={ chLatin_T, chLatin_e, chLatin_s, chLatin_t, chLatin_S, chLatin_u, chLatin_i, chLatin_t, chLatin_e, chNull };
-static XMLCh szTestGroup[]={ chLatin_t, chLatin_e, chLatin_s, chLatin_t, chLatin_G, chLatin_r, chLatin_o, chLatin_u, chLatin_p, chNull };
-static XMLCh szSchemaTest[]={ chLatin_s, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_a, chLatin_T, chLatin_e, chLatin_s, chLatin_t, chNull };
-static XMLCh szInstanceTest[]={ chLatin_i, chLatin_n, chLatin_s, chLatin_t, chLatin_a, chLatin_n, chLatin_c, chLatin_e, chLatin_T, chLatin_e, chLatin_s, chLatin_t, chNull };
-static XMLCh szDocumentationReference[]={ chLatin_d, chLatin_o, chLatin_c, chLatin_u, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n,
-                                          chLatin_R, chLatin_e, chLatin_f, chLatin_e, chLatin_r, chLatin_e, chLatin_n, chLatin_c, chLatin_e, chNull };
-static XMLCh szSchemaDocument[]={ chLatin_s, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_a, chLatin_D, chLatin_o, chLatin_c, chLatin_u, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chNull };
-static XMLCh szInstanceDocument[]={ chLatin_i, chLatin_n, chLatin_s, chLatin_t, chLatin_a, chLatin_n, chLatin_c, chLatin_e, chLatin_D, chLatin_o, chLatin_c, chLatin_u, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chNull };
-static XMLCh szExpected[]={ chLatin_e, chLatin_x, chLatin_p, chLatin_e, chLatin_c, chLatin_t, chLatin_e, chLatin_d, chNull };
-static XMLCh szValidity[]={ chLatin_v, chLatin_a, chLatin_l, chLatin_i, chLatin_d, chLatin_i, chLatin_t, chLatin_y, chNull };
+static XMLCh szTestSuite[] =              u"TestSuite";
+static XMLCh szTestGroup[] =              u"testGroup";
+static XMLCh szSchemaTest[] =             u"schemaTest";
+static XMLCh szInstanceTest[] =           u"instanceTest";
+static XMLCh szDocumentationReference[] = u"documentationReference";
+static XMLCh szSchemaDocument[] =         u"schemaDocument";
+static XMLCh szInstanceDocument[] =       u"instanceDocument";
+static XMLCh szExpected[] =               u"expected";
+static XMLCh szValidity[] =               u"validity";
 
-static XMLCh szXLINK[]={ chLatin_h, chLatin_t, chLatin_t, chLatin_p, chColon, chForwardSlash, chForwardSlash,
-                         chLatin_w, chLatin_w, chLatin_w, chPeriod, chLatin_w, chDigit_3, chPeriod, chLatin_o, chLatin_r, chLatin_g, chForwardSlash,
-                         chDigit_1, chDigit_9, chDigit_9, chDigit_9, chForwardSlash,
-                         chLatin_x, chLatin_l, chLatin_i, chLatin_n, chLatin_k, chNull };
-static XMLCh szHREF[]={ chLatin_h, chLatin_r, chLatin_e, chLatin_f, chNull };
-static XMLCh szNAME[]={ chLatin_n, chLatin_a, chLatin_m, chLatin_e, chNull };
-static XMLCh szVALID[]={ chLatin_v, chLatin_a, chLatin_l, chLatin_i, chLatin_d, chNull };
-static XMLCh szINVALID[]={ chLatin_i, chLatin_n, chLatin_v, chLatin_a, chLatin_l, chLatin_i, chLatin_d, chNull };
+static XMLCh szXLINK[] =    u"http://www.w3.org/1999/xlink";
+static XMLCh szHREF[] =     u"href";
+static XMLCh szNAME[] =     u"name";
+static XMLCh szVALID[] =    u"valid";
+static XMLCh szINVALID[] =  u"invalid";
 
-
-static XMLCh szTestSuite2[]={ chLatin_h, chLatin_t, chLatin_t, chLatin_p, chColon, chForwardSlash, chForwardSlash,
-                        chLatin_w, chLatin_w, chLatin_w, chPeriod, chLatin_w, chDigit_3, chPeriod, chLatin_o, chLatin_r, chLatin_g, chForwardSlash,
-                        chLatin_X, chLatin_M, chLatin_L, chForwardSlash,
-                        chDigit_2, chDigit_0, chDigit_0, chDigit_4, chForwardSlash,
-                        chLatin_x, chLatin_m, chLatin_l, chDash, chLatin_s, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_a, chDash,
-                        chLatin_t, chLatin_e, chLatin_s, chLatin_t, chDash, chLatin_s, chLatin_u, chLatin_i, chLatin_t, chLatin_e, chForwardSlash, chNull };
-
-static XMLCh szTestSetRef[]={ chLatin_t, chLatin_e, chLatin_s, chLatin_t, chLatin_S, chLatin_e, chLatin_t, chLatin_R, chLatin_e, chLatin_f, chNull };
+static XMLCh szTestSuite2[] = u"http://www.w3.org/XML/2004/xml-schema-test-suite/";
+static XMLCh szTestSetRef[] = u"testSetRef";
 
 // ---------------------------------------------------------------------------
 //  XSTSHarnessHandlers: Implementation of the SAX DocumentHandler interface

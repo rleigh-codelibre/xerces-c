@@ -80,75 +80,67 @@ void tassert(bool c, const char *file, int line)
     }                                                               \
 }
 //Define a bunch of XMLCh* string for comparison
-XMLCh xa[] = {chLatin_a, chNull};
-XMLCh xab[] = {chLatin_a, chLatin_b, chNull};
-XMLCh xabHello[] = {chLatin_a, chLatin_b, chLatin_H, chLatin_e, chLatin_l, chLatin_l, chLatin_o, chNull};
-XMLCh xabHellocd[] = {chLatin_a, chLatin_b, chLatin_H, chLatin_e, chLatin_l, chLatin_l, chLatin_o, chSpace, chLatin_c, chLatin_d, chNull};
-XMLCh xAnotherText[] = {chLatin_A, chLatin_n, chLatin_o, chLatin_t, chLatin_h, chLatin_e, chLatin_r,
-     chLatin_T, chLatin_e, chLatin_x, chLatin_t, chNull};
-XMLCh xb[] = {chLatin_b, chNull};
-XMLCh xBlahxyz[] = {chLatin_B, chLatin_l, chLatin_a, chLatin_h, chSpace,
-     chLatin_x, chLatin_y, chLatin_z, chNull};
-XMLCh xBody[] = {chLatin_B, chLatin_o, chLatin_d, chLatin_y, chNull};
-XMLCh xbody2[] = {chLatin_b, chLatin_o, chLatin_d, chLatin_y, chDigit_2, chNull};
-XMLCh xc[] = {chLatin_c, chNull};
-XMLCh xcool[] = {chLatin_c, chLatin_o, chLatin_o, chLatin_l, chNull};
-XMLCh xef[] = {chLatin_e, chLatin_f, chNull};
-XMLCh xElement1[] = {chLatin_E, chLatin_l, chLatin_e, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chDigit_1, chNull};
-XMLCh xElement2[] = {chLatin_E, chLatin_l, chLatin_e, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chDigit_2, chNull};
-XMLCh xElement3[] = {chLatin_E, chLatin_l, chLatin_e, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chDigit_3, chNull};
-XMLCh xell[] = {chLatin_e, chLatin_l, chLatin_l, chNull};
-XMLCh xellocd[] = {chLatin_e, chLatin_l, chLatin_l, chLatin_o, chSpace, chLatin_c, chLatin_d, chNull};
-XMLCh xellocdef[] = {chLatin_e, chLatin_l, chLatin_l, chLatin_o, chSpace, chLatin_c, chLatin_d, chLatin_e, chLatin_f, chNull};
-XMLCh xeplacedTextInsertedTexttle[] = {chLatin_e, chLatin_p, chLatin_l, chLatin_a, chLatin_c, chLatin_e, chLatin_d,
-     chLatin_T, chLatin_e, chLatin_x, chLatin_t, chLatin_I, chLatin_n, chLatin_s, chLatin_e, chLatin_r, chLatin_t, chLatin_e, chLatin_d,
-     chLatin_T, chLatin_e, chLatin_x, chLatin_t, chLatin_t, chLatin_l, chLatin_e, chNull};
-XMLCh xex[] = {chLatin_e, chLatin_x, chNull};
-XMLCh xext1[] = {chLatin_e, chLatin_x, chLatin_t, chDigit_1, chNull};
-XMLCh xext3[] = {chLatin_e, chLatin_x, chLatin_t, chDigit_3, chNull};
-XMLCh xfoo[] = {chLatin_f, chLatin_o, chLatin_o, chNull};
-XMLCh xH1[] = {chLatin_H, chDigit_1, chNull};
-XMLCh xh2[] = {chLatin_h, chDigit_2, chNull};
-XMLCh xh3[] = {chLatin_h, chDigit_3, chNull};
-XMLCh xh4[] = {chLatin_h, chDigit_4, chNull};
-XMLCh xHellocd[] = {chLatin_H, chLatin_e, chLatin_l, chLatin_l, chLatin_o, chSpace, chLatin_c, chLatin_d, chNull};
-XMLCh xhead[] = {chLatin_h, chLatin_e, chLatin_a, chLatin_d, chNull};
-XMLCh xhead2[] = {chLatin_h, chLatin_e, chLatin_a, chLatin_d, chDigit_2, chNull};
-XMLCh xInsertedText[] = {chLatin_I, chLatin_n, chLatin_s, chLatin_e, chLatin_r, chLatin_t, chLatin_e, chLatin_d,
-     chLatin_T, chLatin_e, chLatin_x, chLatin_t, chNull};
-XMLCh xInsertedTexttle[] = {chLatin_I, chLatin_n, chLatin_s, chLatin_e, chLatin_r, chLatin_t, chLatin_e, chLatin_d,
-     chLatin_T, chLatin_e, chLatin_x, chLatin_t, chLatin_t, chLatin_l, chLatin_e, chNull};
-XMLCh xmoo[] = {chLatin_m, chLatin_o, chLatin_o, chNull};
-XMLCh xroot[] = {chLatin_r, chLatin_o, chLatin_o, chLatin_t, chNull};
-XMLCh xroot2[] = {chLatin_r, chLatin_o, chLatin_o, chLatin_t, chDigit_2, chNull};
-XMLCh xP[] = {chLatin_P, chNull};
-XMLCh xp1[] = {chLatin_p, chDigit_1, chNull};
-XMLCh xp2[] = {chLatin_p, chDigit_2, chNull};
-XMLCh xptext2[] = {chLatin_p, chLatin_t, chLatin_e, chLatin_x, chLatin_t, chDigit_2, chNull};
-XMLCh xReplacedText[] = {chLatin_R, chLatin_e, chLatin_p, chLatin_l, chLatin_a, chLatin_c, chLatin_e, chLatin_d,
-     chLatin_T, chLatin_e, chLatin_x, chLatin_t, chNull};
-XMLCh xSurroundNode1[] = {chLatin_S, chLatin_u, chLatin_r, chLatin_r, chLatin_o, chLatin_u, chLatin_n, chLatin_d,
-      chLatin_N, chLatin_o, chLatin_d, chLatin_e, chDigit_1, chNull};
-XMLCh xt[] = {chLatin_t, chNull};
-XMLCh xtl[] = {chLatin_t, chLatin_l, chNull};
-XMLCh xtext1[] = {chLatin_t, chLatin_e, chLatin_x, chLatin_t, chDigit_1, chNull};
-XMLCh xtext2[] = {chLatin_t, chLatin_e, chLatin_x, chLatin_t, chDigit_2, chNull};
-XMLCh xtext2ex[] = {chLatin_t, chLatin_e, chLatin_x, chLatin_t, chDigit_2, chLatin_e, chLatin_x, chNull};
-XMLCh xtext3[] = {chLatin_t, chLatin_e, chLatin_x, chLatin_t, chDigit_3, chNull};
-XMLCh xtext4[] = {chLatin_t, chLatin_e, chLatin_x, chLatin_t, chDigit_4, chNull};
-XMLCh xtext4ext3[] = {chLatin_t, chLatin_e, chLatin_x, chLatin_t, chDigit_4, chLatin_e, chLatin_x, chLatin_t, chDigit_3, chNull};
-XMLCh xttext4ext3[] = {chLatin_t, chLatin_t, chLatin_e, chLatin_x, chLatin_t, chDigit_4, chLatin_e, chLatin_x, chLatin_t, chDigit_3, chNull};
-XMLCh xtext5[] = {chLatin_t, chLatin_e, chLatin_x, chLatin_t, chDigit_5, chNull};
-XMLCh xtext6[] = {chLatin_t, chLatin_e, chLatin_x, chLatin_t, chDigit_6, chNull};
-XMLCh xTi[] = {chLatin_T, chLatin_i, chNull};
-XMLCh xTitle[] = {chLatin_T, chLatin_i, chLatin_t, chLatin_l, chLatin_e, chNull};
-XMLCh xtle[] = {chLatin_t, chLatin_l, chLatin_e, chNull};
-XMLCh xu[] = {chLatin_u, chNull};
-XMLCh xupbody[] = {chLatin_u, chLatin_p, chLatin_b, chLatin_o, chLatin_d, chLatin_y, chNull};
-XMLCh xupbody2[] = {chLatin_u, chLatin_p, chLatin_b, chLatin_o, chLatin_d, chLatin_y, chDigit_2, chNull};
-XMLCh xupp1[] = {chLatin_u, chLatin_p, chLatin_p, chDigit_1, chNull};
-XMLCh xuptext1[] = {chLatin_u, chLatin_p, chLatin_t, chLatin_e, chLatin_x, chLatin_t, chDigit_1, chNull};
-XMLCh xuptext2[] = {chLatin_u, chLatin_p, chLatin_t, chLatin_e, chLatin_x, chLatin_t, chDigit_2, chNull};
+XMLCh xa[] = u"a";
+XMLCh xab[] = u"ab";
+XMLCh xabHello[] = u"abHello";
+XMLCh xabHellocd[] = u"abHello cd";
+XMLCh xAnotherText[] = u"AnotherText";
+XMLCh xb[] = u"b";
+XMLCh xBlahxyz[] = u"Blah xyz";
+XMLCh xBody[] = u"Body";
+XMLCh xbody2[] = u"Body2";
+XMLCh xc[] = u"c";
+XMLCh xcool[] = u"cool";
+XMLCh xef[] = u"ef";
+XMLCh xElement1[] = u"Element1";
+XMLCh xElement2[] = u"ELement2";
+XMLCh xElement3[] = u"Element2";
+XMLCh xell[] = u"ell";
+XMLCh xellocd[] = u"ello cd";
+XMLCh xellocdef[] = u"ello cdef";
+XMLCh xeplacedTextInsertedTexttle[] = u"eplacedTextInsertedTexttle";
+XMLCh xex[] = u"ex";
+XMLCh xext1[] = u"ext1";
+XMLCh xext3[] = u"ext3";
+XMLCh xfoo[] = u"foo";
+XMLCh xH1[] = u"H1";
+XMLCh xh2[] = u"H2";
+XMLCh xh3[] = u"H3";
+XMLCh xh4[] = u"H4";
+XMLCh xHellocd[] = u"Hello cd";
+XMLCh xhead[] = u"head";
+XMLCh xhead2[] = u"head2";
+XMLCh xInsertedText[] = u"InsertedText";
+XMLCh xInsertedTexttle[] = u"InsertedTexttle";
+XMLCh xmoo[] = u"moo";
+XMLCh xroot[] = u"root";
+XMLCh xroot2[] = u"root2";
+XMLCh xP[] = u"P";
+XMLCh xp1[] = u"P1";
+XMLCh xp2[] = u"P2";
+XMLCh xptext2[] = u"ptext2";
+XMLCh xReplacedText[] = u"ReplacedText";
+XMLCh xSurroundNode1[] = u"SurroundNode1";
+XMLCh xt[] = u"t";
+XMLCh xtl[] = u"tl";
+XMLCh xtext1[] = u"text1";
+XMLCh xtext2[] = u"text2";
+XMLCh xtext2ex[] = u"text2ex";
+XMLCh xtext3[] = u"text3";
+XMLCh xtext4[] = u"text4";
+XMLCh xtext4ext3[] = u"text4ext3";
+XMLCh xttext4ext3[] = u"ttext4ext3";
+XMLCh xtext5[] = u"text5";
+XMLCh xtext6[] = u"text6";
+XMLCh xTi[] = u"Ti";
+XMLCh xTitle[] = u"Title";
+XMLCh xtle[] = u"tle";
+XMLCh xu[] = u"u";
+XMLCh xupbody[] = u"upbody";
+XMLCh xupbody2[] = u"upbody2";
+XMLCh xupp1[] = u"upp1";
+XMLCh xuptext1[] = u"uptext1";
+XMLCh xuptext2[] = u"uptext2";
 
 
 int  main()

@@ -35,9 +35,8 @@
 #include <xercesc/util/OutOfMemoryException.hpp>
 #include <xercesc/framework/MemBufInputSource.hpp>
 
-static XMLCh sz_XMLTestSuiteRoot[]={ chLatin_T, chLatin_E, chLatin_S, chLatin_T, chLatin_S, chLatin_U, chLatin_I, chLatin_T, chLatin_E, chNull };
-const XMLCh dummy[]={ chLatin_f, chLatin_i, chLatin_l, chLatin_e, chColon, chForwardSlash, chForwardSlash,
-                       chLatin_d, chLatin_u, chLatin_m, chLatin_m, chLatin_y, chForwardSlash, chNull };
+static XMLCh sz_XMLTestSuiteRoot[] = u"TESTSUITE";
+const XMLCh dummy[] = u"file://dummy/";
 const XMLCh* g_scanner = XMLUni::fgIGXMLScanner;
 
 // ---------------------------------------------------------------------------

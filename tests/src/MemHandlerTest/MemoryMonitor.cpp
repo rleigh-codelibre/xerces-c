@@ -256,8 +256,7 @@ int main (int argC,  char *argV[])
 
     // Instantiate the DOM domBuilder with its memory manager.
     MemoryMonitor *domBuilderMemMonitor = new MemoryMonitor();
-    static const XMLCh gLS[] = { chLatin_L, chLatin_S, chNull };
-    DOMImplementation *impl = DOMImplementationRegistry::getDOMImplementation(gLS);
+    DOMImplementation *impl = DOMImplementationRegistry::getDOMImplementation(u"LS");
     DOMLSParser       *domBuilder = ((DOMImplementationLS*)impl)->createLSParser(DOMImplementationLS::MODE_SYNCHRONOUS, 0, domBuilderMemMonitor);
     DOMLSParserHandler domBuilderHandler;
     domBuilder->getDomConfig()->setParameter(XMLUni::fgDOMErrorHandler, &domBuilderHandler);

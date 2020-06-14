@@ -2786,8 +2786,7 @@ bool DOMTest::testXPath(DOMDocument* document) {
     bool OK = true;
 
 #if 0
-            XMLCh tempLS[3] = {chLatin_L, chLatin_S, chNull};
-            DOMImplementation *impl          = DOMImplementationRegistry::getDOMImplementation(tempLS);
+            DOMImplementation *impl          = DOMImplementationRegistry::getDOMImplementation(u"LS");
             DOMLSSerializer   *theSerializer = ((DOMImplementationLS*)impl)->createLSSerializer();
             DOMLSOutput       *theOutputDesc = ((DOMImplementationLS*)impl)->createLSOutput();
             StdOutFormatTarget myFormTarget;
@@ -4959,8 +4958,7 @@ public:
     virtual FilterAction acceptNode(DOMNode* /* node */) { fCallbackCalls++; return DOMLSParserFilter::FILTER_ACCEPT;}
     virtual FilterAction startElement(DOMElement* node) 
     {
-        XMLCh elem[]={chLatin_e, chLatin_l, chLatin_e, chLatin_m, chNull };
-        if(XMLString::equals(node->getNodeName(), elem))
+        if(XMLString::equals(node->getNodeName(), u"elem"))
             return DOMLSParserFilter::FILTER_REJECT; 
         else
             return DOMLSParserFilter::FILTER_ACCEPT; 
@@ -4987,8 +4985,7 @@ bool DOMTest::testLSExceptions() {
                   "<elem>Test: &ent5;</elem>"
                 "</root>";
 
-    static const XMLCh gLS[] = { chLatin_L, chLatin_S, chNull };
-    DOMImplementationLS *impl = (DOMImplementationLS*)DOMImplementationRegistry::getDOMImplementation(gLS);
+    DOMImplementationLS *impl = (DOMImplementationLS*)DOMImplementationRegistry::getDOMImplementation(u"LS");
     DOMLSParser       *domBuilder = impl->createLSParser(DOMImplementationLS::MODE_SYNCHRONOUS, 0);
     DOMLSInput        *input = impl->createLSInput();
     XMLString::transcode(sXml, tempStr, 3999);
@@ -5175,8 +5172,7 @@ bool DOMTest::testElementTraversal() {
                 "</g>";
 	MemBufInputSource is((XMLByte*)sXml, strlen(sXml), "bufId");
 
-    static const XMLCh gLS[] = { chLatin_L, chLatin_S, chNull };
-    DOMImplementationLS *impl = (DOMImplementationLS*)DOMImplementationRegistry::getDOMImplementation(gLS);
+    DOMImplementationLS *impl = (DOMImplementationLS*)DOMImplementationRegistry::getDOMImplementation(u"LS");
     DOMLSParser       *domBuilder = impl->createLSParser(DOMImplementationLS::MODE_SYNCHRONOUS, 0);
     DOMLSInput        *input = impl->createLSInput();
     XMLString::transcode(sXml, tempStr, 3999);
@@ -5813,13 +5809,13 @@ bool DOMTest::testUtilFunctions()
         fprintf(stderr, "strLen test failed at line %i\n", __LINE__);
         OK = false;
     }
-    XMLCh one[2]={ chLatin_A, chNull };
+    XMLCh one[]= u"A";
     if(XMLString::stringLen(one)!=1)
     {
         fprintf(stderr, "strLen test failed at line %i\n", __LINE__);
         OK = false;
     }
-    XMLCh two[3]={ chLatin_A, chLatin_B, chNull };
+    XMLCh two[]= u"AB";
     if(XMLString::stringLen(two)!=2)
     {
         fprintf(stderr, "strLen test failed at line %i\n", __LINE__);
