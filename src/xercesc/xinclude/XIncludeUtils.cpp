@@ -801,60 +801,18 @@ XIncludeUtils::reportError(const DOMNode* const    /*errorNode*/
 
 /* TODO - declared in this file for convenience, prob ought to be moved out to
    util/XMLUni.cpp before releasing */
-const XMLCh XIncludeUtils::fgXIIncludeQName[] =
-{
-    chLatin_i, chLatin_n, chLatin_c, chLatin_l, chLatin_u, chLatin_d, chLatin_e, chNull
-};
-const XMLCh XIncludeUtils::fgXIFallbackQName[] =
-{
-    chLatin_f, chLatin_a, chLatin_l, chLatin_l, chLatin_b, chLatin_a, chLatin_c, chLatin_k, chNull
-};
-const XMLCh XIncludeUtils::fgXIIncludeHREFAttrName[] =
-{
-    chLatin_h, chLatin_r, chLatin_e, chLatin_f, chNull
-};
-const XMLCh XIncludeUtils::fgXIIncludeParseAttrName[] =
-{
-    chLatin_p, chLatin_a, chLatin_r, chLatin_s, chLatin_e, chNull
-};
-const XMLCh XIncludeUtils::fgXIIncludeXPointerAttrName[] =
-{
-    chLatin_x, chLatin_p, chLatin_o, chLatin_i, chLatin_n, chLatin_t, chLatin_e, chLatin_r, chNull
-};
-const XMLCh XIncludeUtils::fgXIIncludeEncodingAttrName[] =
-{
-     chLatin_e, chLatin_n, chLatin_c, chLatin_o, chLatin_d, chLatin_i, chLatin_n, chLatin_g, chNull
-};
-const XMLCh XIncludeUtils::fgXIIncludeAcceptAttrName[] =
-{
-     chLatin_a, chLatin_c, chLatin_c, chLatin_e, chLatin_p, chLatin_t, chNull
-};
-const XMLCh XIncludeUtils::fgXIIncludeAcceptLanguageAttrName[] =
-{
-     chLatin_a, chLatin_c, chLatin_c, chLatin_e, chLatin_p, chLatin_t, chDash, chLatin_l, chLatin_a,
-         chLatin_n, chLatin_g, chLatin_u, chLatin_a, chLatin_g, chLatin_e, chNull
-};
-const XMLCh XIncludeUtils::fgXIIncludeParseAttrXMLValue[] =
-{
-    chLatin_x, chLatin_m, chLatin_l, chNull
-};
-const XMLCh XIncludeUtils::fgXIIncludeParseAttrTextValue[] =
-{
-    chLatin_t, chLatin_e, chLatin_x, chLatin_t, chNull
-};
-const XMLCh XIncludeUtils::fgXIIIncludeNamespaceURI[] =
-{
-    /* http://www.w3.org/2001/XInclude */
-    chLatin_h, chLatin_t, chLatin_t, chLatin_p, chColon, chForwardSlash
-    ,   chForwardSlash, chLatin_w, chLatin_w, chLatin_w, chPeriod
-    ,   chLatin_w, chDigit_3, chPeriod, chLatin_o, chLatin_r, chLatin_g
-    ,   chForwardSlash, chDigit_2, chDigit_0, chDigit_0, chDigit_1
-    ,    chForwardSlash, chLatin_X, chLatin_I, chLatin_n, chLatin_c, chLatin_l
-    ,    chLatin_u, chLatin_d, chLatin_e, chNull
-};
-const XMLCh XIncludeUtils::fgXIBaseAttrName[] =
-{
-    chLatin_x, chLatin_m, chLatin_l, chColon, chLatin_b, chLatin_a, chLatin_s, chLatin_e, chNull
-};
+const XMLCh XIncludeUtils::fgXIIncludeQName[] =                  u"include";
+const XMLCh XIncludeUtils::fgXIFallbackQName[] =                 u"fallback";
+const XMLCh XIncludeUtils::fgXIIncludeHREFAttrName[] =           u"href";
+const XMLCh XIncludeUtils::fgXIIncludeParseAttrName[] =          u"parse";
+const XMLCh XIncludeUtils::fgXIIncludeXPointerAttrName[] =       u"xpointer";
+const XMLCh XIncludeUtils::fgXIIncludeEncodingAttrName[] =       u"encoding";
+const XMLCh XIncludeUtils::fgXIIncludeAcceptAttrName[] =         u"accept";
+const XMLCh XIncludeUtils::fgXIIncludeAcceptLanguageAttrName[] = u"accept-language";
+const XMLCh XIncludeUtils::fgXIIncludeParseAttrXMLValue[] =      u"xml";
+const XMLCh XIncludeUtils::fgXIIncludeParseAttrTextValue[] =     u"text";
+const XMLCh XIncludeUtils::fgXIIIncludeNamespaceURI[] =          u"http://www.w3.org/2001/XInclude";
+const XMLCh XIncludeUtils::fgXIBaseAttrName[] =                  u"xml:base";
+
 
 }

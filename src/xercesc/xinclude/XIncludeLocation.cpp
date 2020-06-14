@@ -86,7 +86,7 @@ XIncludeLocation::prependPath(const XMLCh *baseToAdd){
         return NULL;
     }
     XMLString::copyNString(relativeHref, baseToAdd, lastSlash + 1);
-    relativeHref[lastSlash + 1] = chNull;
+    relativeHref[lastSlash + 1] = u'\0';
     XMLString::catString(relativeHref, hrefPath);
 
     /* free the old reference */
