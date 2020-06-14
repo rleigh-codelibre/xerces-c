@@ -276,7 +276,7 @@ const XMLCh *BinHTTPInputStreamCommon::getEncoding() const
 		const XMLCh* contentTypeHeader = getContentType();
 		if(contentTypeHeader)
 		{
-			const XMLCh szCharsetEquals[] = {chLatin_c, chLatin_h, chLatin_a, chLatin_r, chLatin_s, chLatin_e, chLatin_t, chEqual, chNull };
+			const XMLCh *szCharsetEquals = u"charset=";
 
 			BaseRefVectorOf<XMLCh>* tokens=XMLString::tokenizeString(contentTypeHeader, chSemiColon, fMemoryManager);
 			for(XMLSize_t i=0;i<tokens->size();i++)
@@ -293,9 +293,9 @@ const XMLCh *BinHTTPInputStreamCommon::getEncoding() const
 			// if the charset=value entry was not present, check if we should use a default value
 			if(fEncoding==0 && tokens->size()>0)
 			{
-				const XMLCh szTextSlash[] = { chLatin_t, chLatin_e, chLatin_x, chLatin_t, chForwardSlash, chNull };
-				const XMLCh szXml[] = {chLatin_x, chLatin_m, chLatin_l, chNull };
-				const XMLCh szXmlDash[] = {chLatin_x, chLatin_m, chLatin_l, chDash, chNull };
+				const XMLCh *szTextSlash = u"text/";
+				const XMLCh *szXml = u"xml";
+				const XMLCh *szXmlDash = u"xml-";
 
 				XMLBuffer contentType(XMLString::stringLen(contentTypeHeader), fMemoryManager);
 				contentType.set(tokens->elementAt(0));

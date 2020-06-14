@@ -334,7 +334,7 @@ void QName::setNPrefix(const XMLCh* prefix, const XMLSize_t newLen)
         ); //new XMLCh[fPrefixBufSz + 1];
     }
     XMLString::moveChars(fPrefix, prefix, newLen);
-    fPrefix[newLen] = chNull;
+    fPrefix[newLen] = u'\0';
 }
 
 void QName::setNLocalPart(const XMLCh* localPart, const XMLSize_t newLen)
@@ -350,7 +350,7 @@ void QName::setNLocalPart(const XMLCh* localPart, const XMLSize_t newLen)
         ); //new XMLCh[fLocalPartBufSz + 1];
     }
     XMLString::moveChars(fLocalPart, localPart, newLen);
-    fLocalPart[newLen] = chNull;
+    fLocalPart[newLen] = u'\0';
 }
 
 void QName::setValues(const QName& qname)

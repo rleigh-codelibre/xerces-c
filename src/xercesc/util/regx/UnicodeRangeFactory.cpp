@@ -35,45 +35,45 @@ namespace XERCES_CPP_NAMESPACE {
 //  Local data
 // ---------------------------------------------------------------------------
 
-const XMLCh uniCategNames[][3] =
+static const XMLCh *uniCategNames[] =
 {
-    {chLatin_C, chLatin_n, chNull},     // UNASSIGNED
-    {chLatin_L, chLatin_u, chNull},     // UPPERCASE_LETTER
-    {chLatin_L, chLatin_l, chNull},     // LOWERCASE_LETTER
-    {chLatin_L, chLatin_t, chNull},     // TITLECASE_LETTER
-    {chLatin_L, chLatin_m, chNull},     // MODIFIER_LETTER
-    {chLatin_L, chLatin_o, chNull},     // OTHER_LETTER
-    {chLatin_M, chLatin_n, chNull},     // NON_SPACING_MARK
-    {chLatin_M, chLatin_e, chNull},     // ENCLOSING_MARK
-    {chLatin_M, chLatin_c, chNull},     // COMBINING_SPACING_MARK
-    {chLatin_N, chLatin_d, chNull},     // DECIMAL_DIGIT_NUMBER
-    {chLatin_N, chLatin_l, chNull},     // LETTER_NUMBER
-    {chLatin_N, chLatin_o, chNull},     // OTHER_NUMBER
-    {chLatin_Z, chLatin_s, chNull},     // SPACE_SEPARATOR
-    {chLatin_Z, chLatin_l, chNull},     // LINE_SEPARATOR
-    {chLatin_Z, chLatin_p, chNull},     // PARAGRAPH_SEPARATOR
-    {chLatin_C, chLatin_c, chNull},     // CONTROL
-    {chLatin_C, chLatin_f, chNull},     // FORMAT
-    {chLatin_C, chLatin_o, chNull},     // PRIVATE_USE
-    {chLatin_C, chLatin_s, chNull},     // SURROGATE
-    {chLatin_P, chLatin_d, chNull},     // DASH_PUNCTUATION
-    {chLatin_P, chLatin_s, chNull},     // START_PUNCTUATION
-    {chLatin_P, chLatin_e, chNull},     // END_PUNCTUATION
-    {chLatin_P, chLatin_c, chNull},     // CONNECTOR_PUNCTUATION
-    {chLatin_P, chLatin_o, chNull},     // OTHER_PUNCTUATION
-    {chLatin_S, chLatin_m, chNull},     // MATH_SYMBOL
-    {chLatin_S, chLatin_c, chNull},     // CURRENCY_SYMBOL
-    {chLatin_S, chLatin_k, chNull},     // MODIFIER_SYMBOL
-    {chLatin_S, chLatin_o, chNull},     // OTHER_SYMBOL
-    {chLatin_P, chLatin_i, chNull},     // INITIAL_PUNCTUATION
-    {chLatin_P, chLatin_f, chNull},     // FINAL_PUNCTUATION
-    {chLatin_L, chNull},                // CHAR_LETTER
-    {chLatin_M, chNull},                // CHAR_MARK
-    {chLatin_N, chNull},                // CHAR_NUMBER
-    {chLatin_Z, chNull},                // CHAR_SEPARATOR
-    {chLatin_C, chNull},                // CHAR_OTHER
-    {chLatin_P, chNull},                // CHAR_PUNCTUATION
-    {chLatin_S, chNull},                // CHAR_SYMBOL
+    u"Cn",     // UNASSIGNED
+    u"Lu",     // UPPERCASE_LETTER
+    u"Ll",     // LOWERCASE_LETTER
+    u"Lt",     // TITLECASE_LETTER
+    u"Lm",     // MODIFIER_LETTER
+    u"Lo",     // OTHER_LETTER
+    u"Mn",     // NON_SPACING_MARK
+    u"Me",     // ENCLOSING_MARK
+    u"Mc",     // COMBINING_SPACING_MARK
+    u"Nd",     // DECIMAL_DIGIT_NUMBER
+    u"Nl",     // LETTER_NUMBER
+    u"No",     // OTHER_NUMBER
+    u"Zs",     // SPACE_SEPARATOR
+    u"Zl",     // LINE_SEPARATOR
+    u"Zp",     // PARAGRAPH_SEPARATOR
+    u"Cc",     // CONTROL
+    u"Cf",     // FORMAT
+    u"Co",     // PRIVATE_USE
+    u"Cs",     // SURROGATE
+    u"Pd",     // DASH_PUNCTUATION
+    u"Ps",     // START_PUNCTUATION
+    u"Pe",     // END_PUNCTUATION
+    u"Pc",     // CONNECTOR_PUNCTUATION
+    u"Po",     // OTHER_PUNCTUATION
+    u"Sm",     // MATH_SYMBOL
+    u"Sc",     // CURRENCY_SYMBOL
+    u"Sk",     // MODIFIER_SYMBOL
+    u"So",     // OTHER_SYMBOL
+    u"Pi",     // INITIAL_PUNCTUATION
+    u"Pf",     // FINAL_PUNCTUATION
+    u"L",      // CHAR_LETTER
+    u"M",      // CHAR_MARK
+    u"N",      // CHAR_NUMBER
+    u"Z",      // CHAR_SEPARATOR
+    u"C",      // CHAR_OTHER
+    u"P",      // CHAR_PUNCTUATION
+    u"S",      // CHAR_SYMBOL
 };
 
 // ---------------------------------------------------------------------------

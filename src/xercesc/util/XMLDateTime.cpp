@@ -68,7 +68,7 @@ static const XMLCh UTC_NEG_CHAR         = chDash;                 // '-'
 static const XMLCh UTC_SET[]            = {UTC_STD_CHAR           //"Z+-"
                                          , UTC_POS_CHAR
                                          , UTC_NEG_CHAR
-                                         , chNull};
+                                         , u'\0'};
 
 static const XMLSize_t YMD_MIN_SIZE    = 10;   // CCYY-MM-DD
 static const XMLSize_t YMONTH_MIN_SIZE = 7;    // CCYY_MM
@@ -1656,7 +1656,7 @@ XMLCh* XMLDateTime::getDateTimeCanonicalRepresentation(MemoryManager* const memM
 
     if (utcSize)
         *retPtr++ = UTC_STD_CHAR;
-    *retPtr = chNull;
+    *retPtr = u'\0';
 
     return retBuf;
 }
@@ -1696,7 +1696,7 @@ XMLCh* XMLDateTime::getDateCanonicalRepresentation(MemoryManager* const memMgr) 
      *   12 yyyy-mm-dd-14:00   yyyy-mm-ddT14:00Z   YYYY-MM-DD+10:00
      */
     int utcSize = (fValue[utc] == UTC_UNKNOWN) ? 0 : 1;
-    // YYYY-MM-DD  + chNull
+    // YYYY-MM-DD  + u'\0'
     // 1234567890  + 1
     int memLength = 10 + 1 + utcSize;
 
@@ -1737,7 +1737,7 @@ XMLCh* XMLDateTime::getDateCanonicalRepresentation(MemoryManager* const memMgr) 
                 *retPtr++ = UTC_STD_CHAR;
             }
         }
-        *retPtr = chNull;
+        *retPtr = u'\0';
     }
     else {
         /*
@@ -1804,7 +1804,7 @@ XMLCh* XMLDateTime::getDateCanonicalRepresentation(MemoryManager* const memMgr) 
         fillString(retPtr, hour, 2);
         *retPtr++ = TIME_SEPARATOR;
         fillString(retPtr, minute, 2);
-        *retPtr = chNull;
+        *retPtr = u'\0';
     }
     return retBuf;
 }
@@ -1854,7 +1854,7 @@ XMLCh* XMLDateTime::getTimeCanonicalRepresentation(MemoryManager* const memMgr) 
 
     if (utcSize)
         *retPtr++ = UTC_STD_CHAR;
-    *retPtr = chNull;
+    *retPtr = u'\0';
 
     return retBuf;
 }

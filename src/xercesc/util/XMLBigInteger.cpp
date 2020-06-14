@@ -48,7 +48,7 @@ XMLCh* XMLBigInteger::getCanonicalRepresentation(const XMLCh*         const rawD
         if (sign == 0)
         {
            retBuf[0] = chDigit_0;
-           retBuf[1] = chNull;           
+           retBuf[1] = u'\0';
         }
         else if (sign == -1)
         {
@@ -361,7 +361,7 @@ void XMLBigInteger::multiply(const unsigned int byteToShift)
     for ( ; i < byteToShift; i++)
         tmp[strLen+i] = chDigit_0;
 
-    tmp[strLen+i] = chNull;
+    tmp[strLen+i] = u'\0';
 
     fMemoryManager->deallocate(fMagnitude);//delete[] fMagnitude;
     fMagnitude = tmp;
@@ -383,7 +383,7 @@ void XMLBigInteger::divide(const unsigned int byteToShift)
     );//new XMLCh[strLen-byteToShift+1];
     XMLString::moveChars(tmp, fMagnitude, strLen-byteToShift);
 
-    tmp[strLen-byteToShift] = chNull;
+    tmp[strLen-byteToShift] = u'\0';
 
     fMemoryManager->deallocate(fMagnitude);//delete[] fMagnitude;
     fMagnitude = tmp;

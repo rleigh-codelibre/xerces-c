@@ -156,7 +156,7 @@ XMLInt32 ParserForXMLSchema::decodeEscaped() {
         break;
     default:
         {
-        XMLCh chString[] = {chBackSlash, (XMLCh)ch, chNull};
+        XMLCh chString[] = {chBackSlash, (XMLCh)ch, u'\0'};
         ThrowXMLwithMemMgr1(ParseException,XMLExcepts::Parser_Process2, chString, getMemoryManager());
         }
     }

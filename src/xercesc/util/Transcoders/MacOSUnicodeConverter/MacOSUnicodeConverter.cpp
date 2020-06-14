@@ -68,24 +68,6 @@ typedef XMLCh	TempXMLBuf[kTempBufCount];
 
 
 // ---------------------------------------------------------------------------
-//  Local, const data
-// ---------------------------------------------------------------------------
-const XMLCh MacOSUnicodeConverter::fgMyServiceId[] =
-{
-    chLatin_M, chLatin_a, chLatin_c, chLatin_O, chLatin_S, chNull
-};
-
-
-const XMLCh MacOSUnicodeConverter::fgMacLCPEncodingName[] =
-{
-        chLatin_M, chLatin_a, chLatin_c, chLatin_O, chLatin_S, chLatin_L
-    ,   chLatin_C, chLatin_P, chLatin_E, chLatin_n, chLatin_c, chLatin_o
-    ,   chLatin_d, chLatin_i, chLatin_n, chLatin_g, chNull
-};
-
-
-
-// ---------------------------------------------------------------------------
 //  MacOSUnicodeConverter: Constructors and Destructor
 // ---------------------------------------------------------------------------
 MacOSUnicodeConverter::MacOSUnicodeConverter(MemoryManager* manager)
@@ -211,7 +193,7 @@ int MacOSUnicodeConverter::compareNIString( const XMLCh* const  comp1
 
 const XMLCh* MacOSUnicodeConverter::getId() const
 {
-    return fgMyServiceId;
+    return u"MacOS";
 }
 
 TextEncoding
@@ -266,7 +248,7 @@ XMLLCPTranscoder* MacOSUnicodeConverter::makeNewLCPTranscoder(MemoryManager* man
     //  We implement the LCP transcoder in terms of the XMLTranscoder.
 	//  Create an XMLTranscoder for this encoding
 	XMLTransService::Codes resValue;
-    XMLTranscoder* xmlTrans = makeNewXMLTranscoder(fgMacLCPEncodingName,
+    XMLTranscoder* xmlTrans = makeNewXMLTranscoder(u"MacOSLCPEncoding",
                                 resValue, kTempBufCount,
 								lcpTextEncoding, manager);
     

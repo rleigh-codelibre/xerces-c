@@ -29,12 +29,7 @@
 
 namespace XERCES_CPP_NAMESPACE {
 
-static const XMLCh gDefOutOfMemoryErrMsg[] =
-{
-        chLatin_O, chLatin_u, chLatin_t, chLatin_O
-    ,   chLatin_f, chLatin_M, chLatin_e, chLatin_m
-    ,   chLatin_o, chLatin_r, chLatin_y, chNull
-};
+static const XMLCh *gDefOutOfMemoryErrMsg = u"OutOfMemory";
 
 class XMLUTIL_EXPORT OutOfMemoryException : public XMemory
 {

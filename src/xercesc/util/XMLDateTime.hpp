@@ -348,7 +348,7 @@ inline void XMLDateTime::copy(const XMLDateTime& rhs)
 
 inline bool XMLDateTime::initParser()
 {
-    if (!fBuffer || fBuffer[0] == chNull)
+    if (!fBuffer || fBuffer[0] == u'\0')
         return false;
 
     fStart = 0;   // to ensure scan from the very first beginning

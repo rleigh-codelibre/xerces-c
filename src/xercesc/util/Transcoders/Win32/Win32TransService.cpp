@@ -42,10 +42,6 @@ namespace XERCES_CPP_NAMESPACE {
 // ---------------------------------------------------------------------------
 //  Local, const data
 // ---------------------------------------------------------------------------
-static const XMLCh gMyServiceId[] =
-{
-    chLatin_W, chLatin_i, chLatin_n, chDigit_3, chDigit_2, chNull
-};
 
 
 #if !HAVE_WCSUPR
@@ -569,7 +565,7 @@ int Win32TransService::compareNIString( const   XMLCh* const    comp1
 
 const XMLCh* Win32TransService::getId() const
 {
-    return gMyServiceId;
+    return u"Win32";
 }
 
 XMLLCPTranscoder* Win32TransService::makeNewLCPTranscoder(MemoryManager* manager)

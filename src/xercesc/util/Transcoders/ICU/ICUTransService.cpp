@@ -66,29 +66,6 @@ extern "C" const uint8_t U_IMPORT icudata_dat[];
 namespace XERCES_CPP_NAMESPACE {
 
 // ---------------------------------------------------------------------------
-//  Local, const data
-// ---------------------------------------------------------------------------
-static const XMLCh gMyServiceId[] =
-{
-    chLatin_I, chLatin_C, chLatin_U, chNull
-};
-
-static const XMLCh gS390Id[] =
-{
-    chLatin_S, chDigit_3, chDigit_9, chDigit_0, chNull
-};
-
-static const XMLCh gs390Id[] =
-{
-    chLatin_s, chDigit_3, chDigit_9, chDigit_0, chNull
-};
-
-static const XMLCh gswaplfnlId[] =
-{
-    chComma, chLatin_s, chLatin_w, chLatin_a, chLatin_p,
-    chLatin_l, chLatin_f, chLatin_n, chLatin_l, chNull
-};
-// ---------------------------------------------------------------------------
 //  Local functions
 // ---------------------------------------------------------------------------
 
@@ -284,7 +261,7 @@ int ICUTransService::compareNIString(const  XMLCh* const    comp1
 
 const XMLCh* ICUTransService::getId() const
 {
-    return gMyServiceId;
+    return u"ICU";
 }
 
 XMLLCPTranscoder* ICUTransService::makeNewLCPTranscoder(MemoryManager* manager)
@@ -374,6 +351,8 @@ makeNewXMLTranscoder(const  XMLCh* const            encodingName
                     , const XMLSize_t               blockSize
                     ,       MemoryManager* const    manager)
 {
+    const XMLCh *gS390Id = u"S390";
+    const XMLCh *gs390Id = u"s390";
     //
     //  For encodings that end with "s390" we need to strip off the "s390"
     //  from the encoding name and add ",swaplfnl" to the encoding name
@@ -385,6 +364,7 @@ makeNewXMLTranscoder(const  XMLCh* const            encodingName
     if ( (XMLString::endsWith(encodingNameToUse, gs390Id)) ||
          (XMLString::endsWith(encodingNameToUse, gS390Id)) )
     {
+       const XMLCh gswaplfnlId[] = u",swaplfnl";
        XMLSize_t workBufferSize = (XMLString::stringLen(encodingNameToUse) + XMLString::stringLen(gswaplfnlId) - XMLString::stringLen(gS390Id) + 1);
        workBuffer = (XMLCh*) manager->allocate(workBufferSize * sizeof(XMLCh));
        XMLSize_t moveSize = XMLString::stringLen(encodingNameToUse) - XMLString::stringLen(gS390Id);

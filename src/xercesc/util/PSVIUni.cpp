@@ -25,947 +25,197 @@
 using namespace XERCES_CPP_NAMESPACE;
 
 
-const XMLCh PSVIUni::fgPsvColon[] = {
-	chLatin_p, chLatin_s, chLatin_v, chColon, chNull
-};
-
-const XMLCh PSVIUni::fgAllDeclarationsProcessed[] =
-{
-	chLatin_a, chLatin_l, chLatin_l, chLatin_D, chLatin_e, chLatin_c, chLatin_l, chLatin_a, chLatin_r, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chLatin_s, chLatin_P, chLatin_r, chLatin_o, chLatin_c, chLatin_e, chLatin_s, chLatin_s, chLatin_e, chLatin_d, chNull
-};
-
-const XMLCh PSVIUni::fgAttribute[] =
-{
-	chLatin_a, chLatin_t, chLatin_t, chLatin_r, chLatin_i, chLatin_b, chLatin_u, chLatin_t, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgAttributes[] =
-{
-	chLatin_a, chLatin_t, chLatin_t, chLatin_r, chLatin_i, chLatin_b, chLatin_u, chLatin_t, chLatin_e, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgAttributeType[] =
-{
-	chLatin_a, chLatin_t, chLatin_t, chLatin_r, chLatin_i, chLatin_b, chLatin_u, chLatin_t, chLatin_e, chLatin_T, chLatin_y, chLatin_p, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgBaseURI[] =
-{
-	chLatin_b, chLatin_a, chLatin_s, chLatin_e, chLatin_U, chLatin_R, chLatin_I, chNull
-};
-
-const XMLCh PSVIUni::fgCanonicalRepresentation[] =
-{
-    chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_c, chLatin_a, chLatin_n, chLatin_o, chLatin_n, chLatin_i, chLatin_c, chLatin_a,
-    chLatin_l, chLatin_R, chLatin_e, chLatin_p, chNull
-
-};
-
-const XMLCh PSVIUni::fgCharacter[] =
-{
-	chLatin_c, chLatin_h, chLatin_a, chLatin_r, chLatin_a, chLatin_c, chLatin_t, chLatin_e, chLatin_r, chNull
-};
-
-const XMLCh PSVIUni::fgCharacterEncodingScheme[] =
-{
-	chLatin_c, chLatin_h, chLatin_a, chLatin_r, chLatin_a, chLatin_c, chLatin_t, chLatin_e, chLatin_r, chLatin_E, chLatin_n, chLatin_c, chLatin_o, chLatin_d, chLatin_i, chLatin_n, chLatin_g, chLatin_S, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgChildren[] =
-{
-	chLatin_c, chLatin_h, chLatin_i, chLatin_l, chLatin_d, chLatin_r, chLatin_e, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgComment[] =
-{
-	chLatin_c, chLatin_o, chLatin_m, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgContent[] =
-{
-	chLatin_c, chLatin_o, chLatin_n, chLatin_t, chLatin_e, chLatin_n, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgDocument[] =
-{
-	chLatin_d, chLatin_o, chLatin_c, chLatin_u, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgDocTypeDeclaration[] =
-{
-	chLatin_d, chLatin_o, chLatin_c, chLatin_T, chLatin_y, chLatin_p, chLatin_e, chLatin_D, chLatin_e, chLatin_c, chLatin_l, chLatin_a, chLatin_r, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgDocumentElement[] =
-{
-	chLatin_d, chLatin_o, chLatin_c, chLatin_u, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chLatin_E, chLatin_l, chLatin_e, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgElement[] =
-{
-	chLatin_e, chLatin_l, chLatin_e, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgInScopeNamespaces[] =
-{
-	chLatin_i, chLatin_n, chLatin_S, chLatin_c, chLatin_o, chLatin_p, chLatin_e, chLatin_N, chLatin_a, chLatin_m, chLatin_e, chLatin_s, chLatin_p, chLatin_a, chLatin_c, chLatin_e, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgLocalName[] =
-{
-	chLatin_l, chLatin_o, chLatin_c, chLatin_a, chLatin_l, chLatin_N, chLatin_a, chLatin_m, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgNamespace[] =
-{
-	chLatin_n, chLatin_a, chLatin_m, chLatin_e, chLatin_s, chLatin_p, chLatin_a, chLatin_c, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgNamespaceAttributes[] =
-{
-	chLatin_n, chLatin_a, chLatin_m, chLatin_e, chLatin_s, chLatin_p, chLatin_a, chLatin_c, chLatin_e, chLatin_A, chLatin_t, chLatin_t, chLatin_r, chLatin_i, chLatin_b, chLatin_u, chLatin_t, chLatin_e, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgNamespaceName[] =
-{
-	chLatin_n, chLatin_a, chLatin_m, chLatin_e, chLatin_s, chLatin_p, chLatin_a, chLatin_c, chLatin_e, chLatin_N, chLatin_a, chLatin_m, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgNormalizedValue[] =
-{
-	chLatin_n, chLatin_o, chLatin_r, chLatin_m, chLatin_a, chLatin_l, chLatin_i, chLatin_z, chLatin_e, chLatin_d, chLatin_V, chLatin_a, chLatin_l, chLatin_u, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgNotations[] =
-{
-	chLatin_n, chLatin_o, chLatin_t, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgPrefix[] =
-{
-	chLatin_p, chLatin_r, chLatin_e, chLatin_f, chLatin_i, chLatin_x, chNull
-};
-
-const XMLCh PSVIUni::fgProcessingInstruction[] =
-{
-	chLatin_p, chLatin_r, chLatin_o, chLatin_c, chLatin_e, chLatin_s, chLatin_s, chLatin_i, chLatin_n, chLatin_g, chLatin_I, chLatin_n, chLatin_s, chLatin_t, chLatin_r, chLatin_u, chLatin_c, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgReferences[] =
-{
-	chLatin_r, chLatin_e, chLatin_f, chLatin_e, chLatin_r, chLatin_e, chLatin_n, chLatin_c, chLatin_e, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgSpecified[] =
-{
-	chLatin_s, chLatin_p, chLatin_e, chLatin_c, chLatin_i, chLatin_f, chLatin_i, chLatin_e, chLatin_d, chNull
-};
-
-const XMLCh PSVIUni::fgStandalone[] =
-{
-	chLatin_s, chLatin_t, chLatin_a, chLatin_n, chLatin_d, chLatin_a, chLatin_l, chLatin_o, chLatin_n, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgTarget[] =
-{
-	chLatin_t, chLatin_a, chLatin_r, chLatin_g, chLatin_e, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgText[] =
-{
-	chLatin_t, chLatin_e, chLatin_x, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgTextContent[] =
-{
-	chLatin_t, chLatin_e, chLatin_x, chLatin_t, chLatin_C, chLatin_o, chLatin_n, chLatin_t, chLatin_e, chLatin_n, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgUnparsedEntities[] =
-{
-	chLatin_u, chLatin_n, chLatin_p, chLatin_a, chLatin_r, chLatin_s, chLatin_e, chLatin_d, chLatin_E, chLatin_n, chLatin_t, chLatin_i, chLatin_t, chLatin_i, chLatin_e, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgVersion[] =
-{
-	chLatin_v, chLatin_e, chLatin_r, chLatin_s, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgAbstract[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_a, chLatin_b, chLatin_s, chLatin_t, chLatin_r, chLatin_a, chLatin_c, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgAnnotation[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_a, chLatin_n, chLatin_n, chLatin_o, chLatin_t, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgAnnotations[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_a, chLatin_n, chLatin_n, chLatin_o, chLatin_t, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgApplicationInformation[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_a, chLatin_p, chLatin_p, chLatin_l, chLatin_i, chLatin_c, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chLatin_I, chLatin_n, chLatin_f, chLatin_o, chLatin_r, chLatin_m, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgAttributeDeclaration[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_a, chLatin_t, chLatin_t, chLatin_r, chLatin_i, chLatin_b, chLatin_u, chLatin_t, chLatin_e, chLatin_D, chLatin_e, chLatin_c, chLatin_l, chLatin_a, chLatin_r, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgAttributeGroupDefinition[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_a, chLatin_t, chLatin_t, chLatin_r, chLatin_i, chLatin_b, chLatin_u, chLatin_t, chLatin_e, chLatin_G, chLatin_r, chLatin_o, chLatin_u, chLatin_p, chLatin_D, chLatin_e, chLatin_f, chLatin_i, chLatin_n, chLatin_i, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgAttributeUse[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_a, chLatin_t, chLatin_t, chLatin_r, chLatin_i, chLatin_b, chLatin_u, chLatin_t, chLatin_e, chLatin_U, chLatin_s, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgAttributeUses[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_a, chLatin_t, chLatin_t, chLatin_r, chLatin_i, chLatin_b, chLatin_u, chLatin_t, chLatin_e, chLatin_U, chLatin_s, chLatin_e, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgAttributeWildcard[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_a, chLatin_t, chLatin_t, chLatin_r, chLatin_i, chLatin_b, chLatin_u, chLatin_t, chLatin_e, chLatin_W, chLatin_i, chLatin_l, chLatin_d, chLatin_c, chLatin_a, chLatin_r, chLatin_d, chNull
-};
-
-const XMLCh PSVIUni::fgBaseTypeDefinition[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_b, chLatin_a, chLatin_s, chLatin_e, chLatin_T, chLatin_y, chLatin_p, chLatin_e, chLatin_D, chLatin_e, chLatin_f, chLatin_i, chLatin_n, chLatin_i, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgComplexTypeDefinition[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_c, chLatin_o, chLatin_m, chLatin_p, chLatin_l, chLatin_e, chLatin_x, chLatin_T, chLatin_y, chLatin_p, chLatin_e, chLatin_D, chLatin_e, chLatin_f, chLatin_i, chLatin_n, chLatin_i, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgCompositor[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_c, chLatin_o, chLatin_m, chLatin_p, chLatin_o, chLatin_s, chLatin_i, chLatin_t, chLatin_o, chLatin_r, chNull
-};
-
-const XMLCh PSVIUni::fgContentType[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_c, chLatin_o, chLatin_n, chLatin_t, chLatin_e, chLatin_n, chLatin_t, chLatin_T, chLatin_y, chLatin_p, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgDeclaration[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_d, chLatin_e, chLatin_c, chLatin_l, chLatin_a, chLatin_r, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgDerivationMethod[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_d, chLatin_e, chLatin_r, chLatin_i, chLatin_v, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chLatin_M, chLatin_e, chLatin_t, chLatin_h, chLatin_o, chLatin_d, chNull
-};
-
-const XMLCh PSVIUni::fgDisallowedSubstitutions[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_d, chLatin_i, chLatin_s, chLatin_a, chLatin_l, chLatin_l, chLatin_o, chLatin_w, chLatin_e, chLatin_d, chLatin_S, chLatin_u, chLatin_b, chLatin_s, chLatin_t, chLatin_i, chLatin_t, chLatin_u, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgDocumentLocation[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_d, chLatin_o, chLatin_c, chLatin_u, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chLatin_L, chLatin_o, chLatin_c, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgPsvDocument[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_d, chLatin_o, chLatin_c, chLatin_u, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chNull
-};
-    
-const XMLCh PSVIUni::fgElementDeclaration[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_e, chLatin_l, chLatin_e, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chLatin_D, chLatin_e, chLatin_c, chLatin_l, chLatin_a, chLatin_r, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgFacetFixed[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_f, chLatin_i, chLatin_x, chLatin_e, chLatin_d, chNull
-};
-
-const XMLCh PSVIUni::fgFacets[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_f, chLatin_a, chLatin_c, chLatin_e, chLatin_t, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgFields[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_f, chLatin_i, chLatin_e, chLatin_l, chLatin_d, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgFinal[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_f, chLatin_i, chLatin_n, chLatin_a, chLatin_l, chNull
-};
-
-const XMLCh PSVIUni::fgFundamentalFacets[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_f, chLatin_u, chLatin_n, chLatin_d, chLatin_a, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chLatin_a, chLatin_l, chLatin_F, chLatin_a, chLatin_c, chLatin_e, chLatin_t, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgIdentityConstraintCategory[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_i, chLatin_d, chLatin_e, chLatin_n, chLatin_t, chLatin_i, chLatin_t, chLatin_y, chLatin_C, chLatin_o, chLatin_n, chLatin_s, chLatin_t, chLatin_r, chLatin_a, chLatin_i, chLatin_n, chLatin_t, chLatin_C, chLatin_a, chLatin_t, chLatin_e, chLatin_g, chLatin_o, chLatin_r, chLatin_y, chNull
-};
-
-const XMLCh PSVIUni::fgIdentityConstraintDefinition[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_i, chLatin_d, chLatin_e, chLatin_n, chLatin_t, chLatin_i, chLatin_t, chLatin_y, chLatin_C, chLatin_o, chLatin_n, chLatin_s, chLatin_t, chLatin_r, chLatin_a, chLatin_i, chLatin_n, chLatin_t, chLatin_D, chLatin_e, chLatin_f, chLatin_i, chLatin_n, chLatin_i, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgIdentityConstraintDefinitions[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_i, chLatin_d, chLatin_e, chLatin_n, chLatin_t, chLatin_i, chLatin_t, chLatin_y, chLatin_C, chLatin_o, chLatin_n, chLatin_s, chLatin_t, chLatin_r, chLatin_a, chLatin_i, chLatin_n, chLatin_t, chLatin_D, chLatin_e, chLatin_f, chLatin_i, chLatin_n, chLatin_i, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgIdentityConstraintTable[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_i, chLatin_d, chLatin_e, chLatin_n, chLatin_t, chLatin_i, chLatin_t, chLatin_y, chLatin_C, chLatin_o, chLatin_n, chLatin_s, chLatin_t, chLatin_r, chLatin_a, chLatin_i, chLatin_n, chLatin_t, chLatin_T, chLatin_a, chLatin_b, chLatin_l, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgIdIdrefTable[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_i, chLatin_d, chLatin_I, chLatin_d, chLatin_r, chLatin_e, chLatin_f, chLatin_T, chLatin_a, chLatin_b, chLatin_l, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgItemTypeDefinition[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_i, chLatin_t, chLatin_e, chLatin_m, chLatin_T, chLatin_y, chLatin_p, chLatin_e, chLatin_D, chLatin_e, chLatin_f, chLatin_i, chLatin_n, chLatin_i, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgMaxOccurs[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_m, chLatin_a, chLatin_x, chLatin_O, chLatin_c, chLatin_c, chLatin_u, chLatin_r, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgMemberTypeDefinition[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_m, chLatin_e, chLatin_m, chLatin_b, chLatin_e, chLatin_r, chLatin_T, chLatin_y, chLatin_p, chLatin_e, chLatin_D, chLatin_e, chLatin_f, chLatin_i, chLatin_n, chLatin_i, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgMemberTypeDefinitions[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_m, chLatin_e, chLatin_m, chLatin_b, chLatin_e, chLatin_r, chLatin_T, chLatin_y, chLatin_p, chLatin_e, chLatin_D, chLatin_e, chLatin_f, chLatin_i, chLatin_n, chLatin_i, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgMinOccurs[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_m, chLatin_i, chLatin_n, chLatin_O, chLatin_c, chLatin_c, chLatin_u, chLatin_r, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgModelGroup[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_m, chLatin_o, chLatin_d, chLatin_e, chLatin_l, chLatin_G, chLatin_r, chLatin_o, chLatin_u, chLatin_p, chNull
-};
-
-const XMLCh PSVIUni::fgModelGroupDefinition[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_m, chLatin_o, chLatin_d, chLatin_e, chLatin_l, chLatin_G, chLatin_r, chLatin_o, chLatin_u, chLatin_p, chLatin_D, chLatin_e, chLatin_f, chLatin_i, chLatin_n, chLatin_i, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgName[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_n, chLatin_a, chLatin_m, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgNamespaceConstraint[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_n, chLatin_a, chLatin_m, chLatin_e, chLatin_s, chLatin_p, chLatin_a, chLatin_c, chLatin_e, chLatin_C, chLatin_o, chLatin_n, chLatin_s, chLatin_t, chLatin_r, chLatin_a, chLatin_i, chLatin_n, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgNamespaces[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_n, chLatin_a, chLatin_m, chLatin_e, chLatin_s, chLatin_p, chLatin_a, chLatin_c, chLatin_e, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgNamespaceSchemaInformation[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_n, chLatin_a, chLatin_m, chLatin_e, chLatin_s, chLatin_p, chLatin_a, chLatin_c, chLatin_e, chLatin_S, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_a, chLatin_I, chLatin_n, chLatin_f, chLatin_o, chLatin_r, chLatin_m, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgNil[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_n, chLatin_i, chLatin_l, chNull
-};
-
-const XMLCh PSVIUni::fgNillable[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_n, chLatin_i, chLatin_l, chLatin_l, chLatin_a, chLatin_b, chLatin_l, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgNotation[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_n, chLatin_o, chLatin_t, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgNotationDeclaration[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_n, chLatin_o, chLatin_t, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chLatin_D, chLatin_e, chLatin_c, chLatin_l, chLatin_a, chLatin_r, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgParticle[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_p, chLatin_a, chLatin_r, chLatin_t, chLatin_i, chLatin_c, chLatin_l, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgParticles[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_p, chLatin_a, chLatin_r, chLatin_t, chLatin_i, chLatin_c, chLatin_l, chLatin_e, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgPrimitiveTypeDefinition[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_p, chLatin_r, chLatin_i, chLatin_m, chLatin_i, chLatin_t, chLatin_i, chLatin_v, chLatin_e, chLatin_T, chLatin_y, chLatin_p, chLatin_e, chLatin_D, chLatin_e, chLatin_f, chLatin_i, chLatin_n, chLatin_i, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgProcessContents[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_p, chLatin_r, chLatin_o, chLatin_c, chLatin_e, chLatin_s, chLatin_s, chLatin_C, chLatin_o, chLatin_n, chLatin_t, chLatin_e, chLatin_n, chLatin_t, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgProhibitedSubstitutions[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_p, chLatin_r, chLatin_o, chLatin_h, chLatin_i, chLatin_b, chLatin_i, chLatin_t, chLatin_e, chLatin_d, chLatin_S, chLatin_u, chLatin_b, chLatin_s, chLatin_t, chLatin_i, chLatin_t, chLatin_u, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgPublicIdentifier[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_p, chLatin_u, chLatin_b, chLatin_l, chLatin_i, chLatin_c, chLatin_I, chLatin_d, chLatin_e, chLatin_n, chLatin_t, chLatin_i, chLatin_f, chLatin_i, chLatin_e, chLatin_r, chNull
-};
-
-const XMLCh PSVIUni::fgReferencedKey[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_r, chLatin_e, chLatin_f, chLatin_e, chLatin_r, chLatin_e, chLatin_n, chLatin_c, chLatin_e, chLatin_d, chLatin_K, chLatin_e, chLatin_y, chNull
-};
-
-const XMLCh PSVIUni::fgRequired[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_r, chLatin_e, chLatin_q, chLatin_u, chLatin_i, chLatin_r, chLatin_e, chLatin_d, chNull
-};
-
-const XMLCh PSVIUni::fgSchemaAnnotations[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_s, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_a, chLatin_A, chLatin_n, chLatin_n, chLatin_o, chLatin_t, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgSchemaComponents[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_s, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_a, chLatin_C, chLatin_o, chLatin_m, chLatin_p, chLatin_o, chLatin_n, chLatin_e, chLatin_n, chLatin_t, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgSchemaDefault[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_s, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_a, chLatin_D, chLatin_e, chLatin_f, chLatin_a, chLatin_u, chLatin_l, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgSchemaDocument[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_s, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_a, chLatin_D, chLatin_o, chLatin_c, chLatin_u, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgSchemaDocuments[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_s, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_a, chLatin_D, chLatin_o, chLatin_c, chLatin_u, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgSchemaErrorCode[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_s, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_a, chLatin_E, chLatin_r, chLatin_r, chLatin_o, chLatin_r, chLatin_C, chLatin_o, chLatin_d, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgSchemaInformation[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_s, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_a, chLatin_I, chLatin_n, chLatin_f, chLatin_o, chLatin_r, chLatin_m, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgSchemaNamespace[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_s, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_a, chLatin_N, chLatin_a, chLatin_m, chLatin_e, chLatin_s, chLatin_p, chLatin_a, chLatin_c, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgSchemaNormalizedValue[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_s, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_a, chLatin_N, chLatin_o, chLatin_r, chLatin_m, chLatin_a, chLatin_l, chLatin_i, chLatin_z, chLatin_e, chLatin_d, chLatin_V, chLatin_a, chLatin_l, chLatin_u, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgSchemaSpecified[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_s, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_a, chLatin_S, chLatin_p, chLatin_e, chLatin_c, chLatin_i, chLatin_f, chLatin_i, chLatin_e, chLatin_d, chNull
-};
-
-const XMLCh PSVIUni::fgScope[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_s, chLatin_c, chLatin_o, chLatin_p, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgSelector[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_s, chLatin_e, chLatin_l, chLatin_e, chLatin_c, chLatin_t, chLatin_o, chLatin_r, chNull
-};
-
-const XMLCh PSVIUni::fgSimpleTypeDefinition[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_s, chLatin_i, chLatin_m, chLatin_p, chLatin_l, chLatin_e, chLatin_T, chLatin_y, chLatin_p, chLatin_e, chLatin_D, chLatin_e, chLatin_f, chLatin_i, chLatin_n, chLatin_i, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgSubstitutionGroupAffiliation[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_s, chLatin_u, chLatin_b, chLatin_s, chLatin_t, chLatin_i, chLatin_t, chLatin_u, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chLatin_G, chLatin_r, chLatin_o, chLatin_u, chLatin_p, chLatin_A, chLatin_f, chLatin_f, chLatin_i, chLatin_l, chLatin_i, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgSubstitutionGroupExclusions[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_s, chLatin_u, chLatin_b, chLatin_s, chLatin_t, chLatin_i, chLatin_t, chLatin_u, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chLatin_G, chLatin_r, chLatin_o, chLatin_u, chLatin_p, chLatin_E, chLatin_x, chLatin_c, chLatin_l, chLatin_u, chLatin_s, chLatin_i, chLatin_o, chLatin_n, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgSystemIdentifier[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_s, chLatin_y, chLatin_s, chLatin_t, chLatin_e, chLatin_m, chLatin_I, chLatin_d, chLatin_e, chLatin_n, chLatin_t, chLatin_i, chLatin_f, chLatin_i, chLatin_e, chLatin_r, chNull
-};
-
-const XMLCh PSVIUni::fgTargetNamespace[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_t, chLatin_a, chLatin_r, chLatin_g, chLatin_e, chLatin_t, chLatin_N, chLatin_a, chLatin_m, chLatin_e, chLatin_s, chLatin_p, chLatin_a, chLatin_c, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgTerm[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_t, chLatin_e, chLatin_r, chLatin_m, chNull
-};
-
-const XMLCh PSVIUni::fgTypeDefinition[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_t, chLatin_y, chLatin_p, chLatin_e, chLatin_D, chLatin_e, chLatin_f, chLatin_i, chLatin_n, chLatin_i, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgUserInformation[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_u, chLatin_s, chLatin_e, chLatin_r, chLatin_I, chLatin_n, chLatin_f, chLatin_o, chLatin_r, chLatin_m, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgValidationAttempted[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_v, chLatin_a, chLatin_l, chLatin_i, chLatin_d, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chLatin_A, chLatin_t, chLatin_t, chLatin_e, chLatin_m, chLatin_p, chLatin_t, chLatin_e, chLatin_d, chNull
-};
-
-const XMLCh PSVIUni::fgValidationContext[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_v, chLatin_a, chLatin_l, chLatin_i, chLatin_d, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chLatin_C, chLatin_o, chLatin_n, chLatin_t, chLatin_e, chLatin_x, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgValidity[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_v, chLatin_a, chLatin_l, chLatin_i, chLatin_d, chLatin_i, chLatin_t, chLatin_y, chNull
-};
-
-const XMLCh PSVIUni::fgValue[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_v, chLatin_a, chLatin_l, chLatin_u, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgValueConstraint[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_v, chLatin_a, chLatin_l, chLatin_u, chLatin_e, chLatin_C, chLatin_o, chLatin_n, chLatin_s, chLatin_t, chLatin_r, chLatin_a, chLatin_i, chLatin_n, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgVariety[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_v, chLatin_a, chLatin_r, chLatin_i, chLatin_e, chLatin_t, chLatin_y, chNull
-};
-
-const XMLCh PSVIUni::fgWildcard[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_w, chLatin_i, chLatin_l, chLatin_d, chLatin_c, chLatin_a, chLatin_r, chLatin_d, chNull
-};
-
-const XMLCh PSVIUni::fgXpath[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_x, chLatin_p, chLatin_a, chLatin_t, chLatin_h, chNull
-};
-
-const XMLCh PSVIUni::fgAll[] =
-{
-	chLatin_a, chLatin_l, chLatin_l, chNull
-};
-
-const XMLCh PSVIUni::fgAny[] =
-{
-	chLatin_a, chLatin_n, chLatin_y, chNull
-};
-
-const XMLCh PSVIUni::fgAppinfo[] =
-{
-	chLatin_a, chLatin_p, chLatin_p, chLatin_i, chLatin_n, chLatin_f, chLatin_o, chNull
-};
-
-const XMLCh PSVIUni::fgAtomic[] =
-{
-	chLatin_a, chLatin_t, chLatin_o, chLatin_m, chLatin_i, chLatin_c, chNull
-};
-
-const XMLCh PSVIUni::fgChoice[] =
-{
-	chLatin_c, chLatin_h, chLatin_o, chLatin_i, chLatin_c, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgDefault[] =
-{
-	chLatin_d, chLatin_e, chLatin_f, chLatin_a, chLatin_u, chLatin_l, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgDocumentation[] =
-{
-	chLatin_d, chLatin_o, chLatin_c, chLatin_u, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgElementOnly[] =
-{
-	chLatin_e, chLatin_l, chLatin_e, chLatin_m, chLatin_e, chLatin_n, chLatin_t, chLatin_O, chLatin_n, chLatin_l, chLatin_y, chNull
-};
-
-const XMLCh PSVIUni::fgEmpty[] =
-{
-	chLatin_e, chLatin_m, chLatin_p, chLatin_t, chLatin_y, chNull
-};
-
-const XMLCh PSVIUni::fgExtension[] =
-{
-	chLatin_e, chLatin_x, chLatin_t, chLatin_e, chLatin_n, chLatin_s, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgFalse[] =
-{
-	chLatin_f, chLatin_a, chLatin_l, chLatin_s, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgFull[] =
-{
-	chLatin_f, chLatin_u, chLatin_l, chLatin_l, chNull
-};
-
-const XMLCh PSVIUni::fgGlobal[] =
-{
-	chLatin_g, chLatin_l, chLatin_o, chLatin_b, chLatin_a, chLatin_l, chNull
-};
-
-const XMLCh PSVIUni::fgInfoset[] =
-{
-	chLatin_i, chLatin_n, chLatin_f, chLatin_o, chLatin_s, chLatin_e, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgInvalid[] =
-{
-	chLatin_i, chLatin_n, chLatin_v, chLatin_a, chLatin_l, chLatin_i, chLatin_d, chNull
-};
-
-const XMLCh PSVIUni::fgKey[] =
-{
-	chLatin_k, chLatin_e, chLatin_y, chNull
-};
-
-const XMLCh PSVIUni::fgKeyref[] =
-{
-	chLatin_k, chLatin_e, chLatin_y, chLatin_r, chLatin_e, chLatin_f, chNull
-};
-
-const XMLCh PSVIUni::fgLax[] =
-{
-	chLatin_l, chLatin_a, chLatin_x, chNull
-};
-
-const XMLCh PSVIUni::fgList[] =
-{
-	chLatin_l, chLatin_i, chLatin_s, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgLocal[] =
-{
-	chLatin_l, chLatin_o, chLatin_c, chLatin_a, chLatin_l, chNull
-};
-
-const XMLCh PSVIUni::fgMixed[] =
-{
-	chLatin_m, chLatin_i, chLatin_x, chLatin_e, chLatin_d, chNull
-};
-
-const XMLCh PSVIUni::fgNone[] =
-{
-	chLatin_n, chLatin_o, chLatin_n, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgNotKnown[] =
-{
-	chLatin_n, chLatin_o, chLatin_t, chLatin_K, chLatin_n, chLatin_o, chLatin_w, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgNsNamespace[] =
-{
-	chLatin_n, chLatin_s, chLatin_N, chLatin_a, chLatin_m, chLatin_e, chLatin_s, chLatin_p, chLatin_a, chLatin_c, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgOnePointZero[] =
-{
-	chDigit_1, chPeriod, chDigit_0, chNull	
-};
-
-const XMLCh PSVIUni::fgPartial[] =
-{
-	chLatin_p, chLatin_a, chLatin_r, chLatin_t, chLatin_i, chLatin_a, chLatin_l, chNull
-};
-
-const XMLCh PSVIUni::fgRestrict[] =
-{
-	chLatin_r, chLatin_e, chLatin_s, chLatin_t, chLatin_r, chLatin_i, chLatin_c, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgRestriction[] =
-{
-	chLatin_r, chLatin_e, chLatin_s, chLatin_t, chLatin_r, chLatin_i, chLatin_c, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgSchema[] =
-{
-	chLatin_s, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_a, chNull
-};
-
-const XMLCh PSVIUni::fgSequence[] =
-{
-	chLatin_s, chLatin_e, chLatin_q, chLatin_u, chLatin_e, chLatin_n, chLatin_c, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgSimple[] =
-{
-	chLatin_s, chLatin_i, chLatin_m, chLatin_p, chLatin_l, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgSkip[] =
-{
-	chLatin_s, chLatin_k, chLatin_i, chLatin_p, chNull
-};
-
-const XMLCh PSVIUni::fgStrict[] =
-{
-	chLatin_s, chLatin_t, chLatin_r, chLatin_i, chLatin_c, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgSubstitution[] =
-{
-	chLatin_s, chLatin_u, chLatin_b, chLatin_s, chLatin_t, chLatin_i, chLatin_t, chLatin_u, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgTotal[] =
-{
-	chLatin_t, chLatin_o, chLatin_t, chLatin_a, chLatin_l, chNull
-};
-
-const XMLCh PSVIUni::fgTrue[] =
-{
-	chLatin_t, chLatin_r, chLatin_u, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgUnbounded[] =
-{
-	chLatin_u, chLatin_n, chLatin_b, chLatin_o, chLatin_u, chLatin_n, chLatin_d, chLatin_e, chLatin_d, chNull
-};
-
-const XMLCh PSVIUni::fgUnion[] =
-{
-	chLatin_u, chLatin_n, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgUnique[] =
-{
-	chLatin_u, chLatin_n, chLatin_i, chLatin_q, chLatin_u, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgUnknown[] =
-{
-	chLatin_u, chLatin_n, chLatin_k, chLatin_n, chLatin_o, chLatin_w, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgValid[] =
-{
-	chLatin_v, chLatin_a, chLatin_l, chLatin_i, chLatin_d, chNull
-};
-
-const XMLCh PSVIUni::fgVCFixed[] =
-{
-	chLatin_f, chLatin_i, chLatin_x, chLatin_e, chLatin_d, chNull
-};
-
-const XMLCh PSVIUni::fgXMLChNull[] =
-{
-	chNull
-};
-
-const XMLCh PSVIUni::fgAg[] =
-{
-	chLatin_a, chLatin_g, chNull
-};
-
-const XMLCh PSVIUni::fgAnnot[] =
-{
-	chLatin_a, chLatin_n, chLatin_n, chLatin_o, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgAttr[] =
-{
-	chLatin_a, chLatin_t, chLatin_t, chLatin_r, chNull
-};
-
-const XMLCh PSVIUni::fgAu[] =
-{
-	chLatin_a, chLatin_u, chNull
-};
-
-const XMLCh PSVIUni::fgElt[] =
-{
-	chLatin_e, chLatin_l, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgIdc[] =
-{
-	chLatin_i, chLatin_d, chLatin_c, chNull
-};
-
-const XMLCh PSVIUni::fgMg[] =
-{
-	chLatin_m, chLatin_g, chNull
-};
-
-const XMLCh PSVIUni::fgNot[] =
-{
-	chLatin_n, chLatin_o, chLatin_t, chNull
-};
-
-const XMLCh PSVIUni::fgType[] =
-{
-	chLatin_t, chLatin_y, chLatin_p, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgBounded[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_b, chLatin_o, chLatin_u, chLatin_n, chLatin_d, chLatin_e, chLatin_d, chNull
-};
-
-const XMLCh PSVIUni::fgCardinality[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_c, chLatin_a, chLatin_r, chLatin_d, chLatin_i, chLatin_n, chLatin_a, chLatin_l, chLatin_i, chLatin_t, chLatin_y, chNull
-};
-
-const XMLCh PSVIUni::fgEnumeration[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_e, chLatin_n, chLatin_u, chLatin_m, chLatin_e, chLatin_r, chLatin_a, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgFractionDigits[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_f, chLatin_r, chLatin_a, chLatin_c, chLatin_t, chLatin_i, chLatin_o, chLatin_n, chLatin_D, chLatin_i, chLatin_g, chLatin_i, chLatin_t, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgLength[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_l, chLatin_e, chLatin_n, chLatin_g, chLatin_t, chLatin_h, chNull
-};
-
-const XMLCh PSVIUni::fgMaxExclusive[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_m, chLatin_a, chLatin_x, chLatin_E, chLatin_x, chLatin_c, chLatin_l, chLatin_u, chLatin_s, chLatin_i, chLatin_v, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgMaxInclusive[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_m, chLatin_a, chLatin_x, chLatin_I, chLatin_n, chLatin_c, chLatin_l, chLatin_u, chLatin_s, chLatin_i, chLatin_v, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgMaxLength[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_m, chLatin_a, chLatin_x, chLatin_L, chLatin_e, chLatin_n, chLatin_g, chLatin_t, chLatin_h, chNull
-};
-
-const XMLCh PSVIUni::fgMinExclusive[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_m, chLatin_i, chLatin_n, chLatin_E, chLatin_x, chLatin_c, chLatin_l, chLatin_u, chLatin_s, chLatin_i, chLatin_v, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgMinInclusive[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_m, chLatin_i, chLatin_n, chLatin_I, chLatin_n, chLatin_c, chLatin_l, chLatin_u, chLatin_s, chLatin_i, chLatin_v, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgMinLength[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_m, chLatin_i, chLatin_n, chLatin_L, chLatin_e, chLatin_n, chLatin_g, chLatin_t, chLatin_h, chNull
-};
-
-const XMLCh PSVIUni::fgNumeric[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_n, chLatin_u, chLatin_m, chLatin_e, chLatin_r, chLatin_i, chLatin_c, chNull
-};
-
-const XMLCh PSVIUni::fgOrdered[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_o, chLatin_r, chLatin_d, chLatin_e, chLatin_r, chLatin_e, chLatin_d, chNull
-};
-
-const XMLCh PSVIUni::fgPattern[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_p, chLatin_a, chLatin_t, chLatin_t, chLatin_e, chLatin_r, chLatin_n, chNull
-};
-
-const XMLCh PSVIUni::fgTotalDigits[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_t, chLatin_o, chLatin_t, chLatin_a, chLatin_l, chLatin_D, chLatin_i, chLatin_g, chLatin_i, chLatin_t, chLatin_s, chNull
-};
-
-const XMLCh PSVIUni::fgWhiteSpace[] =
-{
-	chLatin_p, chLatin_s, chLatin_v, chColon, chLatin_w, chLatin_h, chLatin_i, chLatin_t, chLatin_e, chLatin_S, chLatin_p, chLatin_a, chLatin_c, chLatin_e, chNull
-};
-
-const XMLCh PSVIUni::fgNamespaceInfoset[] = { //http://www.w3.org/2001/05/XMLInfoset
-	chLatin_h, chLatin_t, chLatin_t, chLatin_p, chColon, chForwardSlash, chForwardSlash, 
-	chLatin_w, chLatin_w, chLatin_w, chPeriod, chLatin_w, chDigit_3, chPeriod, chLatin_o, chLatin_r, chLatin_g, 
-	chForwardSlash, chDigit_2, chDigit_0, chDigit_0, chDigit_1, chForwardSlash, chDigit_0, chDigit_5, 
-	chForwardSlash, chLatin_X, chLatin_M, chLatin_L, chLatin_I, chLatin_n, chLatin_f, chLatin_o, chLatin_s, 
-	chLatin_e, chLatin_t, chNull
-};
-const XMLCh PSVIUni::fgXsi[] = { //xsi
-	chLatin_x, chLatin_s, chLatin_i, chNull
-};
-const XMLCh PSVIUni::fgNamespaceInstance[] = { //http://www.w3.org/2001/XMLSchema-instance
-	chLatin_h, chLatin_t, chLatin_t, chLatin_p, chColon, chForwardSlash, chForwardSlash, 
-	chLatin_w, chLatin_w, chLatin_w, chPeriod, chLatin_w, chDigit_3, chPeriod, chLatin_o, chLatin_r, 
-	chLatin_g, chForwardSlash, chDigit_2, chDigit_0, chDigit_0, chDigit_1, chForwardSlash, chLatin_X, 
-	chLatin_M, chLatin_L, chLatin_S, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_a, chDash, chLatin_i, 
-	chLatin_n, chLatin_s, chLatin_t, chLatin_a, chLatin_n, chLatin_c, chLatin_e,  chNull
-};
-const XMLCh PSVIUni::fgPsv[] = { //psv
-	chLatin_p, chLatin_s, chLatin_v, chNull
-};
-const XMLCh PSVIUni::fgNamespacePsvi[] = { //http://apache.org/xml/2001/PSVInfosetExtension
-	chLatin_h, chLatin_t, chLatin_t, chLatin_p, chColon, chForwardSlash, chForwardSlash, 
-	chLatin_a, chLatin_p, chLatin_a, chLatin_c, chLatin_h, chLatin_e, chPeriod, chLatin_o, chLatin_r, chLatin_g, 
-	chForwardSlash, chLatin_x, chLatin_m, chLatin_l, chForwardSlash, chDigit_2, chDigit_0, chDigit_0, 
-	chDigit_1, chForwardSlash, chLatin_P, chLatin_S, chLatin_V, chLatin_I, chLatin_n, chLatin_f, chLatin_o, 
-	chLatin_s, chLatin_e, chLatin_t, chLatin_E, chLatin_x, chLatin_t, chLatin_e, chLatin_n, chLatin_s, 
-	chLatin_i, chLatin_o, chLatin_n, chNull
-};
-const XMLCh PSVIUni::fgXml[] =
-{
-	chLatin_x, chLatin_m, chLatin_l, chNull
-};
-const XMLCh PSVIUni::fgNamespaceXmlSchema[] = { //http://www.w3.org/2001/XMLSchema
-	chLatin_h, chLatin_t, chLatin_t, chLatin_p, chColon, chForwardSlash, chForwardSlash, chLatin_w, 
-	chLatin_w, chLatin_w, chPeriod, chLatin_w, chDigit_3, chPeriod, chLatin_o, chLatin_r, chLatin_g,
-	chForwardSlash, chDigit_2, chDigit_0, chDigit_0, chDigit_1, chForwardSlash, chLatin_X, chLatin_M, 
-	chLatin_L, chLatin_S, chLatin_c, chLatin_h, chLatin_e, chLatin_m, chLatin_a, chNull	
-};
+const XMLCh PSVIUni::fgPsvColon[] =                 u"psv:";
+const XMLCh PSVIUni::fgAllDeclarationsProcessed[] = u"allDeclarationsProcessed";
+const XMLCh PSVIUni::fgAttribute[] =                u"attribute";
+const XMLCh PSVIUni::fgAttributes[] =               u"attributes";
+const XMLCh PSVIUni::fgAttributeType[] =            u"attributeType";
+const XMLCh PSVIUni::fgBaseURI[] =                  u"baseURI";
+const XMLCh PSVIUni::fgCanonicalRepresentation[] =  u"psv:canonicalRep";
+const XMLCh PSVIUni::fgCharacter[] =                u"character";
+const XMLCh PSVIUni::fgCharacterEncodingScheme[] =  u"characterEncodingScheme";
+const XMLCh PSVIUni::fgChildren[] =                 u"children";
+const XMLCh PSVIUni::fgComment[] =                  u"comment";
+const XMLCh PSVIUni::fgContent[] =                  u"content";
+const XMLCh PSVIUni::fgDocument[] =                 u"document";
+const XMLCh PSVIUni::fgDocTypeDeclaration[] =       u"docTypeDeclaration";
+const XMLCh PSVIUni::fgDocumentElement[] =          u"documentElement";
+const XMLCh PSVIUni::fgElement[] =                  u"element";
+const XMLCh PSVIUni::fgInScopeNamespaces[] =        u"inScopeNamespaces";
+const XMLCh PSVIUni::fgLocalName[] =                u"localName";
+const XMLCh PSVIUni::fgNamespace[] =                u"namespace";
+const XMLCh PSVIUni::fgNamespaceAttributes[] =      u"namespaceAttributes";
+const XMLCh PSVIUni::fgNamespaceName[] =            u"namespaceName";
+const XMLCh PSVIUni::fgNormalizedValue[] =          u"normalizedValue";
+const XMLCh PSVIUni::fgNotations[] =                u"notations";
+const XMLCh PSVIUni::fgPrefix[] =                   u"prefix";
+const XMLCh PSVIUni::fgProcessingInstruction[] =    u"processingInstruction";
+const XMLCh PSVIUni::fgReferences[] =               u"references";
+const XMLCh PSVIUni::fgSpecified[] =                u"specified";
+const XMLCh PSVIUni::fgStandalone[] =               u"standalone";
+const XMLCh PSVIUni::fgTarget[] =                   u"target";
+const XMLCh PSVIUni::fgText[] =                     u"text";
+const XMLCh PSVIUni::fgTextContent[] =              u"textContent";
+const XMLCh PSVIUni::fgUnparsedEntities[] =         u"unparsedEntities";
+const XMLCh PSVIUni::fgVersion[] =                  u"version";
+
+
+const XMLCh PSVIUni::fgAbstract[] =                      u"psv:abstract";
+const XMLCh PSVIUni::fgAnnotation[] =                    u"psv:annotation";
+const XMLCh PSVIUni::fgAnnotations[] =                   u"psv:annotations";
+const XMLCh PSVIUni::fgApplicationInformation[] =        u"psv:applicationInformation";
+const XMLCh PSVIUni::fgAttributeDeclaration[] =          u"psv:attributeDeclaration";
+const XMLCh PSVIUni::fgAttributeGroupDefinition[] =      u"psv:attributeGroupDefinition";
+const XMLCh PSVIUni::fgAttributeUse[] =                  u"psv:attributeUse";
+const XMLCh PSVIUni::fgAttributeUses[] =                 u"psv:attributeUses";
+const XMLCh PSVIUni::fgAttributeWildcard[] =             u"psv:attributeWildcard";
+const XMLCh PSVIUni::fgBaseTypeDefinition[] =            u"psv:baseTypeDefinition";
+const XMLCh PSVIUni::fgComplexTypeDefinition[] =         u"psv:complexTypeDefinition";
+const XMLCh PSVIUni::fgCompositor[] =                    u"psv:compositor";
+const XMLCh PSVIUni::fgContentType[] =                   u"psv:contentType";
+const XMLCh PSVIUni::fgDeclaration[] =                   u"psv:declaration";
+const XMLCh PSVIUni::fgDerivationMethod[] =              u"psv:derivationMethod";
+const XMLCh PSVIUni::fgDisallowedSubstitutions[] =       u"psv:disallowedSubstitutions";
+const XMLCh PSVIUni::fgDocumentLocation[] =              u"psv:documentLocation";
+const XMLCh PSVIUni::fgPsvDocument[] =                   u"psv:document";
+const XMLCh PSVIUni::fgElementDeclaration[] =            u"psv:elementDeclaration";
+const XMLCh PSVIUni::fgFacetFixed[] =                    u"psv:fixed";
+const XMLCh PSVIUni::fgFacets[] =                        u"psv:facets";
+const XMLCh PSVIUni::fgFields[] =                        u"psv:fields";
+const XMLCh PSVIUni::fgFinal[] =                         u"psv:final";
+const XMLCh PSVIUni::fgFundamentalFacets[] =             u"psv:fundamentalFacets";
+const XMLCh PSVIUni::fgIdentityConstraintCategory[] =    u"psv:identityConstraintCategory";
+const XMLCh PSVIUni::fgIdentityConstraintDefinition[] =  u"psv:identityConstraintDefinition";
+const XMLCh PSVIUni::fgIdentityConstraintDefinitions[] = u"psv:identityConstraintDefinitions";
+const XMLCh PSVIUni::fgIdentityConstraintTable[] =       u"psv:identityConstraintTable";
+const XMLCh PSVIUni::fgIdIdrefTable[] =                  u"psv:idIdrefTable";
+const XMLCh PSVIUni::fgItemTypeDefinition[] =            u"psv:itemTypeDefinition";
+const XMLCh PSVIUni::fgMaxOccurs[] =                     u"psv:maxOccurs";
+const XMLCh PSVIUni::fgMemberTypeDefinition[] =          u"psv:memberTypeDefinition";
+const XMLCh PSVIUni::fgMemberTypeDefinitions[] =         u"psv:memberTypeDefinitions";
+const XMLCh PSVIUni::fgMinOccurs[] =                     u"psv:minOccurs";
+const XMLCh PSVIUni::fgModelGroup[] =                    u"psv:modelGroup";
+const XMLCh PSVIUni::fgModelGroupDefinition[] =          u"psv:modelGroupDefinition";
+const XMLCh PSVIUni::fgName[] =                          u"psv:name";
+const XMLCh PSVIUni::fgNamespaceConstraint[] =           u"psv:namespaceConstraint";
+const XMLCh PSVIUni::fgNamespaces[] =                    u"psv:namespaces";
+const XMLCh PSVIUni::fgNamespaceSchemaInformation[] =    u"psv:namespaceSchemaInformation";
+const XMLCh PSVIUni::fgNil[] =                           u"psv:nil";
+const XMLCh PSVIUni::fgNillable[] =                      u"psv:nillable";
+const XMLCh PSVIUni::fgNotation[] =                      u"psv:notation";
+const XMLCh PSVIUni::fgNotationDeclaration[] =           u"psv:notationDeclaration";
+const XMLCh PSVIUni::fgParticle[] =                      u"psv:particle";
+const XMLCh PSVIUni::fgParticles[] =                     u"psv:particles";
+const XMLCh PSVIUni::fgPrimitiveTypeDefinition[] =       u"psv:primitiveTypeDefinition";
+const XMLCh PSVIUni::fgProcessContents[] =               u"psv:processContents";
+const XMLCh PSVIUni::fgProhibitedSubstitutions[] =       u"psv:prohibitedSubstitutions";
+const XMLCh PSVIUni::fgPublicIdentifier[] =              u"psv:publicIdentifier";
+const XMLCh PSVIUni::fgReferencedKey[] =                 u"psv:referencedKey";
+const XMLCh PSVIUni::fgRequired[] =                      u"psv:required";
+const XMLCh PSVIUni::fgSchemaAnnotations[] =             u"psv:schemaAnnotations";
+const XMLCh PSVIUni::fgSchemaComponents[] =              u"psv:schemaComponents";
+const XMLCh PSVIUni::fgSchemaDefault[] =                 u"psv:schemaDefault";
+const XMLCh PSVIUni::fgSchemaDocument[] =                u"psv:schemaDocument";
+const XMLCh PSVIUni::fgSchemaDocuments[] =               u"psv:schemaDocuments";
+const XMLCh PSVIUni::fgSchemaErrorCode[] =               u"psv:schemaErrorCode";
+const XMLCh PSVIUni::fgSchemaInformation[] =             u"psv:schemaInformation";
+const XMLCh PSVIUni::fgSchemaNamespace[] =               u"psv:schemaNamespace";
+const XMLCh PSVIUni::fgSchemaNormalizedValue[] =         u"psv:schemaNormalizedValue";
+const XMLCh PSVIUni::fgSchemaSpecified[] =               u"psv:schemaSpecified";
+const XMLCh PSVIUni::fgScope[] =                         u"psv:scope";
+const XMLCh PSVIUni::fgSelector[] =                      u"psv:selector";
+const XMLCh PSVIUni::fgSimpleTypeDefinition[] =          u"psv:simpleTypeDefinition";
+const XMLCh PSVIUni::fgSubstitutionGroupAffiliation[] =  u"psv:substitutionGroupAffiliation";
+const XMLCh PSVIUni::fgSubstitutionGroupExclusions[] =   u"psv:substitutionGroupExclusions";
+const XMLCh PSVIUni::fgSystemIdentifier[] =              u"psv:systemIdentifier";
+const XMLCh PSVIUni::fgTargetNamespace[] =               u"psv:targetNamespace";
+const XMLCh PSVIUni::fgTerm[] =                          u"psv:term";
+const XMLCh PSVIUni::fgTypeDefinition[] =                u"psv:typeDefinition";
+const XMLCh PSVIUni::fgUserInformation[] =               u"psv:userInformation";
+const XMLCh PSVIUni::fgValidationAttempted[] =           u"psv:validationAttempted";
+const XMLCh PSVIUni::fgValidationContext[] =             u"psv:validationContext";
+const XMLCh PSVIUni::fgValidity[] =                      u"psv:validity";
+const XMLCh PSVIUni::fgValue[] =                         u"psv:value";
+const XMLCh PSVIUni::fgValueConstraint[] =               u"psv:valueConstraint";
+const XMLCh PSVIUni::fgVariety[] =                       u"psv:variety";
+const XMLCh PSVIUni::fgWildcard[] =                      u"psv:wildcard";
+const XMLCh PSVIUni::fgXpath[] =                         u"psv:xpath";
+
+const XMLCh PSVIUni::fgAll[] =           u"all";
+const XMLCh PSVIUni::fgAny[] =           u"any";
+const XMLCh PSVIUni::fgAppinfo[] =       u"appinfo";
+const XMLCh PSVIUni::fgAtomic[] =        u"atomic";
+const XMLCh PSVIUni::fgChoice[] =        u"choice";
+const XMLCh PSVIUni::fgDefault[] =       u"default";
+const XMLCh PSVIUni::fgDocumentation[] = u"documentation";
+const XMLCh PSVIUni::fgElementOnly[] =   u"elementOnly";
+const XMLCh PSVIUni::fgEmpty[] =         u"empty";
+const XMLCh PSVIUni::fgExtension[] =     u"extension";
+const XMLCh PSVIUni::fgFalse[] =         u"false";
+const XMLCh PSVIUni::fgFull[] =          u"full";
+const XMLCh PSVIUni::fgGlobal[] =        u"global";
+const XMLCh PSVIUni::fgInfoset[] =       u"infoset";
+const XMLCh PSVIUni::fgInvalid[] =       u"invalid";
+const XMLCh PSVIUni::fgKey[] =           u"key";
+const XMLCh PSVIUni::fgKeyref[] =        u"keyref";
+const XMLCh PSVIUni::fgLax[] =           u"lax";
+const XMLCh PSVIUni::fgList[] =          u"list";
+const XMLCh PSVIUni::fgLocal[] =         u"local";
+const XMLCh PSVIUni::fgMixed[] =         u"mixed";
+const XMLCh PSVIUni::fgNone[] =          u"none";
+const XMLCh PSVIUni::fgNotKnown[] =      u"notKnown";
+const XMLCh PSVIUni::fgNsNamespace[] =   u"nsNamespace";
+const XMLCh PSVIUni::fgOnePointZero[] =  u"1.0";
+const XMLCh PSVIUni::fgPartial[] =       u"partial";
+const XMLCh PSVIUni::fgRestrict[] =      u"restrict";
+const XMLCh PSVIUni::fgRestriction[] =   u"restriction";
+const XMLCh PSVIUni::fgSchema[] =        u"schema";
+const XMLCh PSVIUni::fgSequence[] =      u"sequence";
+const XMLCh PSVIUni::fgSimple[] =        u"simple";
+const XMLCh PSVIUni::fgSkip[] =          u"skip";
+const XMLCh PSVIUni::fgStrict[] =        u"strict";
+const XMLCh PSVIUni::fgSubstitution[] =  u"substitution";
+const XMLCh PSVIUni::fgTotal[] =         u"total";
+const XMLCh PSVIUni::fgTrue[] =          u"true";
+const XMLCh PSVIUni::fgUnbounded[] =     u"unbounded";
+const XMLCh PSVIUni::fgUnion[] =         u"union";
+const XMLCh PSVIUni::fgUnique[] =        u"unique";
+const XMLCh PSVIUni::fgUnknown[] =       u"unknown";
+const XMLCh PSVIUni::fgValid[] =         u"valid";
+const XMLCh PSVIUni::fgVCFixed[] =       u"fixed";
+const XMLCh PSVIUni::fgXMLChNull[] =     u"";
+
+const XMLCh PSVIUni::fgAg[] =             u"ag";
+const XMLCh PSVIUni::fgAnnot[] =          u"annot";
+const XMLCh PSVIUni::fgAttr[] =           u"attr";
+const XMLCh PSVIUni::fgAu[] =             u"au";
+const XMLCh PSVIUni::fgElt[] =            u"elt";
+const XMLCh PSVIUni::fgIdc[] =            u"idc";
+const XMLCh PSVIUni::fgMg[] =             u"mg";
+const XMLCh PSVIUni::fgNot[] =            u"not";
+const XMLCh PSVIUni::fgType[] =           u"type";
+const XMLCh PSVIUni::fgBounded[] =        u"psv:bounded";
+const XMLCh PSVIUni::fgCardinality[] =    u"psv:cardinality";
+const XMLCh PSVIUni::fgEnumeration[] =    u"psv:enumeration";
+const XMLCh PSVIUni::fgFractionDigits[] = u"psv:fractionDigits";
+const XMLCh PSVIUni::fgLength[] =         u"psv:length";
+const XMLCh PSVIUni::fgMaxExclusive[] =   u"psv:maxExclusive";
+const XMLCh PSVIUni::fgMaxInclusive[] =   u"psv:maxInclusive";
+const XMLCh PSVIUni::fgMaxLength[] =      u"psv:maxLength";
+const XMLCh PSVIUni::fgMinExclusive[] =   u"psv:minExclusive";
+const XMLCh PSVIUni::fgMinInclusive[] =   u"psv:minInclusive";
+const XMLCh PSVIUni::fgMinLength[] =      u"psv:minLength";
+const XMLCh PSVIUni::fgNumeric[] =        u"psv:numeric";
+const XMLCh PSVIUni::fgOrdered[] =        u"psv:ordered";
+const XMLCh PSVIUni::fgPattern[] =        u"psv:pattern";
+const XMLCh PSVIUni::fgTotalDigits[] =    u"psv:totalDigits";
+const XMLCh PSVIUni::fgWhiteSpace[] =     u"psv:whiteSpace";
+
+
+const XMLCh PSVIUni::fgNamespaceInfoset[] =   u"http://www.w3.org/2001/05/XMLInfoset";
+const XMLCh PSVIUni::fgXsi[] =                u"xsi";
+const XMLCh PSVIUni::fgNamespaceInstance[] =  u"http://www.w3.org/2001/XMLSchema-instance";
+const XMLCh PSVIUni::fgPsv[] =                u"psv";
+const XMLCh PSVIUni::fgNamespacePsvi[] =      u"http://apache.org/xml/2001/PSVInfosetExtension";
+const XMLCh PSVIUni::fgXml[] =                u"xml";
+const XMLCh PSVIUni::fgNamespaceXmlSchema[] = u"http://www.w3.org/2001/XMLSchema";

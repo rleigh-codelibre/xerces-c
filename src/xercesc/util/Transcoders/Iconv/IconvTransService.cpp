@@ -59,10 +59,6 @@ namespace XERCES_CPP_NAMESPACE {
 //  Local, const data
 // ---------------------------------------------------------------------------
 static const int    gTempBuffArraySize = 1024;
-static const XMLCh  gMyServiceId[] =
-{
-    chLatin_I, chLatin_C, chLatin_o, chLatin_n, chLatin_v, chNull
-};
 
 // ---------------------------------------------------------------------------
 // the following is defined by 'man mbrtowc':
@@ -158,7 +154,7 @@ int IconvTransService::compareNIString( const   XMLCh* const    comp1
 
 const XMLCh* IconvTransService::getId() const
 {
-    return gMyServiceId;
+    return u"IConv";
 }
 
 XMLLCPTranscoder* IconvTransService::makeNewLCPTranscoder(MemoryManager* manager)

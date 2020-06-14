@@ -140,11 +140,6 @@ static const IconvGNUEncoding    gIconvGNUEncodings[] = {
 //  Local, const data
 // ---------------------------------------------------------------------------
 static const unsigned int    gTempBuffArraySize = 4096;
-static const XMLCh        gMyServiceId[] =
-{
-    chLatin_I, chLatin_C, chLatin_o, chLatin_n, chLatin_v, chNull
-};
-
 
 // ---------------------------------------------------------------------------
 //  Local methods
@@ -566,7 +561,7 @@ int IconvGNUTransService::compareNIString(const XMLCh* const     comp1
 
 const XMLCh* IconvGNUTransService::getId() const
 {
-    return gMyServiceId;
+    return u"IConv";
 }
 
 XMLLCPTranscoder* IconvGNUTransService::makeNewLCPTranscoder(MemoryManager* manager)

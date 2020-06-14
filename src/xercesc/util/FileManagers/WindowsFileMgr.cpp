@@ -201,8 +201,7 @@ WindowsFileMgr::openStdIn(MemoryManager* const manager)
     //
     HANDLE stdInOrg = ::GetStdHandle(STD_INPUT_HANDLE);
     if (stdInOrg == INVALID_HANDLE_VALUE) {
-        XMLCh stdinStr[] = {chLatin_s, chLatin_t, chLatin_d, chLatin_i, chLatin_n, chNull};
-        ThrowXMLwithMemMgr1(XMLPlatformUtilsException, XMLExcepts::File_CouldNotOpenFile, stdinStr, manager);
+        ThrowXMLwithMemMgr1(XMLPlatformUtilsException, XMLExcepts::File_CouldNotOpenFile, u"stdin", manager);
     }
 
     HANDLE retHandle;

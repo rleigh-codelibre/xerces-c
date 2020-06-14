@@ -40,9 +40,9 @@ namespace XERCES_CPP_NAMESPACE {
 //
 const XMLCh XMLUri::RESERVED_CHARACTERS[] =
 {
-    chSemiColon, chForwardSlash, chQuestion, chColon, chAt,
-    chAmpersand, chEqual, chPlus, chDollarSign, chComma, chOpenSquare,
-    chCloseSquare, chNull
+    u';', u'/', u'?', u':', u'@', u'&',
+    u'=', u'+', u'$', u',', u'[', u']',
+    u'\0'
 };
 
 //
@@ -51,18 +51,19 @@ const XMLCh XMLUri::RESERVED_CHARACTERS[] =
 //
 const XMLCh XMLUri::MARK_CHARACTERS[] =
 {
-    chDash, chUnderscore, chPeriod, chBang, chTilde,
-    chAsterisk, chSingleQuote, chOpenParen, chCloseParen, chNull
+    u'-', u'_',  u'.', u'!', u'~',
+    u'*', u'\'', u'(', u')',
+    u'\0'
 };
 
 // combination of MARK and RESERVED
 const XMLCh XMLUri::MARK_OR_RESERVED_CHARACTERS[] =
 {
-    chDash, chUnderscore, chPeriod, chBang, chTilde,
-    chAsterisk, chSingleQuote, chOpenParen, chCloseParen,
-    chSemiColon, chForwardSlash, chQuestion, chColon, chAt,
-    chAmpersand, chEqual, chPlus, chDollarSign, chComma, chOpenSquare,
-    chCloseSquare, chNull
+    u'-', u'_',  u'.', u'!', u'~',
+    u'*', u'\'', u'(', u')',
+    u';', u'/', u'?', u':', u'@', u'&',
+    u'=', u'+', u'$', u',', u'[', u']',
+    u'\0'
 };
 
 //
@@ -70,7 +71,8 @@ const XMLCh XMLUri::MARK_OR_RESERVED_CHARACTERS[] =
 //
 const XMLCh XMLUri::SCHEME_CHARACTERS[] =
 {
-    chPlus, chDash, chPeriod, chNull
+    u'+', u'-', u'.',
+    u'\0'
 };
 
 //
@@ -79,8 +81,8 @@ const XMLCh XMLUri::SCHEME_CHARACTERS[] =
 //
 const XMLCh XMLUri::USERINFO_CHARACTERS[] =
 {
-    chSemiColon, chColon, chAmpersand, chEqual, chPlus,
-    chDollarSign, chPeriod, chNull
+    u';', u':', u'&', u'=', u'+', u'$', u'.',
+    u'\0'
 };
 
 //
@@ -89,8 +91,8 @@ const XMLCh XMLUri::USERINFO_CHARACTERS[] =
 //
 const XMLCh XMLUri::REG_NAME_CHARACTERS[] =
 {
-    chDollarSign, chComma, chSemiColon, chColon, chAt,
-    chAmpersand, chEqual, chPlus, chNull
+    u'$', u',', u';', u':', u'@', u'&', u'=', u'+',
+    u'\0'
 };
 
 //      pchar plus ';' and '/'.
@@ -98,8 +100,8 @@ const XMLCh XMLUri::REG_NAME_CHARACTERS[] =
 //                      ":" | "@" | "&" | "=" | "+" | "$" | ","
 const XMLCh XMLUri::PATH_CHARACTERS[] =
 {
-    chSemiColon, chForwardSlash, chColon, chAt, chAmpersand,
-    chEqual, chPlus, chDollarSign, chComma, chNull
+    u';', u'/', u':', u'@', u'&', u'=', u'+', u'$', u',',
+    u'\0'
 };
 
 
@@ -119,93 +121,30 @@ static const int BUF_LEN = 64;
 // "Query"
 // "Fragment"
 //
-static const XMLCh errMsg_SCHEME[] =
-{
-    chLatin_s, chLatin_c, chLatin_h, chLatin_e,
-    chLatin_m, chLatin_e, chNull
-};
-
-static const XMLCh errMsg_PARAMS[] =
-{
-    chLatin_p, chLatin_a, chLatin_r, chLatin_a, chLatin_m,
-    chLatin_e, chLatin_t, chLatin_e, chLatin_r, chLatin_s, chNull
-};
-
-static const XMLCh errMsg_USERINFO[] =
-{
-    chLatin_u, chLatin_s, chLatin_e, chLatin_r,
-    chLatin_i, chLatin_n, chLatin_f, chLatin_o, chNull
-};
-
-static const XMLCh errMsg_HOST[] =
-{
-    chLatin_h, chLatin_o, chLatin_s, chLatin_t, chNull
-};
-
-static const XMLCh errMsg_PORT[] =
-{
-    chLatin_p, chLatin_o, chLatin_r, chLatin_t, chNull
-};
-
-static const XMLCh errMsg_REGNAME[] =
-{
-    chLatin_R, chLatin_e, chLatin_g,
-    chLatin_N, chLatin_a, chLatin_m, chLatin_e, chNull
-};
-
-static const XMLCh errMsg_PATH[] =
-{
-    chLatin_p, chLatin_a, chLatin_t, chLatin_h, chNull
-};
-
-static const XMLCh errMsg_QUERY[] =
-{
-    chLatin_q, chLatin_u, chLatin_e, chLatin_r, chLatin_y, chNull
-};
-
-static const XMLCh errMsg_FRAGMENT[] =
-{
-    chLatin_f, chLatin_r, chLatin_a, chLatin_g,
-    chLatin_m, chLatin_e, chLatin_n, chLatin_t, chNull
-};
+static const XMLCh errMsg_SCHEME[] =   u"scheme";
+static const XMLCh errMsg_PARAMS[] =   u"parameters";
+static const XMLCh errMsg_USERINFO[] = u"userinfo";
+static const XMLCh errMsg_HOST[] =     u"host";
+static const XMLCh errMsg_PORT[] =     u"port";
+static const XMLCh errMsg_REGNAME[] =  u"RegName";
+static const XMLCh errMsg_PATH[] =     u"path";
+static const XMLCh errMsg_QUERY[] =    u"query";
+static const XMLCh errMsg_FRAGMENT[] = u"fragment";
 
 //
 //  "//"
 //  "/"
-//  "./"
+//  "/./"
 //  "/."
 //  "/../"
 //  "/.."
 //
-static const XMLCh DOUBLE_SLASH[] =
-{
-    chForwardSlash, chForwardSlash, chNull
-};
-
-static const XMLCh SINGLE_SLASH[] =
-{
-    chForwardSlash, chNull
-};
-
-static const XMLCh SLASH_DOT_SLASH[] =
-{
-    chForwardSlash, chPeriod, chForwardSlash, chNull
-};
-
-static const XMLCh SLASH_DOT[] =
-{
-    chForwardSlash, chPeriod, chNull
-};
-
-static const XMLCh SLASH_DOTDOT_SLASH[] =
-{
-    chForwardSlash, chPeriod, chPeriod, chForwardSlash, chNull
-};
-
-static const XMLCh SLASH_DOTDOT[] =
-{
-    chForwardSlash, chPeriod, chPeriod, chNull
-};
+static const XMLCh DOUBLE_SLASH[] =       u"//";
+static const XMLCh SINGLE_SLASH[] =       u"/";
+static const XMLCh SLASH_DOT_SLASH[] =    u"/./";
+static const XMLCh SLASH_DOT[] =          u"/.";
+static const XMLCh SLASH_DOTDOT_SLASH[] = u"/../";
+static const XMLCh SLASH_DOTDOT[] =       u"/..";
 
 //
 //  ":/?#"
@@ -213,7 +152,8 @@ static const XMLCh SLASH_DOTDOT[] =
 // REVISIT: why?
 static const XMLCh SCHEME_SEPARATORS[] =
 {
-    chColon, chForwardSlash, chQuestion, chPound, chNull
+    u':', u'/', u'?', u'#',
+    u'\0'
 };
 
 // ---------------------------------------------------------------------------
@@ -611,7 +551,7 @@ void XMLUri::initialize(const XMLUri* const baseURI
         // 6d - remove "." if path ends with "." as a complete path segment
         if (XMLString::endsWith(path, SLASH_DOT))
         {
-            path[XMLString::stringLen(path) - 1] = chNull;
+            path[XMLString::stringLen(path) - 1] = u'\0';
         }
 
         // 6e - remove all "<segment>/../" where "<segment>" is a complete
@@ -665,7 +605,7 @@ void XMLUri::initialize(const XMLUri* const baseURI
                  path[segIndex+2] != chPeriod ||
 				 segIndex + 3 != (int)index))
             {
-                path[segIndex+1] = chNull;
+                path[segIndex+1] = u'\0';
             }
         }
 
@@ -861,8 +801,8 @@ void XMLUri::initializePath(const XMLCh* const uriSpec)
                     if (index + 2 >= end)
                     {
                         XMLCh value1[3];
-                        value1[1] = chNull;
-                        value1[2] = chNull;
+                        value1[1] = u'\0';
+                        value1[2] = u'\0';
                         XMLString::moveChars(value1, &(uriSpec[index]), (index + 1 >= end ? 1 : 2));
                         ThrowXMLwithMemMgr2(MalformedURLException
                             , XMLExcepts::XMLNUM_URI_Component_Invalid_EscapeSequence
@@ -874,7 +814,7 @@ void XMLUri::initializePath(const XMLCh* const uriSpec)
                     {
                         XMLCh value1[4];
                         XMLString::moveChars(value1, &(uriSpec[index]), 3);
-                        value1[3] = chNull;
+                        value1[3] = u'\0';
                         ThrowXMLwithMemMgr2(MalformedURLException
                                 , XMLExcepts::XMLNUM_URI_Component_Invalid_EscapeSequence
                                 , errMsg_PATH
@@ -887,7 +827,7 @@ void XMLUri::initializePath(const XMLCh* const uriSpec)
                 {
                     XMLCh value1[2];
                     value1[0] = testChar;
-                    value1[1] = chNull;
+                    value1[1] = u'\0';
                     ThrowXMLwithMemMgr2(MalformedURLException
                             , XMLExcepts::XMLNUM_URI_Component_Invalid_Char
                             , errMsg_PATH
@@ -916,8 +856,8 @@ void XMLUri::initializePath(const XMLCh* const uriSpec)
                     if (index + 2 >= end)
                     {
                         XMLCh value1[3];
-                        value1[1] = chNull;
-                        value1[2] = chNull;
+                        value1[1] = u'\0';
+                        value1[2] = u'\0';
                         XMLString::moveChars(value1, &(uriSpec[index]), (index + 1 >= end ? 1 : 2));
                         ThrowXMLwithMemMgr2(MalformedURLException
                             , XMLExcepts::XMLNUM_URI_Component_Invalid_EscapeSequence
@@ -929,7 +869,7 @@ void XMLUri::initializePath(const XMLCh* const uriSpec)
                     {
                         XMLCh value1[4];
                         XMLString::moveChars(value1, &(uriSpec[index]), 3);
-                        value1[3] = chNull;
+                        value1[3] = u'\0';
                         ThrowXMLwithMemMgr2(MalformedURLException
                                 , XMLExcepts::XMLNUM_URI_Component_Invalid_EscapeSequence
                                 , errMsg_PATH
@@ -946,7 +886,7 @@ void XMLUri::initializePath(const XMLCh* const uriSpec)
                 {
                     XMLCh value1[2];
                     value1[0] = testChar;
-                    value1[1] = chNull;
+                    value1[1] = u'\0';
                     ThrowXMLwithMemMgr2(MalformedURLException
                             , XMLExcepts::XMLNUM_URI_Component_Invalid_Char
                             , errMsg_PATH
@@ -985,8 +925,8 @@ void XMLUri::initializePath(const XMLCh* const uriSpec)
                 if (index + 2 >= end)
                 {
                     XMLCh value1[3];
-                    value1[1] = chNull;
-                    value1[2] = chNull;
+                    value1[1] = u'\0';
+                    value1[2] = u'\0';
                     XMLString::moveChars(value1, &(uriSpec[index]), (index + 1 >= end ? 1 : 2));
                     ThrowXMLwithMemMgr2(MalformedURLException
                         , XMLExcepts::XMLNUM_URI_Component_Invalid_EscapeSequence
@@ -998,7 +938,7 @@ void XMLUri::initializePath(const XMLCh* const uriSpec)
                 {
                     XMLCh value1[4];
                     XMLString::moveChars(value1, &(uriSpec[index]), 3);
-                    value1[3] = chNull;
+                    value1[3] = u'\0';
                     ThrowXMLwithMemMgr2(MalformedURLException
                             , XMLExcepts::XMLNUM_URI_Component_Invalid_EscapeSequence
                             , errMsg_QUERY
@@ -1010,7 +950,7 @@ void XMLUri::initializePath(const XMLCh* const uriSpec)
             {
                 XMLCh value1[2];
                 value1[0] = testChar;
-                value1[1] = chNull;
+                value1[1] = u'\0';
                 ThrowXMLwithMemMgr2(MalformedURLException
                         , XMLExcepts::XMLNUM_URI_Component_Invalid_Char
                         , errMsg_QUERY
@@ -1046,8 +986,8 @@ void XMLUri::initializePath(const XMLCh* const uriSpec)
                 if (index + 2 >= end)
                 {
                     XMLCh value1[3];
-                    value1[1] = chNull;
-                    value1[2] = chNull;
+                    value1[1] = u'\0';
+                    value1[2] = u'\0';
                     XMLString::moveChars(value1, &(uriSpec[index]), (index + 1 >= end ? 1 : 2));
                     ThrowXMLwithMemMgr2(MalformedURLException
                         , XMLExcepts::XMLNUM_URI_Component_Invalid_EscapeSequence
@@ -1059,7 +999,7 @@ void XMLUri::initializePath(const XMLCh* const uriSpec)
                 {
                     XMLCh value1[4];
                     XMLString::moveChars(value1, &(uriSpec[index]), 3);
-                    value1[3] = chNull;
+                    value1[3] = u'\0';
                     ThrowXMLwithMemMgr2(MalformedURLException
                             , XMLExcepts::XMLNUM_URI_Component_Invalid_EscapeSequence
                             , errMsg_FRAGMENT
@@ -1071,7 +1011,7 @@ void XMLUri::initializePath(const XMLCh* const uriSpec)
             {
                 XMLCh value1[2];
                 value1[0] = testChar;
-                value1[1] = chNull;
+                value1[1] = u'\0';
                 ThrowXMLwithMemMgr2(MalformedURLException
                         , XMLExcepts::XMLNUM_URI_Component_Invalid_Char
                         , errMsg_FRAGMENT
@@ -1445,7 +1385,7 @@ void XMLUri::isConformantUserInfo(const XMLCh* const userInfo
                 value1[0] = chPercent;
                 value1[1] = *(tmpStr+1);
                 value1[2] = *(tmpStr+2);
-                value1[3] = chNull;
+                value1[3] = u'\0';
 
                 ThrowXMLwithMemMgr2(MalformedURLException
                         , XMLExcepts::XMLNUM_URI_Component_Invalid_EscapeSequence
@@ -1901,7 +1841,7 @@ bool XMLUri::isWellFormedIPv6Reference(const XMLCh* const addr, const XMLSize_t 
 //
 int XMLUri::scanHexSequence (const XMLCh* const addr, XMLSize_t index, XMLSize_t end, int& counter)
 {
-    XMLCh testChar = chNull;
+    XMLCh testChar = u'\0';
     int numDigits = 0;
     XMLSize_t start = index;
 
@@ -2461,7 +2401,7 @@ bool XMLUri::processPath(const XMLCh* const pathStr,
     if (pathStrLen != 0)
     {
         XMLSize_t index = 0;
-        XMLCh testChar = chNull;
+        XMLCh testChar = u'\0';
         bool isOpaque = (!isSchemePresent || *pathStr == chForwardSlash);
 
         // path - everything up to query string or fragment

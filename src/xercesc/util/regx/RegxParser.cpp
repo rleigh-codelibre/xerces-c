@@ -691,11 +691,11 @@ RangeToken* RegxParser::parseCharacterClass(const bool useNRange) {
                     || (ch == chDash && getCharData() == chCloseSquare && firstLoop))) {
                 // if regex = [-] then invalid...
                 // '[', ']', '-' not allowed and should be escaped
-                XMLCh chStr[] = { (XMLCh)ch, chNull };
+                XMLCh chStr[] = { (XMLCh)ch, u'\0' };
                 ThrowXMLwithMemMgr2(ParseException,XMLExcepts::Parser_CC6, chStr, chStr, getMemoryManager());
             }
             if (ch == chDash && getCharData() == chDash && getState() != REGX_T_BACKSOLIDUS && !wasDecoded) {
-                XMLCh chStr[] = { (XMLCh)ch, chNull };
+                XMLCh chStr[] = { (XMLCh)ch, u'\0' };
                 ThrowXMLwithMemMgr2(ParseException,XMLExcepts::Parser_CC6, chStr, chStr, getMemoryManager());
             }
 
@@ -714,13 +714,13 @@ RangeToken* RegxParser::parseCharacterClass(const bool useNRange) {
                 }
                 else if (type == REGX_T_XMLSCHEMA_CC_SUBTRACTION) {
 
-                    static const XMLCh dashStr[] = { chDash, chNull};
+                    static const XMLCh dashStr[] = { chDash, u'\0'};
                     ThrowXMLwithMemMgr2(ParseException, XMLExcepts::Parser_CC6, dashStr, dashStr, getMemoryManager());
                 }
                 else {
 
                     XMLInt32 rangeEnd = getCharData();
-                    XMLCh rangeEndStr[] = { (XMLCh)rangeEnd, chNull };
+                    XMLCh rangeEndStr[] = { (XMLCh)rangeEnd, u'\0' };
 
                     if (type == REGX_T_CHAR) {
 
@@ -737,7 +737,7 @@ RangeToken* RegxParser::parseCharacterClass(const bool useNRange) {
                     processNext();
 
                     if (ch > rangeEnd) {
-                        XMLCh chStr[] = { (XMLCh)ch, chNull };
+                        XMLCh chStr[] = { (XMLCh)ch, u'\0' };
                         ThrowXMLwithMemMgr2(ParseException,XMLExcepts::Parser_Ope3, rangeEndStr, chStr, getMemoryManager());
                     }
 
@@ -845,7 +845,7 @@ XMLInt32 RegxParser::decodeEscaped() {
         break;
     default:
     {
-        XMLCh chString[] = {chBackSlash, (XMLCh)ch, chNull};
+        XMLCh chString[] = {chBackSlash, (XMLCh)ch, u'\0'};
         ThrowXMLwithMemMgr1(ParseException,XMLExcepts::Parser_Process2, chString, getMemoryManager());
     }
     }

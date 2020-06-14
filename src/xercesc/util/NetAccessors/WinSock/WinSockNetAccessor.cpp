@@ -32,13 +32,7 @@
 
 namespace XERCES_CPP_NAMESPACE {
 
-const XMLCh WinSockNetAccessor::fgMyName[] =
-{
-    chLatin_W, chLatin_i, chLatin_n, chLatin_S, chLatin_o, chLatin_c,
-    chLatin_k, chLatin_N, chLatin_e, chLatin_t, chLatin_A, chLatin_c,
-    chLatin_c, chLatin_e, chLatin_s, chLatin_s, chLatin_o, chLatin_r,
-    chNull
-};
+const XMLCh WinSockNetAccessor::fgMyName[] = u"WinSockNetAccessor";
 
 WinSockNetAccessor::WinSockNetAccessor()
 {

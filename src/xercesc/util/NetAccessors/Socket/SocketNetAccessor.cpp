@@ -28,12 +28,7 @@
 
 namespace XERCES_CPP_NAMESPACE {
 
-const XMLCh SocketNetAccessor::fgMyName[] =
-{
-    chLatin_S, chLatin_o, chLatin_c, chLatin_k, chLatin_e, chLatin_t,
-    chLatin_N, chLatin_e, chLatin_t, chLatin_A, chLatin_c, chLatin_c,
-    chLatin_e, chLatin_s, chLatin_s, chLatin_o, chLatin_r, chNull
-};
+const XMLCh SocketNetAccessor::fgMyName[] = u"SocketNetAccessor";
 
 
 SocketNetAccessor::SocketNetAccessor()

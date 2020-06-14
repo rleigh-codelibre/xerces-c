@@ -69,10 +69,7 @@ namespace XERCES_CPP_NAMESPACE {
 //      conversion to/from the local code page.
 // ---------------------------------------------------------------------------
 static XMLLCPTranscoder*    gTranscoder = 0;
-static XMLCh                gNullStr[] =
-{
-    chOpenCurly, chLatin_n, chLatin_u, chLatin_l, chLatin_l, chCloseCurly, chNull
-};
+static const XMLCh         *gNullStr = u"{null}";
 
 MemoryManager* XMLString::fgMemoryManager = 0;
 
@@ -818,7 +815,7 @@ void XMLString::sizeToText(  const  XMLSize_t            toFormat
     if (!toFormat)
     {
         toFill[0] = chDigit_0;
-        toFill[1] = chNull;
+        toFill[1] = u'\0';
         return;
     }
 
@@ -886,7 +883,7 @@ void XMLString::sizeToText(  const  XMLSize_t            toFormat
         toFill[outIndex++] = tmpBuf[tmpIndex-1];
 
     // And cap off the caller's buffer
-    toFill[outIndex] = chNull;
+    toFill[outIndex] = u'\0';
 }
 
 void XMLString::binToText(  const   unsigned long   toFormat
@@ -909,7 +906,7 @@ void XMLString::binToText(  const   unsigned long   toFormat
     if (!toFormat)
     {
         toFill[0] = chDigit_0;
-        toFill[1] = chNull;
+        toFill[1] = u'\0';
         return;
     }
 
@@ -977,7 +974,7 @@ void XMLString::binToText(  const   unsigned long   toFormat
         toFill[outIndex++] = tmpBuf[tmpIndex-1];
 
     // And cap off the caller's buffer
-    toFill[outIndex] = chNull;
+    toFill[outIndex] = u'\0';
 }
 
 void XMLString::binToText(  const   unsigned int    toFormat
@@ -1045,7 +1042,7 @@ void XMLString::catString(XMLCh* const target, const XMLCh* const src)
         target[index++] = *pszTmp++;
 
     // Cap off the target where we ended
-    target[index] = chNull;
+    target[index] = u'\0';
 }
 
 
@@ -1854,7 +1851,7 @@ void XMLString::collapseWS(XMLCh* toConvert
 
     if (!*startPtr)
     {
-        *toConvert = chNull;
+        *toConvert = u'\0';
         return;
     }
 
@@ -1862,7 +1859,7 @@ void XMLString::collapseWS(XMLCh* toConvert
     XMLCh* endPtr = toConvert + stringLen(toConvert);
     while (*(endPtr - 1) == chSpace)
         endPtr--;
-    *endPtr = chNull;
+    *endPtr = u'\0';
 
     // move data to beginning only if there were spaces in front
     if(startPtr != toConvert)
@@ -1896,7 +1893,7 @@ void XMLString::collapseWS(XMLCh* toConvert
             startPtr++;
         }
 
-        *retPtr = chNull;
+        *retPtr = u'\0';
     }
 }
 
@@ -1925,7 +1922,7 @@ void XMLString::removeWS(XMLCh* toConvert, MemoryManager* const)
         startPtr++;
     }
 
-    *retPtr = chNull;
+    *retPtr = u'\0';
 }
 
 void XMLString::removeChar(const XMLCh*     const srcString
@@ -1974,7 +1971,7 @@ void XMLString::fixURI(const XMLCh* const str, XMLCh* const target)
         while (*inPtr)
             target[index++] = *inPtr++;
 
-        target[index] = chNull;
+        target[index] = u'\0';
     }
     else if (colonIdx == 1 && XMLString::isAlpha(*str)) {
         // If starts with a driver letter 'x:' we assume
@@ -2002,7 +1999,7 @@ void XMLString::fixURI(const XMLCh* const str, XMLCh* const target)
         }
 
         // cap it with null
-        target[index] = chNull;
+        target[index] = u'\0';
     }
     else {
         // not specific case, so just copy the string over

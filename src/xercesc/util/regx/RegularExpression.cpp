@@ -874,7 +874,7 @@ void RegularExpression::subInExp(const XMLCh* const repString,
 {
     int numSubExp = subEx->getNoGroups() - 1;
 
-    for(const XMLCh *ptr = repString; *ptr != chNull; ++ptr) {
+    for(const XMLCh *ptr = repString; *ptr != u'\0'; ++ptr) {
         if(*ptr == chDollarSign) {
             ++ptr;
 
@@ -1547,7 +1547,7 @@ void RegularExpression::prepare() {
 
                 XMLCh* dummyStr = (XMLCh*) fMemoryManager->allocate(2 * sizeof(XMLCh));//new XMLCh[2];
                 dummyStr[0] = (XMLCh) fOperations->getData();
-                dummyStr[1] = chNull;
+                dummyStr[1] = u'\0';
                 fMemoryManager->deallocate(fFixedString);//delete [] fFixedString;
                 fFixedString = dummyStr;
             }

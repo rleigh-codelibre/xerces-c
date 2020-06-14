@@ -73,43 +73,23 @@ struct ProtoEntry
 //
 //      NOTE:!!! Be sure to keep this up to date if new protocols are added!
 // ---------------------------------------------------------------------------
-static const XMLCh  gFileString[] =
-{
-        chLatin_f, chLatin_i, chLatin_l, chLatin_e, chNull
-};
-
-static const XMLCh gFTPString[]  =
-{
-        chLatin_f, chLatin_t, chLatin_p, chNull
-};
-
-static const XMLCh gHTTPString[] =
-{
-        chLatin_h, chLatin_t, chLatin_t, chLatin_p, chNull
-};
-
-static const XMLCh gHTTPSString[] =
-{
-        chLatin_h, chLatin_t, chLatin_t, chLatin_p, chLatin_s, chNull
-};
-
 static ProtoEntry gProtoList[XMLURL::Protocols_Count] =
 {
-        { XMLURL::File     , gFileString    , 0  }
-    ,   { XMLURL::HTTP     , gHTTPString    , 80 }
-    ,   { XMLURL::FTP      , gFTPString     , 21 }
-    ,   { XMLURL::HTTPS    , gHTTPSString   , 443 }
+        { XMLURL::File     , u"file"    , 0  }
+    ,   { XMLURL::HTTP     , u"http"    , 80 }
+    ,   { XMLURL::FTP      , u"ftp"     , 21 }
+    ,   { XMLURL::HTTPS    , u"https"   , 443 }
 };
 
 // !!! Keep these up to date with list above!
 static const unsigned int gMaxProtoLen = 5;
 
-static const XMLCh gListOne[]    = { chColon, chForwardSlash, chNull };
-static const XMLCh gListTwo[]    = { chAt, chNull };
-static const XMLCh gListThree[]  = { chColon, chNull };
-static const XMLCh gListFour[]   = { chForwardSlash, chNull };
-static const XMLCh gListFive[]   = { chPound, chQuestion, chNull };
-static const XMLCh gListSix[]    = { chPound, chNull };
+static const XMLCh gListOne[]    = u":/";
+static const XMLCh gListTwo[]    = u"@";
+static const XMLCh gListThree[]  = u":";
+static const XMLCh gListFour[]   = u"/";
+static const XMLCh gListFive[]   = u"#?";
+static const XMLCh gListSix[]    = u"#";
 
 // ---------------------------------------------------------------------------
 //  Local methods
@@ -615,8 +595,8 @@ BinInputStream* XMLURL::makeNewStream() const
                 if (percentIndex+2 >= (int)end)
                 {
                     XMLCh value1[3];
-                    value1[1] = chNull;
-                    value1[2] = chNull;
+                    value1[1] = u'\0';
+                    value1[2] = u'\0';
 					XMLString::moveChars(value1, &(realPath[percentIndex]), (percentIndex + 1 >= (int)end ? 1 : 2));
                     ThrowXMLwithMemMgr2(MalformedURLException
                             , XMLExcepts::XMLNUM_URI_Component_Invalid_EscapeSequence
@@ -628,7 +608,7 @@ BinInputStream* XMLURL::makeNewStream() const
                 {
                     XMLCh value1[4];
                     XMLString::moveChars(value1, &(realPath[percentIndex]), 3);
-                    value1[3] = chNull;
+                    value1[3] = u'\0';
                     ThrowXMLwithMemMgr2(MalformedURLException
                             , XMLExcepts::XMLNUM_URI_Component_Invalid_EscapeSequence
                             , realPath
@@ -643,7 +623,7 @@ BinInputStream* XMLURL::makeNewStream() const
                 XMLSize_t i =0;
                 for (i = percentIndex + 1; i < end - 2 ; i++)
                     realPath[i] = realPath[i+2];
-                realPath[i] = chNull;
+                realPath[i] = u'\0';
                 end = i;
 
                 if (((XMLSize_t)(percentIndex + 1)) < end)
@@ -1146,7 +1126,7 @@ void XMLURL::parse(const XMLCh* const urlText)
     // If we are at the end, then we are done now
     if (!*srcPtr) {
         if(fHost) {
-            static const XMLCh slash[] = { chForwardSlash, chNull };
+            static const XMLCh slash[] = { chForwardSlash, u'\0' };
             fPath = XMLString::replicate(slash, fMemoryManager);
         }
         return;
@@ -1423,7 +1403,7 @@ bool XMLURL::parse(const XMLCh* const urlText, XMLURL& xmlURL)
     // If we are at the end, then we are done now
     if (!*srcPtr) {
         if(xmlURL.fHost) {
-            static const XMLCh slash[] = { chForwardSlash, chNull };
+            static const XMLCh slash[] = { chForwardSlash, u'\0' };
             xmlURL.fPath = XMLString::replicate(slash, xmlURL.fMemoryManager);
         }
         return true;

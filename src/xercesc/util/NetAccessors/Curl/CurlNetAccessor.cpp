@@ -28,12 +28,7 @@
 
 namespace XERCES_CPP_NAMESPACE {
 
-const XMLCh CurlNetAccessor::fgMyName[] =
-{
-    chLatin_C, chLatin_u, chLatin_r, chLatin_l, chLatin_N, chLatin_e,
-    chLatin_t, chLatin_A, chLatin_c, chLatin_c, chLatin_e, chLatin_s,
-    chLatin_s, chLatin_o, chLatin_r, chNull
-};
+const XMLCh CurlNetAccessor::fgMyName[] = u"CurlNetAccessor";
 
 
 CurlNetAccessor::CurlNetAccessor()

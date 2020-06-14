@@ -30,13 +30,7 @@
 namespace XERCES_CPP_NAMESPACE {
 
 const XMLCh
-MacOSURLAccessCF::sMyID[] =
-{
-    chLatin_M, chLatin_a, chLatin_c, chLatin_O, chLatin_S, chLatin_U,
-    chLatin_R, chLatin_L, chLatin_A, chLatin_c, chLatin_c, chLatin_e,
-    chLatin_s, chLatin_s, chLatin_C, chLatin_F,
-    chNull
-};
+MacOSURLAccessCF::sMyID[] = u"MacOSURLAccessCF";
 
 
 MacOSURLAccessCF::MacOSURLAccessCF()

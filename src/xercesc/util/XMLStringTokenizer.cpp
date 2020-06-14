@@ -32,10 +32,7 @@ namespace XERCES_CPP_NAMESPACE {
 // ---------------------------------------------------------------------------
 //  XMLStringTokenizer: Local const data
 // ---------------------------------------------------------------------------
-const XMLCh fgDelimeters[] =
-{
-    chSpace, chHTab, chCR, chLF, chNull
-};
+const XMLCh *fgDelimeters = u" \t\r\n";
 
 // ---------------------------------------------------------------------------
 //  XMLStringTokenizer: Constructors and Destructor

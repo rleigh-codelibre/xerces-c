@@ -34,7 +34,7 @@ XMLCh* RegxUtil::decomposeToSurrogates(XMLInt32 ch,
 
     decomposeToSurrogates(ch, pszStr[0], pszStr[1]);
 
-    pszStr[2] = chNull;
+    pszStr[2] = u'\0';
 
     return pszStr;
 }
@@ -90,7 +90,7 @@ XMLCh* RegxUtil::stripExtendedComment(const XMLCh* const expression,
             }
         }
 
-        *outPtr = chNull; // null terminate
+        *outPtr = u'\0'; // null terminate
     }
 
     return buffer;

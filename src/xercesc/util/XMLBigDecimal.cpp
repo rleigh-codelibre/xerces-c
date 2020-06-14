@@ -73,7 +73,7 @@ XMLBigDecimal::XMLBigDecimal(const XMLCh* const strValue,
             ((fRawDataLen*2) + 2) * sizeof(XMLCh) //fRawData and fIntVal
         );
         memcpy(fRawData, strValue, fRawDataLen * sizeof(XMLCh));
-        fRawData[fRawDataLen] = chNull;
+        fRawData[fRawDataLen] = u'\0';
         fIntVal = fRawData + fRawDataLen + 1;
         parseDecimal(strValue, fIntVal, fSign, (int&) fTotalDigits, (int&) fScale, fMemoryManager);
     }
@@ -113,7 +113,7 @@ void XMLBigDecimal::setDecimalValue(const XMLCh* const strValue)
     }
 
     memcpy(fRawData, strValue, valueLen * sizeof(XMLCh));
-    fRawData[valueLen] = chNull;
+    fRawData[valueLen] = u'\0';
     fRawDataLen = valueLen;
     fIntVal = fRawData + fRawDataLen + 1;
     parseDecimal(strValue, fIntVal, fSign, (int&) fTotalDigits, (int&) fScale, fMemoryManager);
@@ -156,7 +156,7 @@ XMLCh* XMLBigDecimal::getCanonicalRepresentation(const XMLCh*         const rawD
         retBuffer[0] = chDigit_0;
         retBuffer[1] = chPeriod;
         retBuffer[2] = chDigit_0;
-        retBuffer[3] = chNull;
+        retBuffer[3] = u'\0';
     }
     else
     {
@@ -173,7 +173,7 @@ XMLCh* XMLBigDecimal::getCanonicalRepresentation(const XMLCh*         const rawD
             *retPtr++ = chPeriod;
             XMLString::copyNString(retPtr, retBuf, strLen);
             retPtr += strLen;
-            *retPtr = chNull;
+            *retPtr = u'\0';
         }
         else if (fractDigits == 0)        // no fraction
         {
@@ -181,7 +181,7 @@ XMLCh* XMLBigDecimal::getCanonicalRepresentation(const XMLCh*         const rawD
             retPtr += strLen;
             *retPtr++ = chPeriod;
             *retPtr++ = chDigit_0;
-            *retPtr   = chNull;
+            *retPtr   = u'\0';
         }
         else  // normal
         {
@@ -191,7 +191,7 @@ XMLCh* XMLBigDecimal::getCanonicalRepresentation(const XMLCh*         const rawD
             *retPtr++ = chPeriod;
             XMLString::copyNString(retPtr, &(retBuf[intLen]), fractDigits);
             retPtr += fractDigits;
-            *retPtr = chNull;
+            *retPtr = u'\0';
         }
 
     }
@@ -207,7 +207,7 @@ void  XMLBigDecimal::parseDecimal(const XMLCh* const toParse
                                ,        MemoryManager* const manager)
 {
     //init
-    retBuffer[0] = chNull;
+    retBuffer[0] = u'\0';
     totalDigits = 0;
     fractDigits = 0;
 
@@ -305,7 +305,7 @@ void  XMLBigDecimal::parseDecimal(const XMLCh* const toParse
     if(totalDigits==0)
         sign = 0;
 
-    *retPtr = chNull;   //terminated
+    *retPtr = u'\0';   //terminated
     return;
 }
 
@@ -506,10 +506,10 @@ void XMLBigDecimal::serialize(XSerializeEngine& serEng)
         );
 
         memcpy(fRawData, rawdataStr, fRawDataLen * sizeof(XMLCh));
-        fRawData[fRawDataLen] = chNull;
+        fRawData[fRawDataLen] = u'\0';
         fIntVal = fRawData + fRawDataLen + 1;
         memcpy(fIntVal, intvalStr,  intvalStrLen * sizeof(XMLCh));
-        fIntVal[intvalStrLen] = chNull;
+        fIntVal[intvalStrLen] = u'\0';
 
     }
 

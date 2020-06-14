@@ -40,7 +40,7 @@ namespace XERCES_CPP_NAMESPACE {
 // ---------------------------------------------------------------------------
 static const int BUF_LEN = 64;
 
-static XMLCh expSign[] = {chLatin_e, chLatin_E, chNull};
+static XMLCh expSign[] = u"eE";
 
 // ---------------------------------------------------------------------------
 //  ctor/dtor
@@ -205,7 +205,7 @@ void XMLAbstractDoubleFloat::formatString()
         (rawDataLen + 8) * sizeof(XMLCh)
     );//new XMLCh [ rawDataLen + 8];
     for (XMLSize_t i = 0; i < rawDataLen + 8; i++)
-        fFormattedString[i] = chNull;
+        fFormattedString[i] = u'\0';
 
     XMLString::copyString(fFormattedString, fRawData);
 
@@ -559,13 +559,13 @@ XMLCh* XMLAbstractDoubleFloat::getCanonicalRepresentation(const XMLCh*         c
         {
             XMLSize_t manLen = ePosition - rawData;
             XMLString::copyNString(manStr, rawData, manLen);
-            *(manStr + manLen) = chNull;
+            *(manStr + manLen) = u'\0';
             XMLBigDecimal::parseDecimal(manStr, manBuf, sign, totalDigits, fractDigits, memMgr);
 
             XMLSize_t expLen = strLen - manLen - 1;
             ePosition++;
             XMLString::copyNString(expStr, ePosition, expLen);
-            *(expStr + expLen) = chNull;
+            *(expStr + expLen) = u'\0';
             expValue = XMLString::parseInt(expStr); 
         }
 
@@ -576,7 +576,7 @@ XMLCh* XMLAbstractDoubleFloat::getCanonicalRepresentation(const XMLCh*         c
             retBuffer[2] = chDigit_0;
             retBuffer[3] = chLatin_E;
             retBuffer[4] = chDigit_0;
-            retBuffer[5] = chNull;
+            retBuffer[5] = u'\0';
         }
         else
         {
@@ -632,7 +632,7 @@ XMLCh* XMLAbstractDoubleFloat::getCanonicalRepresentation(const XMLCh*         c
             expValue += (totalDigits - 1) - fractDigits ;
             XMLString::binToText(expValue, expStr, strLen, 10, memMgr);
             *retPtr++  = chLatin_E;
-            *retPtr = chNull;
+            *retPtr = u'\0';
 
             XMLString::catString(&(retBuffer[0]), expStr);
         }

@@ -194,7 +194,7 @@ RangeToken* RangeToken::getCaseInsensitiveToken(TokenFactory* const tokFactory) 
             }
         }
         rangeStr[c++] = chCloseSquare;
-        rangeStr[c++] = chNull;
+        rangeStr[c++] = u'\0';
         UErrorCode ec=U_ZERO_ERROR;
         USet* range=uset_openPatternOptions(rangeStr, -1, USET_CASE_INSENSITIVE, &ec);
         if(range)
