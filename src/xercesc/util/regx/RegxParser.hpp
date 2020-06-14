@@ -256,22 +256,22 @@ inline bool RegxParser::isSet(const int flag) {
 
 inline int RegxParser::hexChar(const XMLInt32 ch) {
 
-    if (ch < chDigit_0 || ch > chLatin_f)
+    if (ch < chDigit_0 || ch > u'f')
         return -1;
 
     if (ch <= chDigit_9)
         return ch - chDigit_0;
 
-    if (ch < chLatin_A)
+    if (ch < u'A')
         return -1;
 
-    if (ch <= chLatin_F)
-        return ch - chLatin_A + 10;
+    if (ch <= u'F')
+        return ch - u'A' + 10;
 
-    if (ch < chLatin_a)
+    if (ch < u'a')
         return -1;
 
-    return ch - chLatin_a + 10;
+    return ch - u'a' + 10;
 }
 
 }

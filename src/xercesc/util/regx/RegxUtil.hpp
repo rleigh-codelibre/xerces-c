@@ -93,8 +93,8 @@ inline bool RegxUtil::isWordChar(const XMLCh ch) {
 
     if ((ch == chUnderscore)
         || (ch >= chDigit_0 && ch <= chDigit_9)
-        || (ch >= chLatin_A && ch <= chLatin_Z)
-        || (ch >= chLatin_a && ch <= chLatin_z))
+        || (ch >= u'A' && ch <= u'Z')
+        || (ch >= u'a' && ch <= u'z'))
         return true;
 
     return false;

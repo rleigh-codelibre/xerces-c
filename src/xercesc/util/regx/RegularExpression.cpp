@@ -957,25 +957,25 @@ int RegularExpression::getOptionValue(const XMLCh ch) {
 
     switch (ch) {
 
-        case chLatin_i:
+        case u'i':
             ret = IGNORE_CASE;
             break;
-        case chLatin_m:
+        case u'm':
             ret = MULTIPLE_LINE;
             break;
-        case chLatin_s:
+        case u's':
             ret = SINGLE_LINE;
             break;
-        case chLatin_x:
+        case u'x':
             ret = EXTENDED_COMMENT;
             break;
-        case chLatin_F:
+        case u'F':
             ret = PROHIBIT_FIXED_STRING_OPTIMIZATION;
             break;
-        case chLatin_H:
+        case u'H':
             ret = PROHIBIT_HEAD_CHARACTER_OPTIMIZATION;
             break;
-        case chLatin_X:
+        case u'X':
             ret = XMLSCHEMA_MODE;
             break;
         default:

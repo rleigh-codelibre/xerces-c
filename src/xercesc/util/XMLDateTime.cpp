@@ -48,24 +48,24 @@ namespace XERCES_CPP_NAMESPACE {
 //                                [{+|-}hh:mm']
 //
 
-static const XMLCh DURATION_STARTER     = chLatin_P;              // 'P'
-static const XMLCh DURATION_Y           = chLatin_Y;              // 'Y'
-static const XMLCh DURATION_M           = chLatin_M;              // 'M'
-static const XMLCh DURATION_D           = chLatin_D;              // 'D'
-static const XMLCh DURATION_H           = chLatin_H;              // 'H'
-static const XMLCh DURATION_S           = chLatin_S;              // 'S'
+static const XMLCh DURATION_STARTER     = u'P';
+static const XMLCh DURATION_Y           = u'Y';
+static const XMLCh DURATION_M           = u'M';
+static const XMLCh DURATION_D           = u'D';
+static const XMLCh DURATION_H           = u'H';
+static const XMLCh DURATION_S           = u'S';
 
 static const XMLCh DATE_SEPARATOR       = chDash;                 // '-'
 static const XMLCh TIME_SEPARATOR       = chColon;                // ':'
 static const XMLCh TIMEZONE_SEPARATOR   = chColon;                // ':'
-static const XMLCh DATETIME_SEPARATOR   = chLatin_T;              // 'T'
+static const XMLCh DATETIME_SEPARATOR   = u'T';
 static const XMLCh MILISECOND_SEPARATOR = chPeriod;               // '.'
 
-static const XMLCh UTC_STD_CHAR         = chLatin_Z;              // 'Z'
+static const XMLCh UTC_STD_CHAR         = u'Z';
 static const XMLCh UTC_POS_CHAR         = chPlus;                 // '+'
 static const XMLCh UTC_NEG_CHAR         = chDash;                 // '-'
 
-static const XMLCh UTC_SET[]            = {UTC_STD_CHAR           //"Z+-"
+static const XMLCh UTC_SET[]            = {UTC_STD_CHAR           // "Z+-"
                                          , UTC_POS_CHAR
                                          , UTC_NEG_CHAR
                                          , u'\0'};

@@ -1425,7 +1425,7 @@ void DOMLSSerializerImpl::procUnrepCharInCdataSection(const XMLCh*   const nodeV
     XMLCh tmpBuf[32];
     tmpBuf[0] = chAmpersand;
     tmpBuf[1] = chPound;
-    tmpBuf[2] = chLatin_x;
+    tmpBuf[2] = u'x';
 
     while (srcPtr < endPtr)
     {

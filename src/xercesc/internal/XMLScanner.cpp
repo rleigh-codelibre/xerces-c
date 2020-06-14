@@ -1105,9 +1105,9 @@ void XMLScanner::scanPI()
     // See if it is some form of 'xml' and emit a warning
     //if (!XMLString::compareIString(namePtr, XMLUni::fgXMLString))
     if (bbName.getLen() == 3 &&
-        (((namePtr[0] == chLatin_x) || (namePtr[0] == chLatin_X)) &&
-         ((namePtr[1] == chLatin_m) || (namePtr[1] == chLatin_M)) &&
-         ((namePtr[2] == chLatin_l) || (namePtr[2] == chLatin_L))))
+        (((namePtr[0] == u'x') || (namePtr[0] == u'X')) &&
+         ((namePtr[1] == u'm') || (namePtr[1] == u'M')) &&
+         ((namePtr[2] == u'l') || (namePtr[2] == u'L'))))
         emitError(XMLErrs::NoPIStartsWithXML);
 
     // If namespaces are enabled, then no colons allowed
@@ -1488,13 +1488,13 @@ void XMLScanner::scanXMLDecl(const DeclTypes type)
                 //if (!XMLString::compareIString(rawValue, XMLUni::fgYesString))
                 //else if (!XMLString::compareIString(rawValue, XMLUni::fgNoString))
                 if (buffers[curString]->getLen() == 3 &&
-                    (((rawValue[0] == chLatin_y) || (rawValue[0] == chLatin_Y)) &&
-                     ((rawValue[1] == chLatin_e) || (rawValue[1] == chLatin_E)) &&
-                     ((rawValue[2] == chLatin_s) || (rawValue[2] == chLatin_S))))
+                    (((rawValue[0] == u'y') || (rawValue[0] == u'Y')) &&
+                     ((rawValue[1] == u'e') || (rawValue[1] == u'E')) &&
+                     ((rawValue[2] == u's') || (rawValue[2] == u'S'))))
                     fStandalone = true;
                 else if (buffers[curString]->getLen() == 2 &&
-                    (((rawValue[0] == chLatin_n) || (rawValue[0] == chLatin_N)) &&
-                     ((rawValue[1] == chLatin_o) || (rawValue[1] == chLatin_O))))
+                    (((rawValue[0] == u'n') || (rawValue[0] == u'N')) &&
+                     ((rawValue[1] == u'o') || (rawValue[1] == u'O'))))
                     fStandalone = false;
             }
         }
@@ -1998,11 +1998,11 @@ bool XMLScanner::scanCharRef(XMLCh& toFill, XMLCh& second)
     //  order to recover well, we check for an upper and put out an error
     //  for that.
     unsigned int radix = 10;
-    if (fReaderMgr.skippedChar(chLatin_x))
+    if (fReaderMgr.skippedChar(u'x'))
     {
         radix = 16;
     }
-    else if (fReaderMgr.skippedChar(chLatin_X))
+    else if (fReaderMgr.skippedChar(u'X'))
     {
         emitError(XMLErrs::HexRadixMustBeLowerCase);
         radix = 16;
@@ -2028,10 +2028,10 @@ bool XMLScanner::scanCharRef(XMLCh& toFill, XMLCh& second)
         unsigned int nextVal;
         if ((nextCh >= chDigit_0) && (nextCh <= chDigit_9))
             nextVal = (unsigned int)(nextCh - chDigit_0);
-        else if ((nextCh >= chLatin_A) && (nextCh <= chLatin_F))
-            nextVal= (unsigned int)(10 + (nextCh - chLatin_A));
-        else if ((nextCh >= chLatin_a) && (nextCh <= chLatin_f))
-            nextVal = (unsigned int)(10 + (nextCh - chLatin_a));
+        else if ((nextCh >= u'A') && (nextCh <= u'F'))
+            nextVal= (unsigned int)(10 + (nextCh - u'A'));
+        else if ((nextCh >= u'a') && (nextCh <= u'f'))
+            nextVal = (unsigned int)(10 + (nextCh - u'a'));
         else
         {
             // Return a zero

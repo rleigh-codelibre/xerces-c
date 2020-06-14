@@ -544,7 +544,7 @@ void XMLFormatter::writeCharRef(const XMLCh &toWrite)
     XMLCh tmpBuf[32];
     tmpBuf[0] = chAmpersand;
     tmpBuf[1] = chPound;
-    tmpBuf[2] = chLatin_x;
+    tmpBuf[2] = u'x';
 
     // Build a char ref for the current char
     XMLString::binToText(toWrite, &tmpBuf[3], 8, 16, fMemoryManager);
@@ -565,7 +565,7 @@ void XMLFormatter::writeCharRef(XMLSize_t toWrite)
     XMLCh tmpBuf[64];
     tmpBuf[0] = chAmpersand;
     tmpBuf[1] = chPound;
-    tmpBuf[2] = chLatin_x;
+    tmpBuf[2] = u'x';
 
     // Build a char ref for the current char
     XMLString::sizeToText(toWrite, &tmpBuf[3], 32, 16, fMemoryManager);

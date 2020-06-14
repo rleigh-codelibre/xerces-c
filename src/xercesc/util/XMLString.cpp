@@ -764,8 +764,8 @@ bool XMLString::isValidEncName(const XMLCh* const name)
 
 bool XMLString::isAlpha(XMLCh const theChar)
 {
-    if ((( theChar >= chLatin_a ) && ( theChar <= chLatin_z )) ||
-        (( theChar >= chLatin_A ) && ( theChar <= chLatin_Z )) )
+    if ((( theChar >= u'a' ) && ( theChar <= u'z' )) ||
+        (( theChar >= u'A' ) && ( theChar <= u'Z' )) )
         return true;
 
     return false;
@@ -787,8 +787,8 @@ bool XMLString::isAlphaNum(XMLCh const theChar)
 bool XMLString::isHex(XMLCh const theChar)
 {
 	return (isDigit(theChar) ||
-			(theChar >= chLatin_a && theChar <= chLatin_f) ||
-			(theChar >= chLatin_A && theChar <= chLatin_F));
+			(theChar >= u'a' && theChar <= u'f') ||
+			(theChar >= u'A' && theChar <= u'F'));
 }
 
 // ---------------------------------------------------------------------------
@@ -804,8 +804,8 @@ void XMLString::sizeToText(  const  XMLSize_t            toFormat
     static const XMLCh digitList[16] =
     {
             chDigit_0, chDigit_1, chDigit_2, chDigit_3, chDigit_4, chDigit_5
-        ,   chDigit_6, chDigit_7, chDigit_8, chDigit_9, chLatin_A, chLatin_B
-        ,   chLatin_C, chLatin_D, chLatin_E, chLatin_F
+        ,   chDigit_6, chDigit_7, chDigit_8, chDigit_9, u'A', u'B'
+        ,   u'C', u'D', u'E', u'F'
     };
 
     if (!maxChars)
@@ -895,8 +895,8 @@ void XMLString::binToText(  const   unsigned long   toFormat
     static const XMLCh digitList[16] =
     {
             chDigit_0, chDigit_1, chDigit_2, chDigit_3, chDigit_4, chDigit_5
-        ,   chDigit_6, chDigit_7, chDigit_8, chDigit_9, chLatin_A, chLatin_B
-        ,   chLatin_C, chLatin_D, chLatin_E, chLatin_F
+        ,   chDigit_6, chDigit_7, chDigit_8, chDigit_9, u'A', u'B'
+        ,   u'C', u'D', u'E', u'F'
     };
 
     if (!maxChars)
@@ -1073,12 +1073,12 @@ int XMLString::compareIStringASCII(  const   XMLCh* const    str1
     XMLCh ch2;
 
     for (;;) {
-        if (*psz1 >= chLatin_A && *psz1 <= chLatin_Z)
-            ch1 = *psz1 - chLatin_A + chLatin_a;
+        if (*psz1 >= u'A' && *psz1 <= u'Z')
+            ch1 = *psz1 - u'A' + u'a';
         else
             ch1 = *psz1;
-        if (*psz2 >= chLatin_A && *psz2 <= chLatin_Z)
-            ch2 = *psz2 - chLatin_A + chLatin_a;
+        if (*psz2 >= u'A' && *psz2 <= u'Z')
+            ch2 = *psz2 - u'A' + u'a';
         else
             ch2 = *psz2;
 
@@ -1527,8 +1527,8 @@ void XMLString::upperCaseASCII(XMLCh* const toUpperCase)
         return;
 
     while (*psz1) {
-        if (*psz1 >= chLatin_a && *psz1 <= chLatin_z)
-            *psz1 = *psz1 - chLatin_a + chLatin_A;
+        if (*psz1 >= u'a' && *psz1 <= u'z')
+            *psz1 = *psz1 - u'a' + u'A';
 
         psz1++;
     }
@@ -1549,8 +1549,8 @@ void XMLString::lowerCaseASCII(XMLCh* const toLowerCase)
         return;
 
     while (*psz1) {
-        if (*psz1 >= chLatin_A && *psz1 <= chLatin_Z)
-            *psz1 = *psz1 - chLatin_A + chLatin_a;
+        if (*psz1 >= u'A' && *psz1 <= u'Z')
+            *psz1 = *psz1 - u'A' + u'a';
 
         psz1++;
     }
@@ -1958,10 +1958,10 @@ void XMLString::fixURI(const XMLCh* const str, XMLCh* const target)
     // this is an absolute (UNIX) file path and prefix it with file://
     if (colonIdx == -1 && XMLString::indexOf(str, chForwardSlash) == 0) {
         unsigned index = 0;
-        target[index++] = chLatin_f;
-        target[index++] = chLatin_i;
-        target[index++] = chLatin_l;
-        target[index++] = chLatin_e;
+        target[index++] = u'f';
+        target[index++] = u'i';
+        target[index++] = u'l';
+        target[index++] = u'e';
         target[index++] = chColon;
         target[index++] = chForwardSlash;
         target[index++] = chForwardSlash;
@@ -1977,10 +1977,10 @@ void XMLString::fixURI(const XMLCh* const str, XMLCh* const target)
         // If starts with a driver letter 'x:' we assume
         // this is an absolute (Windows) file path and prefix it with file:///
         unsigned index = 0;
-        target[index++] = chLatin_f;
-        target[index++] = chLatin_i;
-        target[index++] = chLatin_l;
-        target[index++] = chLatin_e;
+        target[index++] = u'f';
+        target[index++] = u'i';
+        target[index++] = u'l';
+        target[index++] = u'e';
         target[index++] = chColon;
         target[index++] = chForwardSlash;
         target[index++] = chForwardSlash;

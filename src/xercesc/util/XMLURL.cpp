@@ -97,8 +97,8 @@ static const XMLCh gListSix[]    = u"#";
 static bool isHexDigit(const XMLCh toCheck)
 {
     if (((toCheck >= chDigit_0) && (toCheck <= chDigit_9))
-    ||  ((toCheck >= chLatin_A) && (toCheck <= chLatin_F))
-    ||  ((toCheck >= chLatin_a) && (toCheck <= chLatin_f)))
+    ||  ((toCheck >= u'A') && (toCheck <= u'F'))
+    ||  ((toCheck >= u'a') && (toCheck <= u'f')))
     {
         return true;
     }
@@ -110,10 +110,10 @@ static unsigned int xlatHexDigit(const XMLCh toXlat)
     if ((toXlat >= chDigit_0) && (toXlat <= chDigit_9))
         return (unsigned int)(toXlat - chDigit_0);
 
-    if ((toXlat >= chLatin_A) && (toXlat <= chLatin_F))
-        return (unsigned int)(toXlat - chLatin_A) + 10;
+    if ((toXlat >= u'A') && (toXlat <= u'F'))
+        return (unsigned int)(toXlat - u'A') + 10;
 
-    return (unsigned int)(toXlat - chLatin_a) + 10;
+    return (unsigned int)(toXlat - u'a') + 10;
 }
 
 
@@ -926,8 +926,8 @@ void XMLURL::parse(const XMLCh* const urlText)
     //  we don't waste time thinking its a URL. If its in the form x:\ or x:/
     //  and x is an ASCII letter, then assume that's the deal.
     //
-    if (((*urlText >= chLatin_A) && (*urlText <= chLatin_Z))
-    ||  ((*urlText >= chLatin_a) && (*urlText <= chLatin_z)))
+    if (((*urlText >= u'A') && (*urlText <= u'Z'))
+    ||  ((*urlText >= u'a') && (*urlText <= u'z')))
     {
         if (*(urlText + 1) == chColon)
         {
@@ -1221,8 +1221,8 @@ bool XMLURL::parse(const XMLCh* const urlText, XMLURL& xmlURL)
     //  we don't waste time thinking its a URL. If its in the form x:\ or x:/
     //  and x is an ASCII letter, then assume that's the deal.
     //
-    if (((*urlText >= chLatin_A) && (*urlText <= chLatin_Z))
-    ||  ((*urlText >= chLatin_a) && (*urlText <= chLatin_z)))
+    if (((*urlText >= u'A') && (*urlText <= u'Z'))
+    ||  ((*urlText >= u'a') && (*urlText <= u'z')))
     {
         if (*(urlText + 1) == chColon)
         {

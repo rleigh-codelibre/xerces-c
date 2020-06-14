@@ -98,10 +98,10 @@ XIncludeLocation::prependPath(const XMLCh *baseToAdd){
 
 const XMLCh *
 XIncludeLocation::findEndOfProtocol(const XMLCh *URI){
-    if ( URI[0] == chLatin_f &&
-        URI[1] == chLatin_i &&
-        URI[2] == chLatin_l &&
-        URI[3] == chLatin_e &&
+    if (URI[0] == u'f' &&
+        URI[1] == u'i' &&
+        URI[2] == u'l' &&
+        URI[3] == u'e' &&
         URI[4] == chColon &&
         URI[5] == chForwardSlash &&
         URI[6] == chForwardSlash &&
@@ -110,9 +110,9 @@ XIncludeLocation::findEndOfProtocol(const XMLCh *URI){
         return URI + 8;
     }
 
-    if ( URI[0] == chLatin_f &&
-        URI[1] == chLatin_t &&
-        URI[2] == chLatin_p &&
+    if (URI[0] == u'f' &&
+        URI[1] == u't' &&
+        URI[2] == u'p' &&
         URI[3] == chColon &&
         URI[4] == chForwardSlash &&
         URI[5] == chForwardSlash &&
@@ -121,10 +121,10 @@ XIncludeLocation::findEndOfProtocol(const XMLCh *URI){
         return URI + 7;
     }
 
-    if ( URI[0] == chLatin_h &&
-        URI[1] == chLatin_t &&
-        URI[2] == chLatin_t &&
-        URI[3] == chLatin_p &&
+    if (URI[0] == u'h' &&
+        URI[1] == u't' &&
+        URI[2] == u't' &&
+        URI[3] == u'p' &&
         URI[4] == chColon &&
         URI[5] == chForwardSlash &&
         URI[6] == chForwardSlash &&

@@ -119,8 +119,8 @@ void XMLAbstractDoubleFloat::init(const XMLCh* const strValue)
                   curChar == chPeriod  ||
                   curChar == chDash    ||
                   curChar == chPlus    ||
-                  curChar == chLatin_E ||
-                  curChar == chLatin_e)) {                
+                  curChar == u'E' ||
+                  curChar == u'e')) {                
                 ThrowXMLwithMemMgr(
                     NumberFormatException,
                     XMLExcepts::XMLNUM_Inv_chars,
@@ -574,7 +574,7 @@ XMLCh* XMLAbstractDoubleFloat::getCanonicalRepresentation(const XMLCh*         c
             retBuffer[0] = chDigit_0;
             retBuffer[1] = chPeriod;
             retBuffer[2] = chDigit_0;
-            retBuffer[3] = chLatin_E;
+            retBuffer[3] = u'E';
             retBuffer[4] = chDigit_0;
             retBuffer[5] = u'\0';
         }
@@ -631,7 +631,7 @@ XMLCh* XMLAbstractDoubleFloat::getCanonicalRepresentation(const XMLCh*         c
              ***/
             expValue += (totalDigits - 1) - fractDigits ;
             XMLString::binToText(expValue, expStr, strLen, 10, memMgr);
-            *retPtr++  = chLatin_E;
+            *retPtr++  = u'E';
             *retPtr = u'\0';
 
             XMLString::catString(&(retBuffer[0]), expStr);

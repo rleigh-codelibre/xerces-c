@@ -171,7 +171,7 @@ RangeToken* RangeToken::getCaseInsensitiveToken(TokenFactory* const tokFactory) 
             XMLSize_t len, j;
 
             rangeStr[c++] = chBackSlash;
-            rangeStr[c++] = chLatin_U;
+            rangeStr[c++] = u'U';
             XMLString::binToText(fRanges[i], buffer, 10, 16, fMemoryManager);
             len = XMLString::stringLen(buffer);
             for(j=0;j<(8-len);j++)
@@ -183,7 +183,7 @@ RangeToken* RangeToken::getCaseInsensitiveToken(TokenFactory* const tokFactory) 
             {
                 rangeStr[c++] = chDash;
                 rangeStr[c++] = chBackSlash;
-                rangeStr[c++] = chLatin_U;
+                rangeStr[c++] = u'U';
                 XMLString::binToText(fRanges[i+1], buffer, 10, 16, fMemoryManager);
                 len = XMLString::stringLen(buffer);
                 for(j=0;j<(8-len);j++)
@@ -245,15 +245,15 @@ RangeToken* RangeToken::getCaseInsensitiveToken(TokenFactory* const tokFactory) 
                     lwrToken->addRange(titleCh, titleCh);
                 }
 #else
-                if (ch >= chLatin_A && ch <= chLatin_Z)
+                if (ch >= u'A' && ch <= u'Z')
                 {
-                    ch += chLatin_a - chLatin_A;
+                    ch += u'a' - u'A';
 
                     lwrToken->addRange(ch, ch);
                 }
-                else if (ch >= chLatin_a && ch <= chLatin_z)
+                else if (ch >= u'a' && ch <= u'z')
                 {
-                    ch -= chLatin_a - chLatin_A;
+                    ch -= u'a' - u'A';
 
                     lwrToken->addRange(ch, ch);
                 }

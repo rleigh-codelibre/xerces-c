@@ -237,9 +237,9 @@ static void formatNode( const   ContentSpecNode* const      curNode
 			case ContentSpecNode::All :
 				if ((parentType & 0x0f) != (curType & 0x0f))
 				{
-					bufToFill.append(chLatin_A);
-					bufToFill.append(chLatin_l);
-					bufToFill.append(chLatin_l);
+					bufToFill.append(u'A');
+					bufToFill.append(u'l');
+					bufToFill.append(u'l');
 					bufToFill.append(chOpenParen);
 				}
 

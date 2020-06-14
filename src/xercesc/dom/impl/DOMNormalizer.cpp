@@ -318,15 +318,15 @@ void DOMNormalizer::addOrChangeNamespaceDecl(const XMLCh* prefix, const XMLCh* u
 
 const XMLCh* DOMNormalizer::addCustomNamespaceDecl(const XMLCh* uri, DOMElementImpl *element) const {
     XMLBuffer preBuf(1023, fMemoryManager);
-    preBuf.append(chLatin_N);
-    preBuf.append(chLatin_S);
+    preBuf.append(u'N');
+    preBuf.append(u'S');
     preBuf.append(integerToXMLCh(fNewNamespaceCount));
     ((DOMNormalizer *)this)->fNewNamespaceCount++;
 
     while(fNSScope->getUri(preBuf.getRawBuffer())) {
         preBuf.reset();
-        preBuf.append(chLatin_N);
-        preBuf.append(chLatin_S);
+        preBuf.append(u'N');
+        preBuf.append(u'S');
         preBuf.append(integerToXMLCh(fNewNamespaceCount));
         ((DOMNormalizer *)this)->fNewNamespaceCount++;
     }

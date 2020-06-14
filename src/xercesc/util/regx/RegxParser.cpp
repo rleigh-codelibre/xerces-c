@@ -506,16 +506,16 @@ Token* RegxParser::parseAtom() {
     case REGX_T_BACKSOLIDUS:
         switch(fCharData) {
 
-        case chLatin_d:
-        case chLatin_D:
-        case chLatin_w:
-        case chLatin_W:
-        case chLatin_s:
-        case chLatin_S:
-        case chLatin_c:
-        case chLatin_C:
-        case chLatin_i:
-        case chLatin_I:
+        case u'd':
+        case u'D':
+        case u'w':
+        case u'W':
+        case u's':
+        case u'S':
+        case u'c':
+        case u'C':
+        case u'i':
+        case u'I':
             tok = getTokenForShorthand(fCharData);
             processNext();
             return tok;
@@ -530,8 +530,8 @@ Token* RegxParser::parseAtom() {
         case chDigit_8:
         case chDigit_9:
             return processBackReference();
-        case chLatin_p:
-        case chLatin_P:
+        case u'p':
+        case u'P':
             {                
                 tok = processBacksolidus_pP(fCharData);
                 if (tok == 0) {
@@ -595,7 +595,7 @@ RangeToken* RegxParser::processBacksolidus_pP(const XMLInt32 ch) {
     ArrayJanitor<XMLCh> janRangeName(rangeName, fMemoryManager);
     XMLString::subString(rangeName, fString, nameStart, nameEnd, fMemoryManager);
 
-    return  fTokenFactory->getRange(rangeName, !(ch == chLatin_p));
+    return  fTokenFactory->getRange(rangeName, !(ch == u'p'));
 }
 
 RangeToken* RegxParser::parseCharacterClass(const bool useNRange) {
@@ -630,23 +630,23 @@ RangeToken* RegxParser::parseCharacterClass(const bool useNRange) {
         if (type == REGX_T_BACKSOLIDUS) {
 
             switch(ch) {
-            case chLatin_d:
-            case chLatin_D:
-            case chLatin_w:
-            case chLatin_W:
-            case chLatin_s:
-            case chLatin_S:
-            case chLatin_i:
-            case chLatin_I:
-            case chLatin_c:
-            case chLatin_C:
+            case u'd':
+            case u'D':
+            case u'w':
+            case u'W':
+            case u's':
+            case u'S':
+            case u'i':
+            case u'I':
+            case u'c':
+            case u'C':
                 {
                     tok->mergeRanges(getTokenForShorthand(ch));
                     end = true;
                 }
                 break;
-            case chLatin_p:
-            case chLatin_P:
+            case u'p':
+            case u'P':
                 {                    
                     RangeToken* tok2 = processBacksolidus_pP(ch);
 
@@ -780,27 +780,27 @@ RangeToken* RegxParser::parseCharacterClass(const bool useNRange) {
 RangeToken* RegxParser::getTokenForShorthand(const XMLInt32 ch) {
 
     switch(ch) {
-    case chLatin_d:
+    case u'd':
         return fTokenFactory->getRange(fgUniDecimalDigit);
         //return fTokenFactory->getRange(fgXMLDigit);
-    case chLatin_D:
+    case u'D':
         return fTokenFactory->getRange(fgUniDecimalDigit, true);
         //return fTokenFactory->getRange(fgXMLDigit, true);
-    case chLatin_w:
+    case u'w':
         return fTokenFactory->getRange(fgXMLWord);
-    case chLatin_W:
+    case u'W':
         return fTokenFactory->getRange(fgXMLWord, true);
-    case chLatin_s:
+    case u's':
         return fTokenFactory->getRange(fgXMLSpace);
-    case chLatin_S:
+    case u'S':
         return fTokenFactory->getRange(fgXMLSpace, true);
-    case chLatin_c:
+    case u'c':
         return fTokenFactory->getRange(fgXMLNameChar);
-    case chLatin_C:
+    case u'C':
         return fTokenFactory->getRange(fgXMLNameChar, true);
-    case chLatin_i:
+    case u'i':
         return fTokenFactory->getRange(fgXMLInitialNameChar);
-    case chLatin_I:
+    case u'I':
         return fTokenFactory->getRange(fgXMLInitialNameChar, true);
 //    default:
 //        ThrowXMLwithMemMgr(RuntimeException, "Invalid shorthand {0}", chAsString)
@@ -818,13 +818,13 @@ XMLInt32 RegxParser::decodeEscaped() {
     XMLInt32 ch = fCharData;
 
     switch (ch) {
-    case chLatin_n:
+    case u'n':
         ch = chLF;
         break;
-    case chLatin_r:
+    case u'r':
         ch = chCR;
         break;
-    case chLatin_t:
+    case u't':
         ch = chHTab;
         break;
     case chBackSlash:

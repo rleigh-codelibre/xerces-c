@@ -73,8 +73,8 @@ WindowsFileMgr::fileOpen(const XMLCh* fileName, bool toWrite, MemoryManager* con
             if (*(fileName + 2) == chColon)
             {
                 const XMLCh chDrive = *(fileName + 1);
-                if (((chDrive >= chLatin_A) && (chDrive <= chLatin_Z))
-                ||  ((chDrive >= chLatin_a) && (chDrive <= chLatin_z)))
+                if (((chDrive >= u'A') && (chDrive <= u'Z'))
+                ||  ((chDrive >= u'a') && (chDrive <= u'z')))
                 {
                     nameToOpen = fileName + 1;
                 }
@@ -407,8 +407,8 @@ WindowsFileMgr::isRelative(const XMLCh* const toCheck, MemoryManager* const /*ma
     //
     if (toCheck[1] == chColon)
     {
-        if (((toCheck[0] >= chLatin_A) && (toCheck[0] <= chLatin_Z))
-        ||  ((toCheck[0] >= chLatin_a) && (toCheck[0] <= chLatin_z)))
+        if (((toCheck[0] >= u'A') && (toCheck[0] <= u'Z'))
+        ||  ((toCheck[0] >= u'a') && (toCheck[0] <= u'z')))
         {
             return false;
         }

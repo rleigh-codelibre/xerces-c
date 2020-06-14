@@ -9255,7 +9255,7 @@ void TraverseSchema::validateAnnotations() {
 
     fBuffer.set(SchemaSymbols::fgURI_SCHEMAFORSCHEMA);
     fBuffer.append(chComma);
-    fBuffer.append(chLatin_C);
+    fBuffer.append(u'C');
     fBuffer.append(chDigit_0);
     const XMLCh* fullName = fStringPool->getValueForId(fStringPool->addOrFind(fBuffer.getRawBuffer()));
     grammar->getComplexTypeRegistry()->put((void*) fullName, complexType);

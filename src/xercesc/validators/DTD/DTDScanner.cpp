@@ -473,14 +473,14 @@ DTDScanner::scanAttDef(DTDElementDecl& parentElem, XMLBuffer& bufToUse)
     {
         if (!fReaderMgr->skippedString(XMLUni::fgRefString))
             decl->setType(XMLAttDef::ID);
-        else if (!fReaderMgr->skippedChar(chLatin_S))
+        else if (!fReaderMgr->skippedChar(u'S'))
             decl->setType(XMLAttDef::IDRef);
         else
             decl->setType(XMLAttDef::IDRefs);
     }
      else if (fReaderMgr->skippedString(XMLUni::fgEntitString))
     {
-        if (fReaderMgr->skippedChar(chLatin_Y))
+        if (fReaderMgr->skippedChar(u'Y'))
         {
             decl->setType(XMLAttDef::Entity);
         }
@@ -501,7 +501,7 @@ DTDScanner::scanAttDef(DTDElementDecl& parentElem, XMLBuffer& bufToUse)
     }
      else if (fReaderMgr->skippedString(XMLUni::fgNmTokenString))
     {
-        if (fReaderMgr->skippedChar(chLatin_S))
+        if (fReaderMgr->skippedChar(u'S'))
             decl->setType(XMLAttDef::NmTokens);
         else
             decl->setType(XMLAttDef::NmToken);
@@ -937,11 +937,11 @@ bool DTDScanner::scanCharRef(XMLCh& first, XMLCh& second)
     //
     unsigned int radix = 10;
 
-    if (fReaderMgr->skippedChar(chLatin_x))
+    if (fReaderMgr->skippedChar(u'x'))
     {
         radix = 16;
     }
-     else if (fReaderMgr->skippedChar(chLatin_X))
+     else if (fReaderMgr->skippedChar(u'X'))
     {
         fScanner->emitError(XMLErrs::HexRadixMustBeLowerCase);
         radix = 16;
@@ -969,10 +969,10 @@ bool DTDScanner::scanCharRef(XMLCh& first, XMLCh& second)
         unsigned int nextVal;
         if ((nextCh >= chDigit_0) && (nextCh <= chDigit_9))
             nextVal = (unsigned int)(nextCh - chDigit_0);
-        else if ((nextCh >= chLatin_A) && (nextCh <= chLatin_F))
-            nextVal= (unsigned int)(10 + (nextCh - chLatin_A));
-        else if ((nextCh >= chLatin_a) && (nextCh <= chLatin_f))
-            nextVal = (unsigned int)(10 + (nextCh - chLatin_a));
+        else if ((nextCh >= u'A') && (nextCh <= u'F'))
+            nextVal= (unsigned int)(10 + (nextCh - u'A'));
+        else if ((nextCh >= u'a') && (nextCh <= u'f'))
+            nextVal = (unsigned int)(10 + (nextCh - u'a'));
         else
         {
             //
@@ -3577,9 +3577,9 @@ void DTDScanner::scanPI()
     // See if it issome form of 'xml' and emit a warning
     //if (!XMLString::compareIString(namePtr, XMLUni::fgXMLString))
     if (bbName.getLen() == 3 &&
-        (((namePtr[0] == chLatin_x) || (namePtr[0] == chLatin_X)) &&
-         ((namePtr[1] == chLatin_m) || (namePtr[1] == chLatin_M)) &&
-         ((namePtr[2] == chLatin_l) || (namePtr[2] == chLatin_L))))       
+        (((namePtr[0] == u'x') || (namePtr[0] == u'X')) &&
+         ((namePtr[1] == u'm') || (namePtr[1] == u'M')) &&
+         ((namePtr[2] == u'l') || (namePtr[2] == u'L'))))
         fScanner->emitError(XMLErrs::NoPIStartsWithXML);
 
     // If namespaces are enabled, then no colons allowed

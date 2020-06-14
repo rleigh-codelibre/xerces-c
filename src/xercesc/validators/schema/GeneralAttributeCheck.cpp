@@ -193,9 +193,9 @@ GeneralAttributeCheck::checkAttributes(const DOMElement* const elem,
 
         // Bypass attributes that start with xml
         // add this to the list of "non-schema" attributes
-        if ((*attName == chLatin_X || *attName == chLatin_x)
-           && (*(attName+1) == chLatin_M || *(attName+1) == chLatin_m)
-           && (*(attName+2) == chLatin_L || *(attName+2) == chLatin_l)) {
+        if ((*attName == u'X' || *attName == u'x')
+           && (*(attName+1) == u'M' || *(attName+1) == u'm')
+           && (*(attName+2) == u'L' || *(attName+2) == u'l')) {
 
            if (nonXSAttList)
                 nonXSAttList->addElement(attribute);

@@ -130,13 +130,13 @@ XMLInt32 ParserForXMLSchema::decodeEscaped() {
     XMLInt32 ch = getCharData();
 
     switch (ch) {
-    case chLatin_n:
+    case u'n':
         ch = chLF;
         break;
-    case chLatin_r:
+    case u'r':
         ch = chCR;
         break;
-    case chLatin_t:
+    case u't':
         ch = chHTab;
         break;
     case chBackSlash:
