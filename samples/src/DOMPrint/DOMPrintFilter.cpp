@@ -23,15 +23,6 @@
 #include <xercesc/util/XMLUniDefs.hpp>
 #include <xercesc/util/XMLString.hpp>
 
-static const XMLCh  element_person[]=
-{
-	chLatin_p, chLatin_e, chLatin_r, chLatin_s, chLatin_o, chLatin_n, chNull
-};
-
-static const XMLCh  element_link[]=
-{
-	chLatin_l, chLatin_i, chLatin_n, chLatin_k, chNull
-};
 
 DOMPrintFilter::DOMPrintFilter(ShowType whatToShow)
 :fWhatToShow(whatToShow)
@@ -61,10 +52,10 @@ acceptNode(const DOMNode* node) const
 	case DOMNode::ELEMENT_NODE:
 		{
 			// for element whose name is "person", skip it
-			if (XMLString::compareString(node->getNodeName(), element_person)==0)
+			if (XMLString::compareString(node->getNodeName(), u"person")==0)
 				return DOMNodeFilter::FILTER_SKIP;
 			// for element whose name is "line", reject it
-			if (XMLString::compareString(node->getNodeName(), element_link)==0)
+			if (XMLString::compareString(node->getNodeName(), u"link")==0)
 				return DOMNodeFilter::FILTER_REJECT;
 			// for rest, accept it
 			return DOMNodeFilter::FILTER_ACCEPT;

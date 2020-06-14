@@ -44,17 +44,8 @@
 //  gRedirectToFile
 //      This is the file that we are going to redirect the parser to.
 // ---------------------------------------------------------------------------
-static const XMLCh  gFileToTrap[] =
-{
-        chLatin_p, chLatin_e, chLatin_r, chLatin_s, chLatin_o, chLatin_n
-    ,   chLatin_a, chLatin_l, chPeriod,  chLatin_d, chLatin_t, chLatin_d, chNull
-};
-
-static const XMLCh  gRedirectToFile[] =
-{
-        chLatin_r, chLatin_e, chLatin_d, chLatin_i, chLatin_r, chLatin_e
-    ,   chLatin_c, chLatin_t, chPeriod,  chLatin_d, chLatin_t, chLatin_d, chNull
-};
+static const XMLCh *gFileToTrap = u"personal.dtd";
+static const XMLCh  gRedirectToFile[] = u"redirect.dtd";
 
 
 // ---------------------------------------------------------------------------

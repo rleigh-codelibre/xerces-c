@@ -31,31 +31,12 @@
 
 // ---------------------------------------------------------------------------
 //  Local const data
-//
-//  Note: This is the 'safe' way to do these strings. If you compiler supports
-//        L"" style strings, and portability is not a concern, you can use
-//        those types constants directly.
 // ---------------------------------------------------------------------------
-static const XMLCh  gEndElement[] = { chOpenAngle, chForwardSlash, chNull };
-static const XMLCh  gEndPI[] = { chQuestion, chCloseAngle, chNull };
-static const XMLCh  gStartPI[] = { chOpenAngle, chQuestion, chNull };
-static const XMLCh  gXMLDecl1[] =
-{
-        chOpenAngle, chQuestion, chLatin_x, chLatin_m, chLatin_l
-    ,   chSpace, chLatin_v, chLatin_e, chLatin_r, chLatin_s, chLatin_i
-    ,   chLatin_o, chLatin_n, chEqual, chDoubleQuote, chDigit_1, chPeriod
-    ,   chDigit_0, chDoubleQuote, chSpace, chLatin_e, chLatin_n, chLatin_c
-    ,   chLatin_o, chLatin_d, chLatin_i, chLatin_n, chLatin_g, chEqual
-    ,   chDoubleQuote, chNull
-};
-
-static const XMLCh  gXMLDecl2[] =
-{
-        chDoubleQuote, chQuestion, chCloseAngle
-    ,   chLF, chNull
-};
-
-
+static const XMLCh  gEndElement[] = u"</";
+static const XMLCh  gEndPI[] = u"?>";
+static const XMLCh  gStartPI[] = u"<?";
+static const XMLCh  gXMLDecl1[] = u"<?xml version=\"1.0\" encoding=\"";
+static const XMLCh  gXMLDecl2[] = u"\"?>\n";
 
 
 // ---------------------------------------------------------------------------

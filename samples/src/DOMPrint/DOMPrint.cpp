@@ -454,8 +454,7 @@ int main(int argC, char* argV[])
         try
         {
             // get a serializer, an instance of DOMLSSerializer
-            XMLCh tempStr[3] = {chLatin_L, chLatin_S, chNull};
-            DOMImplementation *impl          = DOMImplementationRegistry::getDOMImplementation(tempStr);
+            DOMImplementation *impl          = DOMImplementationRegistry::getDOMImplementation(u"LS");
             DOMLSSerializer   *theSerializer = ((DOMImplementationLS*)impl)->createLSSerializer();
             DOMLSOutput       *theOutputDesc = ((DOMImplementationLS*)impl)->createLSOutput();
 

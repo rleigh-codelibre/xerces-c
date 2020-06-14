@@ -39,59 +39,6 @@
 
 using namespace XERCES_CPP_NAMESPACE;
 
-static const XMLCh fgSpace[] = { chSpace, chNull };
-static const XMLCh fgChar[] = { chSpace, chLatin_C, chLatin_h, chLatin_a, chLatin_r, chNull }; // char
-static const XMLCh fgLine[] = { chSpace, chLatin_L, chLatin_i, chLatin_n, chLatin_e, chNull }; // line
-static const XMLCh fgError[] = { chLatin_E, chLatin_r, chLatin_r, chLatin_o, chLatin_r, chNull }; //Error
-static const XMLCh fgAtFile[] = { // at file
-	chSpace, chLatin_a, chLatin_t, chSpace, chLatin_f, chLatin_i, chLatin_l, chLatin_e, chNull
-};
-static const XMLCh fgFatalError[] = { //Fatal Error
-	chLatin_F, chLatin_a, chLatin_t, chLatin_a, chLatin_l, chSpace,
-	chLatin_E, chLatin_r, chLatin_r, chLatin_o, chLatin_r, chNull
-};
-static const XMLCh fgMessage[] = { //Message
-	chLatin_M, chLatin_e, chLatin_s, chLatin_s, chLatin_a, chLatin_g, chLatin_e, chNull
-};
-static const XMLCh fgXsiNil[] = { //xsi:nil
-	chLatin_x, chLatin_s, chLatin_i, chColon, chLatin_n, chLatin_i, chLatin_l, chNull
-};
-static const XMLCh fgWarning[] = { //Warning
-	chLatin_W, chLatin_a, chLatin_r, chLatin_n, chLatin_i, chLatin_n, chLatin_g, chNull
-};
-static const XMLCh gXmlnsColonXsi[] = { //xmlns:xsi
-	chLatin_x, chLatin_m, chLatin_l, chLatin_n, chLatin_s, chColon, chLatin_x, chLatin_s,
-	chLatin_i, chNull
-};
-static const XMLCh gXmlnsColonPsv[] = { //xmlns:psv
-	chLatin_x, chLatin_m, chLatin_l, chLatin_n, chLatin_s, chColon, chLatin_p, chLatin_s,
-	chLatin_v, chNull
-};
-
-static const XMLCh gRef[] = { chLatin_r, chLatin_e, chLatin_f, chNull }; // ref
-static const XMLCh gId[] = { chLatin_i, chLatin_d, chNull }; // id
-
-static const XMLCh gEqualsQuote[] = { chEqual, chDoubleQuote, chNull };
-static const XMLCh gAngleSlash[] = { chOpenAngle, chForwardSlash, chNull };
-static const XMLCh gAngleFeed[] = { chCloseAngle, chLF, chNull };
-static const XMLCh gSlashAngleFeed[] = { chForwardSlash, chCloseAngle, chLF, chNull };
-
-static const XMLCh gActualValue[] = { chLatin_a, chLatin_c, chLatin_t, chLatin_u, chLatin_a,
-                                      chLatin_l, chLatin_V, chLatin_a, chLatin_l, chLatin_u,
-                                      chLatin_e, chNull };
-
-static const XMLCh gDataType[] = { chLatin_d, chLatin_a, chLatin_t, chLatin_a, chLatin_T,
-                                   chLatin_y, chLatin_p, chLatin_e, chNull };
-static const XMLCh gDataValue[] = { chLatin_d, chLatin_a, chLatin_t, chLatin_a, chLatin_V,
-                                   chLatin_a, chLatin_l,  chLatin_u, chLatin_e, chNull };
-static const XMLCh gCommentStart[] = { chOpenAngle, chBang, chDash, chDash, chLF, chNull};
-static const XMLCh gCommentEnd[] = { chDash, chDash, chCloseAngle, chLF, chNull};
-
-static const XMLCh gPartialElementPSVI[] =
-{ chLatin_p, chLatin_a, chLatin_r, chLatin_t, chLatin_i, chLatin_t, chLatin_i, chLatin_a, chLatin_l,
-  chLatin_E, chLatin_l, chLatin_e, chLatin_m, chLatin_e, chLatin_n, chLatin_t,
-  chLatin_P, chLatin_S, chLatin_V, chLatin_I, chNull };
-
 // ---------------------------------------------------------------------------
 //  PSVIWriterHandlers: Constructors and Destructor
 // ---------------------------------------------------------------------------
@@ -203,9 +150,9 @@ void PSVIWriterHandlers::endElement(	const XMLCh* const /* uri */,
 
 void PSVIWriterHandlers::startDocument() {
 	fAttrList->removeAllElements();
-	fAttrList->addElement((XMLCh*)gXmlnsColonXsi);
+	fAttrList->addElement((XMLCh*)u"xmlns:xsi");
 	fAttrList->addElement((XMLCh*)PSVIUni::fgNamespaceInstance);
-	fAttrList->addElement((XMLCh*)gXmlnsColonPsv);
+	fAttrList->addElement((XMLCh*)u"xmlns:psv");
 	fAttrList->addElement((XMLCh*)PSVIUni::fgNamespacePsvi);
 	fAttrList->addElement((XMLCh*)XMLUni::fgXMLNSString);
 	fAttrList->addElement((XMLCh*)PSVIUni::fgNamespaceInfoset);
@@ -297,10 +244,10 @@ void PSVIWriterHandlers::error(const SAXParseException& e) {
 	XMLCh* temp2 = new XMLCh[10];
         XMLString::binToText((unsigned long)e.getLineNumber(), temp1, 9, 10);
 	XMLString::binToText((unsigned long)e.getColumnNumber(), temp2, 9, 10);
-	*fErrorFormatter << fgError << fgAtFile << chSpace << e.getSystemId()
-		<< chComma << fgLine << chSpace << temp1
-		<< chComma << fgChar << chSpace << temp2
-		<< chLF << fgMessage << chColon << e.getMessage() << chLF;
+	*fErrorFormatter << u"Error" << u" at file" << chSpace << e.getSystemId()
+		<< chComma << u" Line" << chSpace << temp1
+		<< chComma << u" Char" << chSpace << temp2
+		<< chLF << u"Message" << chColon << e.getMessage() << chLF;
 	delete[] temp1;
 	delete[] temp2;
 }
@@ -310,10 +257,10 @@ void PSVIWriterHandlers::fatalError(const SAXParseException& e) {
 	XMLCh* temp2 = new XMLCh[10];
         XMLString::binToText((unsigned long)e.getLineNumber(), temp1, 9, 10);
 	XMLString::binToText((unsigned long)e.getColumnNumber(), temp2, 9, 10);
-	*fErrorFormatter << fgFatalError << fgAtFile << chSpace << e.getSystemId()
-		<< chComma << fgLine << chSpace << temp1
-		<< chComma << fgChar << chSpace << temp2
-		<< chLF	<< fgMessage << chColon << e.getMessage() << chLF;
+	*fErrorFormatter << u"Fatal Error" << u" at file" << chSpace << e.getSystemId()
+		<< chComma << u" Line" << chSpace << temp1
+		<< chComma << u" Char" << chSpace << temp2
+		<< chLF	<< u"Message" << chColon << e.getMessage() << chLF;
 	delete[] temp1;
 	delete[] temp2;
 	resetDocument();
@@ -324,10 +271,10 @@ void PSVIWriterHandlers::warning(const SAXParseException& e) {
 	XMLCh* temp2 = new XMLCh[10];
         XMLString::binToText((unsigned long)e.getLineNumber(), temp1, 9, 10);
 	XMLString::binToText((unsigned long)e.getColumnNumber(), temp2, 9, 10);
-	*fErrorFormatter << fgWarning << fgAtFile << chSpace << e.getSystemId()
-		<< chComma << fgLine << chSpace << temp1
-		<< chComma << fgChar << chSpace << temp2
-		<< chLF	<< fgMessage << chColon << e.getMessage() << chLF;
+	*fErrorFormatter << u"Warning" << u" at file" << chSpace << e.getSystemId()
+		<< chComma << u" Line" << chSpace << temp1
+		<< chComma << u" Char" << chSpace << temp2
+		<< chLF	<< u"Message" << chColon << e.getMessage() << chLF;
 	delete[] temp1;
 	delete[] temp2;
 }
@@ -409,9 +356,9 @@ PSVIWriterHandlers::handlePartialElementPSVI( const XMLCh*       const /* localN
                                                     PSVIElement*       elementInfo )
 {
 
-    writeString(gCommentStart);
+    writeString(u"<!--\n");
     incIndent();
-    writeOpen(gPartialElementPSVI);
+    writeOpen(u"partialElementPSVI");
     incIndent();
 
 	processSchemaInformation(elementInfo->getSchemaInformation());
@@ -439,9 +386,9 @@ PSVIWriterHandlers::handlePartialElementPSVI( const XMLCh*       const /* localN
                 , elementInfo->getNotationDeclaration());
 
     decIndent();
-    writeClose(gPartialElementPSVI);
+    writeClose(u"partialElementPSVI");
     decIndent();
-    writeString(gCommentEnd);
+    writeString(u"-->\n");
 
 }
 
@@ -1220,9 +1167,9 @@ void PSVIWriterHandlers::sendReference(const XMLCh* elementName, XSObject* obj) 
 		sendElementEmpty(elementName);
 	} else {
 		fAttrList->removeAllElements();
-		fAttrList->addElement((XMLCh*)gRef);
+		fAttrList->addElement((XMLCh*)u"ref");
 		fAttrList->addElement((XMLCh*)getIdName(obj));
-		fAttrList->addElement((XMLCh*)fgXsiNil);
+		fAttrList->addElement((XMLCh*)u"xsi:nil");
 		fAttrList->addElement((XMLCh*)PSVIUni::fgTrue);
 		writeEmpty(elementName, fAttrList);
 	}
@@ -1230,7 +1177,7 @@ void PSVIWriterHandlers::sendReference(const XMLCh* elementName, XSObject* obj) 
 
 void PSVIWriterHandlers::sendElementEmpty(const XMLCh* const elementName) {
 	fAttrList->removeAllElements();
-	fAttrList->addElement((XMLCh*)fgXsiNil);
+	fAttrList->addElement((XMLCh*)u"xsi:nil");
 	fAttrList->addElement((XMLCh*)PSVIUni::fgTrue);
 	writeEmpty(elementName, fAttrList);
 }
@@ -1264,7 +1211,7 @@ void PSVIWriterHandlers::sendIndentedElement(const XMLCh* const elementName) {
 void PSVIWriterHandlers::sendIndentedElementWithID(const XMLCh* const elementName, XSObject* obj) {
 	fDefinedIds->addElement(obj);
 	fAttrList->removeAllElements();
-	fAttrList->addElement((XMLCh*)gId);
+	fAttrList->addElement((XMLCh*)u"id");
 	fAttrList->addElement((XMLCh*)getIdName(obj));
 	writeOpen(elementName, fAttrList);
 	incIndent();
@@ -1277,7 +1224,7 @@ void PSVIWriterHandlers::sendUnindentedElement(const XMLCh* const elementName) {
 
 void PSVIWriterHandlers::writeOpen(const XMLCh* const elementName) {
 	*fFormatter
-		<< XMLFormatter::NoEscapes << fIndentChars << chOpenAngle << elementName << gAngleFeed;
+		<< XMLFormatter::NoEscapes << fIndentChars << chOpenAngle << elementName << u">\n";
 }
 
 void PSVIWriterHandlers::writeOpen(const XMLCh* const elementName, const StringList* const attrs) {
@@ -1285,24 +1232,24 @@ void PSVIWriterHandlers::writeOpen(const XMLCh* const elementName, const StringL
 		<< XMLFormatter::NoEscapes << fIndentChars << chOpenAngle << elementName ;
 	for (unsigned int i=0; i < attrs->size(); i+=2 ) {
 		*fFormatter
-			<< XMLFormatter::NoEscapes << chSpace << attrs->elementAt(i) << gEqualsQuote
+			<< XMLFormatter::NoEscapes << chSpace << attrs->elementAt(i) << u"=\""
 			<< XMLFormatter::AttrEscapes << attrs->elementAt(i+1)
 			<< XMLFormatter::NoEscapes << chDoubleQuote ;
 	}
 	*fFormatter
-		<< XMLFormatter::NoEscapes << gAngleFeed;
+		<< XMLFormatter::NoEscapes << u">\n";
 }
 
 void PSVIWriterHandlers::writeClose(const XMLCh* const elementName) {
 	*fFormatter
-		<< XMLFormatter::NoEscapes << fIndentChars << gAngleSlash << elementName << gAngleFeed;
+		<< XMLFormatter::NoEscapes << fIndentChars << u"</" << elementName << u">\n";
 }
 
 void PSVIWriterHandlers::writeValue(const XMLCh* const elementName, const XMLCh* const value) {
 	*fFormatter
 		<< XMLFormatter::NoEscapes << fIndentChars << chOpenAngle << elementName << chCloseAngle
 		<< XMLFormatter::CharEscapes << value
-		<< XMLFormatter::NoEscapes << gAngleSlash << elementName <<	gAngleFeed ;
+		<< XMLFormatter::NoEscapes << u"</" << elementName <<	u">\n" ;
 }
 
 void PSVIWriterHandlers::writeValue(const XMLCh* const elementName, const StringList* const values) {
@@ -1313,7 +1260,7 @@ void PSVIWriterHandlers::writeValue(const XMLCh* const elementName, const String
 			<< XMLFormatter::CharEscapes << values->elementAt(i) << chSpace;
 	}
 	*fFormatter
-		<< XMLFormatter::NoEscapes << gAngleSlash << elementName <<	gAngleFeed ;
+		<< XMLFormatter::NoEscapes << u"</" << elementName <<	u">\n" ;
 }
 
 void PSVIWriterHandlers::writeEmpty(const XMLCh* const elementName, const StringList* const attrs) {
@@ -1321,17 +1268,17 @@ void PSVIWriterHandlers::writeEmpty(const XMLCh* const elementName, const String
 		<< XMLFormatter::NoEscapes << fIndentChars << chOpenAngle << elementName ;
 	for (unsigned int i=0; i < attrs->size(); i+=2 ) {
 		*fFormatter
-			<< XMLFormatter::NoEscapes << chSpace << attrs->elementAt(i) << gEqualsQuote
+			<< XMLFormatter::NoEscapes << chSpace << attrs->elementAt(i) << u"=\""
 			<< XMLFormatter::AttrEscapes << attrs->elementAt(i+1)
 			<< XMLFormatter::NoEscapes << chDoubleQuote ;
 	}
 	*fFormatter
-		<< XMLFormatter::NoEscapes << gSlashAngleFeed ;
+		<< XMLFormatter::NoEscapes << u"/>\n" ;
 }
 
 void PSVIWriterHandlers::writeEmpty(const XMLCh* const elementName) {
 	*fFormatter
-		<< XMLFormatter::NoEscapes << fIndentChars << chOpenAngle << elementName << gSlashAngleFeed ;
+		<< XMLFormatter::NoEscapes << fIndentChars << chOpenAngle << elementName << u"/>\n" ;
 }
 
 void PSVIWriterHandlers::writeString(const XMLCh* const string) {
@@ -1370,22 +1317,22 @@ const XMLCh* PSVIWriterHandlers::translateBlockOrFinal(short val) {
 	}
 	if ((val & XSConstants::DERIVATION_RESTRICTION) != 0) {
 		if (fTempResult && *fTempResult)
-			XMLString::catString(fTempResult, fgSpace);
+			XMLString::catString(fTempResult, u" ");
 		XMLString::catString(fTempResult, PSVIUni::fgRestriction);
 	}
 	if ((val & XSConstants::DERIVATION_LIST) != 0) {
 		if (fTempResult && *fTempResult)
-			XMLString::catString(fTempResult, fgSpace);
+			XMLString::catString(fTempResult, u" ");
 		XMLString::catString(fTempResult, PSVIUni::fgList);
 	}
 	if ((val & XSConstants::DERIVATION_UNION) != 0) {
 		if (fTempResult && *fTempResult)
-			XMLString::catString(fTempResult, fgSpace);
+			XMLString::catString(fTempResult, u" ");
 		XMLString::catString(fTempResult, PSVIUni::fgUnion);
 	}
 	if ((val & XSConstants::DERIVATION_SUBSTITUTION) != 0) {
 		if (fTempResult && *fTempResult)
-			XMLString::catString(fTempResult, fgSpace);
+			XMLString::catString(fTempResult, u" ");
 		XMLString::catString(fTempResult, PSVIUni::fgSubstitution);
 	}
 	return fTempResult;
@@ -1585,28 +1532,26 @@ XMLCh* PSVIWriterHandlers::createID(XSObject* obj) {
 	if (XMLString::equals(obj->getNamespace(), PSVIUni::fgNamespaceXmlSchema)) {
 			XMLString::copyString(result, obj->getName());
 	} else {
-		const XMLCh period[] = { chPeriod, chNull };
 		XMLCh anonNum[6];
 		bool hasPrefix = objPrefix!=NULL && *objPrefix!=0;
 		if (hasPrefix) {
 			XMLString::copyString(result, objPrefix);
-			XMLString::catString(result, period);
+			XMLString::catString(result, u".");
 			XMLString::catString(result, translateComponentType(obj->getType()));
 		} else {
 			XMLString::copyString(result, translateComponentType(obj->getType()));
 		}
-		XMLString::catString(result, period);
+		XMLString::catString(result, u".");
 
 		if (obj->getType()==XSConstants::TYPE_DEFINITION && ((XSTypeDefinition*)obj)->getAnonymous()) {
-			const XMLCh anon[] = { chLatin_a, chLatin_n, chLatin_o, chLatin_n, chUnderscore, chNull };
-			XMLString::catString(result, anon);
+			XMLString::catString(result, u"anon_");
 			XMLString::binToText(fAnonNum, anonNum, 5, 10);
 			XMLString::catString(result, anonNum);
 			fAnonNum++;
 		} else {
 			XMLString::catString(result, obj->getName());
 			if (!hasPrefix) {
-				XMLString::catString(result, period);
+				XMLString::catString(result, u".");
 				XMLString::binToText(fAnonNum, anonNum, 5, 10);
 				XMLString::catString(result, anonNum);
 				fAnonNum++;
@@ -1632,7 +1577,6 @@ const XMLCh* PSVIWriterHandlers::getIdName(XSObject* obj) {
 }
 
 void PSVIWriterHandlers::incIndent() {
-    XMLCh tab[] = {chHTab, chNull};
     if (fIndent >= fIndentCap) {
         fIndentCap *= 2;
         XMLCh* temp = (XMLCh*) XMLPlatformUtils::fgMemoryManager->allocate((fIndentCap+1)*sizeof(XMLCh));
@@ -1640,12 +1584,12 @@ void PSVIWriterHandlers::incIndent() {
         XMLPlatformUtils::fgMemoryManager->deallocate(fIndentChars);
         fIndentChars = temp;
     }
-    XMLString::catString(fIndentChars, tab);
+    XMLString::catString(fIndentChars, u"\t");
     fIndent++;
 }
 
 void PSVIWriterHandlers::decIndent() {
-	fIndentChars[XMLString::stringLen(fIndentChars)-1] = chNull;
+	fIndentChars[XMLString::stringLen(fIndentChars)-1] = u'\0';
 	fIndent--;
 }
 
@@ -1667,7 +1611,7 @@ void PSVIWriterHandlers::formDateTime(XSValue* obj)
 
     XMLCh *value = XMLString::transcode(buffer);
     ArrayJanitor<XMLCh> jan(value);
-    writeValue(gDataValue, value);
+    writeValue(u"dataValue", value);
 }
 
 /***
@@ -1686,228 +1630,228 @@ void  PSVIWriterHandlers::processActualValue(PSVIItem* item)
     {
         char buffer[1024];
 
-        writeString(gCommentStart);
+        writeString(u"<!--\n");
         incIndent();
-        writeOpen(gActualValue);
+        writeOpen(u"actualValue");
         incIndent();
 
         switch (obj->fData.f_datatype)
         {
         case XSValue::dt_boolean:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_BOOLEAN);
-                writeValue(gDataValue, XMLUni::fgBooleanValueSpace[obj->fData.fValue.f_bool? 0: 1]);
+                writeValue(u"dataType", SchemaSymbols::fgDT_BOOLEAN);
+                writeValue(u"dataValue", XMLUni::fgBooleanValueSpace[obj->fData.fValue.f_bool? 0: 1]);
             }
             break;
         case XSValue::dt_decimal:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_DECIMAL);
+                writeValue(u"dataType", SchemaSymbols::fgDT_DECIMAL);
                 sprintf( buffer,"%f", obj->fData.fValue.f_decimal.f_dvalue);
                 XMLCh *value = XMLString::transcode(buffer);
                 ArrayJanitor<XMLCh> jan(value);
-                writeValue(gDataValue, value);
+                writeValue(u"dataValue", value);
             }
             break;
         case XSValue::dt_float:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_FLOAT);
+                writeValue(u"dataType", SchemaSymbols::fgDT_FLOAT);
                 sprintf( buffer,"%f", obj->fData.fValue.f_float);
                 XMLCh *value = XMLString::transcode(buffer);
                 ArrayJanitor<XMLCh> jan(value);
-                writeValue(gDataValue, value);
+                writeValue(u"dataValue", value);
             }
             break;
         case XSValue::dt_double:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_DOUBLE);
+                writeValue(u"dataType", SchemaSymbols::fgDT_DOUBLE);
                 sprintf( buffer,"%f", obj->fData.fValue.f_double);
                 XMLCh *value = XMLString::transcode(buffer);
                 ArrayJanitor<XMLCh> jan(value);
-                writeValue(gDataValue, value);
+                writeValue(u"dataValue", value);
             }
             break;
         case XSValue::dt_duration:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_DURATION);
+                writeValue(u"dataType", SchemaSymbols::fgDT_DURATION);
                 formDateTime(obj);
             }
             break;
         case XSValue::dt_dateTime:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_DATETIME);
+                writeValue(u"dataType", SchemaSymbols::fgDT_DATETIME);
                 formDateTime(obj);
             }
             break;
         case XSValue::dt_time:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_TIME);
+                writeValue(u"dataType", SchemaSymbols::fgDT_TIME);
                 formDateTime(obj);
             }
             break;
         case XSValue::dt_date:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_DATE);
+                writeValue(u"dataType", SchemaSymbols::fgDT_DATE);
                 formDateTime(obj);
             }
             break;
         case XSValue::dt_gYearMonth:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_YEARMONTH);
+                writeValue(u"dataType", SchemaSymbols::fgDT_YEARMONTH);
                 formDateTime(obj);
             }
             break;
         case XSValue::dt_gYear:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_YEAR);
+                writeValue(u"dataType", SchemaSymbols::fgDT_YEAR);
                 formDateTime(obj);
             }
             break;
         case XSValue::dt_gMonthDay:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_MONTHDAY);
+                writeValue(u"dataType", SchemaSymbols::fgDT_MONTHDAY);
                 formDateTime(obj);
             }
             break;
         case XSValue::dt_gDay:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_DAY);
+                writeValue(u"dataType", SchemaSymbols::fgDT_DAY);
                 formDateTime(obj);
             }
             break;
         case XSValue::dt_gMonth:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_MONTH);
+                writeValue(u"dataType", SchemaSymbols::fgDT_MONTH);
                 formDateTime(obj);
             }
             break;
         case XSValue::dt_hexBinary:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_HEXBINARY);
-                writeValue(gDataValue, obj->fData.fValue.f_strVal);
+                writeValue(u"dataType", SchemaSymbols::fgDT_HEXBINARY);
+                writeValue(u"dataValue", obj->fData.fValue.f_strVal);
             }
             break;
         case XSValue::dt_base64Binary:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_BASE64BINARY);
-                writeValue(gDataValue, obj->fData.fValue.f_strVal);
+                writeValue(u"dataType", SchemaSymbols::fgDT_BASE64BINARY);
+                writeValue(u"dataValue", obj->fData.fValue.f_strVal);
             }
             break;
 
         case XSValue::dt_integer:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_INTEGER);
+                writeValue(u"dataType", SchemaSymbols::fgDT_INTEGER);
                 sprintf( buffer,"%ld", obj->fData.fValue.f_long);
                 XMLCh *value = XMLString::transcode(buffer);
                 ArrayJanitor<XMLCh> jan(value);
-                writeValue(gDataValue, value);
+                writeValue(u"dataValue", value);
             }
             break;
         case XSValue::dt_nonPositiveInteger:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_NONPOSITIVEINTEGER);
+                writeValue(u"dataType", SchemaSymbols::fgDT_NONPOSITIVEINTEGER);
                 sprintf( buffer,"%ld", obj->fData.fValue.f_long);
                 XMLCh *value = XMLString::transcode(buffer);
                 ArrayJanitor<XMLCh> jan(value);
-                writeValue(gDataValue, value);
+                writeValue(u"dataValue", value);
             }
             break;
         case XSValue::dt_negativeInteger:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_NEGATIVEINTEGER);
+                writeValue(u"dataType", SchemaSymbols::fgDT_NEGATIVEINTEGER);
                 sprintf( buffer,"%ld", obj->fData.fValue.f_long);
                 XMLCh *value = XMLString::transcode(buffer);
                 ArrayJanitor<XMLCh> jan(value);
-                writeValue(gDataValue, value);
+                writeValue(u"dataValue", value);
             }
             break;
         case XSValue::dt_long:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_LONG);
+                writeValue(u"dataType", SchemaSymbols::fgDT_LONG);
                 sprintf( buffer,"%ld", obj->fData.fValue.f_long);
                 XMLCh *value = XMLString::transcode(buffer);
                 ArrayJanitor<XMLCh> jan(value);
-                writeValue(gDataValue, value);
+                writeValue(u"dataValue", value);
             }
             break;
         case XSValue::dt_int:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_INT);
+                writeValue(u"dataType", SchemaSymbols::fgDT_INT);
                 sprintf( buffer,"%d", obj->fData.fValue.f_int);
                 XMLCh *value = XMLString::transcode(buffer);
                 ArrayJanitor<XMLCh> jan(value);
-                writeValue(gDataValue, value);
+                writeValue(u"dataValue", value);
             }
             break;
         case XSValue::dt_short:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_SHORT);
+                writeValue(u"dataType", SchemaSymbols::fgDT_SHORT);
                 sprintf( buffer,"%d", obj->fData.fValue.f_short);
                 XMLCh *value = XMLString::transcode(buffer);
                 ArrayJanitor<XMLCh> jan(value);
-                writeValue(gDataValue, value);
+                writeValue(u"dataValue", value);
             }
             break;
         case XSValue::dt_byte:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_BYTE);
+                writeValue(u"dataType", SchemaSymbols::fgDT_BYTE);
                 sprintf( buffer,"%d", obj->fData.fValue.f_char);
                 XMLCh *value = XMLString::transcode(buffer);
                 ArrayJanitor<XMLCh> jan(value);
-                writeValue(gDataValue, value);
+                writeValue(u"dataValue", value);
             }
             break;
         case XSValue::dt_nonNegativeInteger:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_NONNEGATIVEINTEGER);
+                writeValue(u"dataType", SchemaSymbols::fgDT_NONNEGATIVEINTEGER);
                 sprintf( buffer,"%ld", obj->fData.fValue.f_long);
                 XMLCh *value = XMLString::transcode(buffer);
                 ArrayJanitor<XMLCh> jan(value);
-                writeValue(gDataValue, value);
+                writeValue(u"dataValue", value);
             }
             break;
         case XSValue::dt_unsignedLong:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_ULONG);
+                writeValue(u"dataType", SchemaSymbols::fgDT_ULONG);
                 sprintf( buffer,"%lu", obj->fData.fValue.f_ulong);
                 XMLCh *value = XMLString::transcode(buffer);
                 ArrayJanitor<XMLCh> jan(value);
-                writeValue(gDataValue, value);
+                writeValue(u"dataValue", value);
             }
             break;
         case XSValue::dt_unsignedInt:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_UINT);
+                writeValue(u"dataType", SchemaSymbols::fgDT_UINT);
                 sprintf( buffer,"%u", obj->fData.fValue.f_uint);
                 XMLCh *value = XMLString::transcode(buffer);
                 ArrayJanitor<XMLCh> jan(value);
-                writeValue(gDataValue, value);
+                writeValue(u"dataValue", value);
             }
             break;
         case XSValue::dt_unsignedShort:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_USHORT);
+                writeValue(u"dataType", SchemaSymbols::fgDT_USHORT);
                 sprintf( buffer,"%u", obj->fData.fValue.f_ushort);
                 XMLCh *value = XMLString::transcode(buffer);
                 ArrayJanitor<XMLCh> jan(value);
-                writeValue(gDataValue, value);
+                writeValue(u"dataValue", value);
             }
             break;
         case XSValue::dt_unsignedByte:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_UBYTE);
+                writeValue(u"dataType", SchemaSymbols::fgDT_UBYTE);
                 sprintf( buffer,"%u", obj->fData.fValue.f_uchar);
                 XMLCh *value = XMLString::transcode(buffer);
                 ArrayJanitor<XMLCh> jan(value);
-                writeValue(gDataValue, value);
+                writeValue(u"dataValue", value);
             }
             break;
         case XSValue::dt_positiveInteger:
             {
-                writeValue(gDataType, SchemaSymbols::fgDT_POSITIVEINTEGER);
+                writeValue(u"dataType", SchemaSymbols::fgDT_POSITIVEINTEGER);
                 sprintf( buffer,"%ld", obj->fData.fValue.f_long);
                 XMLCh *value = XMLString::transcode(buffer);
                 ArrayJanitor<XMLCh> jan(value);
-                writeValue(gDataValue, value);
+                writeValue(u"dataValue", value);
             }
             break;
         case XSValue::dt_string:
@@ -1932,9 +1876,9 @@ void  PSVIWriterHandlers::processActualValue(PSVIItem* item)
         }
 
         decIndent();
-        writeClose(gActualValue);
+        writeClose(u"actualValue");
         decIndent();
-        writeString(gCommentEnd);
+        writeString(u"-->\n");
 
     	delete obj;
  	}

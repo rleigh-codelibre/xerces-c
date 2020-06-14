@@ -264,8 +264,7 @@ int main(int argC, char* argV[])
     }
 
     // Instantiate the DOM parser.
-    static const XMLCh gLS[] = { chLatin_L, chLatin_S, chNull };
-    DOMImplementation *impl = DOMImplementationRegistry::getDOMImplementation(gLS);
+    DOMImplementation *impl = DOMImplementationRegistry::getDOMImplementation(u"LS");
     DOMLSParser       *parser = ((DOMImplementationLS*)impl)->createLSParser(DOMImplementationLS::MODE_SYNCHRONOUS, 0);
     DOMConfiguration  *config = parser->getDomConfig();
 
@@ -397,8 +396,7 @@ int main(int argC, char* argV[])
             if (doc) {
                 elementCount = countChildElements((DOMNode*)doc->getDocumentElement(), printOutEncounteredEles);
                 // test getElementsByTagName and getLength
-                XMLCh xa[] = {chAsterisk, chNull};
-                if (elementCount != doc->getElementsByTagName(xa)->getLength()) {
+                if (elementCount != doc->getElementsByTagName(u"*")->getLength()) {
                     std::cout << "\nErrors occurred, element count is wrong\n" << std::endl;
                     errorOccurred = true;
                 }

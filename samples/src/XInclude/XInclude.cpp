@@ -89,8 +89,7 @@ int main(int argC, char* argV[])
 	//============================================================================
 	// Instantiate the DOM parser to use for the source documents
 	//============================================================================
-    static const XMLCh gLS[] = { chLatin_L, chLatin_S, chNull };
-    DOMImplementation *impl = DOMImplementationRegistry::getDOMImplementation(gLS);
+    DOMImplementation *impl = DOMImplementationRegistry::getDOMImplementation(u"LS");
     DOMLSParser       *parser = ((DOMImplementationLS*)impl)->createLSParser(DOMImplementationLS::MODE_SYNCHRONOUS, 0);
     DOMConfiguration  *config = parser->getDomConfig();
 
