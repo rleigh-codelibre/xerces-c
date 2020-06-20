@@ -24,6 +24,10 @@
 
 #include <xercesc/util/TransService.hpp>
 #include <xercesc/util/RefHashTableOf.hpp>
+
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 
 namespace XERCES_CPP_NAMESPACE {

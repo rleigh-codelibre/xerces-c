@@ -28,6 +28,7 @@
 #	include <config.h>
 #endif
 
+#include <cstdint>
 #include <limits>
 #include <mutex>
 #include <stdexcept>
