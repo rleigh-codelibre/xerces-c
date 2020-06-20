@@ -43,7 +43,7 @@
 #include <cstdlib>
 
 #include <fstream>
-#include <limits.h>
+#include <limits>
 
 
 // ---------------------------------------------------------------------------
@@ -68,21 +68,21 @@ int TestInit4SAX2(const char* xmlFile, bool gDoNamespaces, bool gDoSchema, bool 
 //  Define macro
 // ---------------------------------------------------------------------------
 #define TESTINITPRE                                               \
-    long times = 1;                                               \
+    uint64_t times = 1u;                                          \
     switch (theState) {                                           \
         case Multiple:                                            \
         case UnEven:                                              \
-            times = 100;                                           \
+            times = 100u;                                         \
             break;                                                \
         case Limit:                                               \
         case ExceedLimit:                                         \
-            times = LONG_MAX;                                     \
+            times = std::numeric_limits<uint64_t>::max();         \
             break;                                                \
         case Once:                                                \
         default:                                                  \
             times = 1;                                            \
     }                                                             \
-    long i = 0;                                                   \
+    uint64_t i = 0;                                               \
     for (i = 0; i < times; i++) {                                 \
         try                                                       \
         {                                                         \
@@ -162,7 +162,15 @@ int TestInit4SAX2(const char* xmlFile, bool gDoNamespaces, bool gDoSchema, bool 
     }                                                             \
                                                                   \
     if (theState == ExceedLimit || theState == UnEven) {          \
-        XMLPlatformUtils::Terminate();                            \
+        bool failed = false;                                      \
+        try {                                                     \
+            XMLPlatformUtils::Terminate();                        \
+        } catch (std::logic_error &) {                            \
+            failed = true;                                        \
+        }                                                         \
+        if (!failed) {                                            \
+            errorOccurred = true;                                 \
+        }                                                         \
     }                                                             \
                                                                   \
     if (errorOccurred)                                            \

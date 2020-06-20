@@ -28,9 +28,10 @@
 #	include <config.h>
 #endif
 
-#if HAVE_LIMITS_H
-#	include <limits.h>
-#endif
+#include <limits>
+#include <mutex>
+#include <stdexcept>
+
 #if HAVE_SYS_TIME_H
 #	include <sys/time.h>
 #endif
@@ -115,14 +116,29 @@ namespace XERCES_CPP_NAMESPACE {
 
 // ---------------------------------------------------------------------------
 //  Local data members
-//
-//  gSyncMutex
-//      This is a mutex that will be used to synchronize access to some of
-//      the static data of the platform utilities class and here locally.
 // ---------------------------------------------------------------------------
-static XMLMutex*                gSyncMutex = 0;
-static long                     gInitFlag = 0;
 
+namespace
+{
+    std::recursive_mutex platformMutex;
+    static long gInitFlag = 0u;
+
+    /*
+     * Check if we are initialized, and throw std::logic_error if not.
+     * This is to ensure that no XMLPlatformUtils methods are called
+     * when this could result in misbehavior.
+     */
+    void checkInit()
+    {
+      // Ensure that the entire function is synchronised.
+      std::lock_guard<std::recursive_mutex> lock(platformMutex);
+
+      if (gInitFlag == 0u)
+      {
+          throw std::logic_error("Xerces-C++ XMLPlatformUtils function called before XMLPlatformUtils::Initialize");
+      }
+    }
+}
 
 // ---------------------------------------------------------------------------
 //  XMLPlatformUtils: Static Data Members
@@ -153,6 +169,9 @@ void XMLPlatformUtils::Initialize(const char*          const locale
                                 ,       PanicHandler*  const panicHandler
                                 ,       MemoryManager* const memoryManager)
 {
+    // Ensure that the entire function is synchronised.
+    std::lock_guard<std::recursive_mutex> lock(platformMutex);
+
     //
     //  Effects of overflow:
     //  . resouce re-allocations
@@ -162,8 +181,10 @@ void XMLPlatformUtils::Initialize(const char*          const locale
     //  We got to prevent overflow from happening.
     //  no error or exception
     //
-    if (gInitFlag == LONG_MAX)
-        return;
+    if (gInitFlag == std::numeric_limits<uint64_t>::max())
+    {
+      throw std::logic_error("Xerces-C++ XMLPlatformUtils::Initialize called too many times");
+    }
 
     //
     //  Make sure we haven't already been initialized. Note that this is not
@@ -173,7 +194,7 @@ void XMLPlatformUtils::Initialize(const char*          const locale
     //
     gInitFlag++;
 
-    if (gInitFlag > 1)
+    if (gInitFlag > 1u)
       return;
 
     // Set pluggable memory manager
@@ -236,10 +257,6 @@ void XMLPlatformUtils::Initialize(const char*          const locale
     // Initialize the platform-specific mutex and file mgrs
     fgMutexMgr		= makeMutexMgr(fgMemoryManager);
     fgFileMgr		= makeFileMgr(fgMemoryManager);
-
-
-    // Create the local sync mutex
-    gSyncMutex = new XMLMutex(fgMemoryManager);
 
     // Create the global "atomic operations" mutex.
     fgAtomicMutex = new XMLMutex(fgMemoryManager);
@@ -304,11 +321,13 @@ void XMLPlatformUtils::Initialize(XMLSize_t initialDOMHeapAllocSize
                                 ,       PanicHandler*  const panicHandler
                                 ,       MemoryManager* const memoryManager)
 {
-  Initialize (locale, nlsHome, panicHandler, memoryManager);
+    // Ensure that the entire function is synchronised.
+    std::lock_guard<std::recursive_mutex> lock(platformMutex);
 
-  // Don't change the parameters unless it is the first time.
-  //
-  if (gInitFlag == 1)
+    Initialize (locale, nlsHome, panicHandler, memoryManager);
+
+    // Don't change the parameters unless it is the first time.
+    //
     XMLInitializer::initializeDOMHeap(initialDOMHeapAllocSize,
                                       maxDOMHeapAllocSize,
                                       maxDOMSubAllocationSize);
@@ -316,18 +335,14 @@ void XMLPlatformUtils::Initialize(XMLSize_t initialDOMHeapAllocSize
 
 void XMLPlatformUtils::Terminate()
 {
-    //
-    // To prevent it from running underflow.
-    // otherwise we come to delete non-existing resources.
-    //
-    //  no error or exception
-    //
-    if (gInitFlag == 0)
-        return;
+    // Ensure that the entire function is synchronised.
+    std::lock_guard<std::recursive_mutex> lock(platformMutex);
+
+    checkInit();
 
     gInitFlag--;
 
-    if (gInitFlag > 0)
+    if (gInitFlag > 0u)
 	return;
 
     // Terminate static data.
@@ -352,7 +367,6 @@ void XMLPlatformUtils::Terminate()
     XMLInitializer::terminateTransService(); // TransService static data.
 
     // Clean up mutexes
-    delete gSyncMutex;		gSyncMutex = 0;
     delete fgAtomicMutex;	fgAtomicMutex = 0;
 
     // Clean up our mgrs
@@ -379,9 +393,6 @@ void XMLPlatformUtils::Terminate()
 
     // set memory manager to 0
     fgMemoryManager = 0;
-
-    // And say we are no longer initialized
-    gInitFlag = 0;
 }
 
 
@@ -769,11 +780,11 @@ XMLMsgLoader* XMLPlatformUtils::loadMsgSet(const XMLCh* const msgDomain)
 //  XMLPlatformUtils: NEL Character Handling
 // ---------------------------------------------------------------------------
 void XMLPlatformUtils::recognizeNEL(bool state, MemoryManager* const manager) {
+    // Ensure that the entire function is synchronised.
+    std::lock_guard<std::recursive_mutex> lock(platformMutex);
 
-    //Make sure initialize has been called
-    if (gInitFlag == 0) {
-        return;
-    }
+    // Make sure initialize has been called
+    checkInit();
 
     if (state) {
 
@@ -791,6 +802,11 @@ void XMLPlatformUtils::recognizeNEL(bool state, MemoryManager* const manager) {
 
 
 bool XMLPlatformUtils::isNELRecognized() {
+    // Ensure that the entire function is synchronised.
+    std::lock_guard<std::recursive_mutex> lock(platformMutex);
+
+    // Make sure initialize has been called
+    checkInit();
 
     return XMLChar1_0::isNELRecognized();
 }
@@ -799,22 +815,24 @@ bool XMLPlatformUtils::isNELRecognized() {
 //  XMLPlatformUtils: IANA Encoding checking setting
 // ---------------------------------------------------------------------------
 void XMLPlatformUtils::strictIANAEncoding(const bool state) {
+    // Ensure that the entire function is synchronised.
+    std::lock_guard<std::recursive_mutex> lock(platformMutex);
 
-    //Make sure initialize has been called
-    if (gInitFlag == 0) {
-        return;
-    }
+    // Make sure initialize has been called
+    checkInit();
 
     fgTransService->strictIANAEncoding(state);
 }
 
 
 bool XMLPlatformUtils::isStrictIANAEncoding() {
+    // Ensure that the entire function is synchronised.
+    std::lock_guard<std::recursive_mutex> lock(platformMutex);
 
-    if (gInitFlag)
-        return fgTransService->isStrictIANAEncoding();
+    // Make sure initialize has been called
+    checkInit();
 
-    return false;
+    return fgTransService->isStrictIANAEncoding();
 }
 
 /***
@@ -858,6 +876,12 @@ XMLCh* XMLPlatformUtils::weavePaths(const XMLCh* const    basePath
                                   , MemoryManager* const  manager)
 
 {
+    // Ensure that the entire function is synchronised.
+    std::lock_guard<std::recursive_mutex> lock(platformMutex);
+
+    // Make sure initialize has been called
+    checkInit();
+
     // Create a buffer as large as both parts and empty it
     XMLCh* tmpBuf = (XMLCh*) manager->allocate
     (
@@ -922,6 +946,12 @@ XMLCh* XMLPlatformUtils::weavePaths(const XMLCh* const    basePath
 void XMLPlatformUtils::removeDotSlash(XMLCh* const path
                                       , MemoryManager* const manager)
 {
+    // Ensure that the entire function is synchronised.
+    std::lock_guard<std::recursive_mutex> lock(platformMutex);
+
+    // Make sure initialize has been called
+    checkInit();
+
     if ((!path) || (!*path))
         return;
 
@@ -975,6 +1005,12 @@ void XMLPlatformUtils::removeDotSlash(XMLCh* const path
 void XMLPlatformUtils::removeDotDotSlash(XMLCh* const path
                                          , MemoryManager* const manager)
 {
+    // Ensure that the entire function is synchronised.
+    std::lock_guard<std::recursive_mutex> lock(platformMutex);
+
+    // Make sure initialize has been called
+    checkInit();
+
     XMLSize_t pathLen = XMLString::stringLen(path);
     XMLCh* tmp1 = (XMLCh*) manager->allocate
     (
@@ -1034,6 +1070,12 @@ void XMLPlatformUtils::removeDotDotSlash(XMLCh* const path
 
 int XMLPlatformUtils::searchSlashDotDotSlash(XMLCh* const srcPath)
 {
+    // Ensure that the entire function is synchronised.
+    std::lock_guard<std::recursive_mutex> lock(platformMutex);
+
+    // Make sure initialize has been called
+    checkInit();
+
     if ((!srcPath) || (!*srcPath))
         return -1;
 
@@ -1069,6 +1111,5 @@ int XMLPlatformUtils::searchSlashDotDotSlash(XMLCh* const srcPath)
     return retVal;
 
 }
-
 
 }
