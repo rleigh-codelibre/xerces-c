@@ -29,6 +29,11 @@
 #include <cstdio>
 #include <cstring>
 #include <ctype.h>
+
+#include <chrono>
+#include <thread>
+#include <vector>
+
 #include <xercesc/parsers/SAXParser.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
 #include <xercesc/util/PlatformUtils.hpp>
@@ -47,115 +52,9 @@
 #include <xercesc/internal/MemoryManagerImpl.hpp>
 #include <xercesc/util/OutOfMemoryException.hpp>
 
+using namespace std::chrono_literals;
+
 void clearFileInfoMemory();
-
-#ifdef HAVE_PTHREAD
-#include <pthread.h>
-#include <unistd.h>
-#include <errno.h>
-
-
-//------------------------------------------------------------------------------
-//
-//   UNIX specific code for starting threads
-//
-//------------------------------------------------------------------------------
-
-extern "C" {
-
-typedef void (*ThreadFunc)(void *);
-typedef void *(*pthreadfunc)(void *);
-
-class ThreadFuncs           // This class isolates OS dependent threading
-{                           //   functions from the rest of ThreadTest program.
-public:
-    static void Sleep(int millis);
-    static void startThread(ThreadFunc, void *param);
-};
-
-void ThreadFuncs::Sleep(int millis)
-{
-   int seconds = millis/1000;
-   if (seconds <= 0) seconds = 1;
-#if defined(SOLARIS)
-   // somehow the sleep hangs on Solaris
-   // so ignore the call
-#else
-   ::sleep(seconds);
-#endif
-}
-
-
-void ThreadFuncs::startThread(ThreadFunc func, void *param)
-{
-    int x;
-
-    pthread_t tId;
-    //thread_t tId;
-#if defined(_HP_UX) && defined(XML_USE_DCE)
-    x = pthread_create( &tId, pthread_attr_default,  (pthreadfunc)func,  param);
-#else
-    pthread_attr_t attr;
-    pthread_attr_init(&attr);
-    x = pthread_create( &tId, &attr,  (pthreadfunc)func,  param);
-#endif
-    if (x == -1)
-    {
-        fprintf(stderr, "Error starting thread.  Errno = %d\n", errno);
-        clearFileInfoMemory();
-        exit(-1);
-    }
-
-}
-
-} // end of extern "C"
-
-#else
-
-//------------------------------------------------------------------------------
-//
-//   Windows specific code for starting threads
-//
-//------------------------------------------------------------------------------
-
-#include <Windows.h>
-#include <process.h>
-
-typedef DWORD (WINAPI *ThreadFunc)(void *);
-
-class ThreadFuncs           // This class isolates OS dependent threading
-{                           //   functions from the rest of ThreadTest program.
-public:
-    static void Sleep(int millis) {::Sleep(millis);};
-    static void startThread(ThreadFunc, void *param);
-};
-
-void ThreadFuncs::startThread(ThreadFunc func, void *param)
-{
-    HANDLE  tHandle;
-    DWORD   threadID;
-
-    tHandle = CreateThread(0,          // Security Attributes,
-                           0x10000,    // Stack Size,
-                           func,       // Starting Address.
-                           param,      // Parmeters
-                           0,          // Creation Flags,
-                           &threadID); // Thread ID (Can not be null on 95/98)
-
-    if (tHandle == 0)
-    {
-        fprintf(stderr, "Error starting thread.  Errno = %d\n", errno);
-        clearFileInfoMemory();
-        exit(-1);
-    }
-
-    // Set the priority of the working threads low, so that the UI of the running system will
-    //   remain responsive.
-    SetThreadPriority(tHandle, THREAD_PRIORITY_IDLE);
-}
-
-#endif
-
 
 //------------------------------------------------------------------------------
 //
@@ -246,7 +145,6 @@ struct RunInfo
 //
 //------------------------------------------------------------------------------
 RunInfo         gRunInfo;
-ThreadInfo      *gThreadInfo;
 
 /** Grammar caching thread testing */
 MemoryManager*  gpMemMgr = 0;
@@ -1065,18 +963,12 @@ void clearFileInfoMemory()
 //
 //----------------------------------------------------------------------
 
-#ifdef HAVE_PTHREAD
-extern "C" {
-void threadMain (void *param)
-#else
-unsigned long WINAPI threadMain (void *param)
-#endif
+void threadMain (ThreadInfo& thInfo, std::vector<ThreadInfo>& allThreadInfo)
 {
-    ThreadInfo   *thInfo = (ThreadInfo *)param;
     ThreadParser *thParser = 0;
 
     if (gRunInfo.verbose)
-        printf("Thread #%d: starting\n", thInfo->fThreadNum);
+        printf("Thread #%d: starting\n", thInfo.fThreadNum);
 
     int docNum = gRunInfo.numInputFiles;
 
@@ -1085,8 +977,8 @@ unsigned long WINAPI threadMain (void *param)
     // computed and compared with the precomputed value for that file.
     //
     while (gRunInfo.stopNow == false) {
-        if (gRunInfo.numParses == 0 || thInfo->fParses < gRunInfo.numParses) {
-            thInfo->fInProgress = true;
+        if (gRunInfo.numParses == 0 || thInfo.fParses < gRunInfo.numParses) {
+            thInfo.fInProgress = true;
 
             if (thParser == 0)
                 thParser = new ThreadParser;
@@ -1099,7 +991,7 @@ unsigned long WINAPI threadMain (void *param)
             InFileInfo *fInfo = &gRunInfo.files[docNum];
 
             if (gRunInfo.verbose )
-                printf("Thread #%d: parse %d starting file %s\n", thInfo->fThreadNum, thInfo->fParses, fInfo->fileName);
+                printf("Thread #%d: parse %d starting file %s\n", thInfo.fThreadNum, thInfo.fParses, fInfo->fileName);
 
             int checkSum = 0;
 
@@ -1119,11 +1011,11 @@ unsigned long WINAPI threadMain (void *param)
                     checkSum = thParser->getCheckSum();
                 }
                 fprintf(stderr, "\nThread %d: Parse Check sum error on file  \"%s\" for parse # %d.  Expected %x,  got %x\n",
-                    thInfo->fThreadNum, fInfo->fileName, thInfo->fParses, fInfo->checkSum, checkSum);
+                    thInfo.fThreadNum, fInfo->fileName, thInfo.fParses, fInfo->checkSum, checkSum);
 
 	            double totalParsesCompleted = 0;
                 for (int threadNum=0; threadNum < gRunInfo.numThreads; threadNum++) {
-                    totalParsesCompleted += gThreadInfo[threadNum].fParses;
+                    totalParsesCompleted += allThreadInfo[threadNum].fParses;
                 }
                 fprintf(stderr, "Total number of parses completed is %f.\n", totalParsesCompleted);
 
@@ -1144,21 +1036,15 @@ unsigned long WINAPI threadMain (void *param)
                 thParser = 0;
             }
 
-            thInfo->fHeartBeat = true;
-            thInfo->fParses++;
-            thInfo->fInProgress = false;
+            thInfo.fHeartBeat = true;
+            thInfo.fParses++;
+            thInfo.fInProgress = false;
         }
         else {
-            ThreadFuncs::Sleep(1000);
+            std::this_thread::sleep_for(1s);
         }
     }
     delete thParser;
-#ifdef HAVE_PTHREAD
-	return;
-}
-#else
-    return 0;
-#endif
 }
 
 
@@ -1170,7 +1056,8 @@ unsigned long WINAPI threadMain (void *param)
 
 int main (int argc, char **argv)
 {
-
+    std::vector<std::thread> threads;
+    std::vector<ThreadInfo> threadInfo;
 
     parseCommandLine(argc, argv);
 
@@ -1265,13 +1152,16 @@ int main (int argc, char **argv)
         exit(0);
     }
 
-    gThreadInfo = new ThreadInfo[gRunInfo.numThreads];
+    threads.reserve(gRunInfo.numThreads);
+    threadInfo.reserve(gRunInfo.numThreads);
 
     int threadNum;
     for (threadNum=0; threadNum < gRunInfo.numThreads; threadNum++)
     {
-        gThreadInfo[threadNum].fThreadNum = threadNum;
-        ThreadFuncs::startThread(threadMain, &gThreadInfo[threadNum]);
+        threadInfo.emplace_back(ThreadInfo());
+        ThreadInfo& info = threadInfo.back();
+        info.fThreadNum = threadNum;
+        threads.emplace_back(std::thread(threadMain, std::ref(info), std::ref(threadInfo)));
     }
 
     if (gRunInfo.numParses)
@@ -1279,11 +1169,11 @@ int main (int argc, char **argv)
         bool notDone;
         while (true)
         {
-            ThreadFuncs::Sleep(1000);
+            std::this_thread::sleep_for(1s);
             notDone = false;
 
             for (threadNum = 0; threadNum < gRunInfo.numThreads; threadNum++) {
-                if (gThreadInfo[threadNum].fParses < gRunInfo.numParses)
+                if (threadInfo[threadNum].fParses < gRunInfo.numParses)
                     notDone = true;
             }
             if (notDone == false) {
@@ -1302,11 +1192,11 @@ int main (int argc, char **argv)
         unsigned long startTime = XMLPlatformUtils::getCurrentMillis();
         int elapsedSeconds = 0;
         while (gRunInfo.totalTime == 0 || gRunInfo.totalTime > elapsedSeconds) {
-            ThreadFuncs::Sleep(1000);
+            std::this_thread::sleep_for(1s);
             if (gRunInfo.quiet == false && gRunInfo.verbose == false) {
                 char c = '+';
                 for (threadNum=0; threadNum < gRunInfo.numThreads; threadNum++) {
-                    if (gThreadInfo[threadNum].fHeartBeat == false) {
+                    if (threadInfo[threadNum].fHeartBeat == false) {
                         c = '.';
                         break;
                     }
@@ -1315,7 +1205,7 @@ int main (int argc, char **argv)
                 fflush(stdout);
                 if (c == '+')
                     for (threadNum=0; threadNum < gRunInfo.numThreads; threadNum++)
-                        gThreadInfo[threadNum].fHeartBeat = false;
+                        threadInfo[threadNum].fHeartBeat = false;
             }
             elapsedSeconds = (XMLPlatformUtils::getCurrentMillis() - startTime) / 1000;
         }
@@ -1331,11 +1221,15 @@ int main (int argc, char **argv)
     //  Make sure all threads are done before terminate
     //
     for (threadNum=0; threadNum < gRunInfo.numThreads; threadNum++) {
-        while (gThreadInfo[threadNum].fInProgress == true) {
-            ThreadFuncs::Sleep(1000);
+        while (threadInfo[threadNum].fInProgress == true) {
+            std::this_thread::sleep_for(1s);
         }
         if (gRunInfo.verbose)
             printf("Thread #%d: is finished.\n", threadNum);
+    }
+
+    for (auto& thread : threads) {
+        thread.join();
     }
 
     //
@@ -1344,7 +1238,7 @@ int main (int argc, char **argv)
     double totalParsesCompleted = 0;
     for (threadNum=0; threadNum < gRunInfo.numThreads; threadNum++)
     {
-        totalParsesCompleted += gThreadInfo[threadNum].fParses;
+        totalParsesCompleted += threadInfo[threadNum].fParses;
         // printf("%f   ", totalParsesCompleted);
     }
 
@@ -1367,8 +1261,6 @@ int main (int argc, char **argv)
     XMLPlatformUtils::Terminate();
 
     clearFileInfoMemory();
-
-    delete [] gThreadInfo;
 
     printf("Test Run Successfully\n");
 
