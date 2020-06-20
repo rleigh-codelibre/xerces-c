@@ -478,8 +478,9 @@ set(util_headers
   xercesc/util/KeyValuePair.hpp
   xercesc/util/KeyValuePair.c
   xercesc/util/KVStringPair.hpp
-  xercesc/util/Mutexes.hpp
   xercesc/util/LogicalPath.c
+  xercesc/util/Mutexes.hpp
+  xercesc/util/MutexManagers/StdMutexMgr.hpp
   xercesc/util/NameIdPool.hpp
   xercesc/util/NameIdPool.c
   xercesc/util/NoSuchElementException.hpp
@@ -606,6 +607,7 @@ set(util_sources
   xercesc/util/JanitorExports.cpp
   xercesc/util/KVStringPair.cpp
   xercesc/util/Mutexes.cpp
+  xercesc/util/MutexManagers/StdMutexMgr.cpp
   xercesc/util/PanicHandler.cpp
   xercesc/util/PlatformUtils.cpp
   xercesc/util/PSVIUni.cpp
@@ -1001,38 +1003,6 @@ set(winfmgr_sources
   xercesc/util/FileManagers/WindowsFileMgr.cpp
 )
 
-set(nothreadmmgr_headers
-  xercesc/util/MutexManagers/NoThreadMutexMgr.hpp
-)
-
-set(nothreadmmgr_sources
-  xercesc/util/MutexManagers/NoThreadMutexMgr.cpp
-)
-
-set(stdmmgr_headers
-  xercesc/util/MutexManagers/StdMutexMgr.hpp
-)
-
-set(stdmmgr_sources
-  xercesc/util/MutexManagers/StdMutexMgr.cpp
-)
-
-set(posixmmgr_headers
-  xercesc/util/MutexManagers/PosixMutexMgr.hpp
-)
-
-set(posixmmgr_sources
-  xercesc/util/MutexManagers/PosixMutexMgr.cpp
-)
-
-set(winmmgr_headers
-  xercesc/util/MutexManagers/WindowsMutexMgr.hpp
-)
-
-set(winmmgr_sources
-  xercesc/util/MutexManagers/WindowsMutexMgr.cpp
-)
-
 set(libxerces_c_SOURCES
   ${util_sources}
   ${dom_sources}
@@ -1202,31 +1172,6 @@ if(XERCES_USE_MSGLOADER_ICONV)
     COMPONENT "runtime")
 endif()
 
-# Mutex Managers, conditionally built based on selection
-#
-if(XERCES_USE_MUTEXMGR_NOTHREAD)
-  list(APPEND libxerces_c_SOURCES ${nothreadmmgr_sources})
-  list(APPEND libxerces_c_HEADERS ${nothreadmmgr_headers})
-endif()
-
-if(XERCES_USE_MUTEXMGR_STD)
-  list(APPEND libxerces_c_SOURCES ${stdmmgr_sources})
-  list(APPEND libxerces_c_HEADERS ${stdmmgr_headers})
-  list(APPEND libxerces_c_DEPS Threads::Threads)
-endif()
-
-if(XERCES_USE_MUTEXMGR_POSIX)
-  list(APPEND libxerces_c_SOURCES ${posixmmgr_sources})
-  list(APPEND libxerces_c_HEADERS ${posixmmgr_headers})
-  list(APPEND libxerces_c_DEPS Threads::Threads)
-endif()
-
-if(XERCES_USE_MUTEXMGR_WINDOWS)
-  list(APPEND libxerces_c_SOURCES ${winmmgr_sources})
-  list(APPEND libxerces_c_HEADERS ${winmmgr_headers})
-endif()
-
-
 # File Managers, conditionally built based on selection
 #
 if(XERCES_USE_FILEMGR_POSIX)
@@ -1271,7 +1216,7 @@ set_target_properties(xerces-c-headers PROPERTIES FOLDER "Library")
 add_library(xerces-c
   ${libxerces_c_SOURCES}
   ${libxerces_c_RESOURCES})
-target_link_libraries(xerces-c ${libxerces_c_DEPS})
+target_link_libraries(xerces-c ${libxerces_c_DEPS} Threads::Threads)
 if(XERCES_USE_NETACCESSOR_CURL)
   target_include_directories(xerces-c SYSTEM PRIVATE ${CURL_INCLUDE_DIRS})
 endif()

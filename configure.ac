@@ -309,7 +309,6 @@ AC_SUBST(abs_top_builddir)
 
 XERCES_PATH_DELIMITERS
 
-XERCES_MUTEXMGR_SELECTION
 XERCES_NETACCESSOR_SELECTION
 XERCES_TRANSCODER_SELECTION
 XERCES_MSGLOADER_SELECTION
@@ -503,7 +502,6 @@ AC_OUTPUT
 AC_MSG_NOTICE
 AC_MSG_NOTICE([Report:])
 AC_MSG_NOTICE([  File Manager: $filemgr])
-AC_MSG_NOTICE([  Mutex Manager: $mutexmgr])
 AC_MSG_NOTICE([  Transcoder: $transcoder])
 AC_MSG_NOTICE([  NetAccessor: $netaccessor])
 AC_MSG_NOTICE([  Message Loader: $msgloader])

@@ -66,18 +66,7 @@
 #endif
 
 #include <xercesc/util/XMLMutexMgr.hpp>
-#if XERCES_USE_MUTEXMGR_NOTHREAD
-#	include <xercesc/util/MutexManagers/NoThreadMutexMgr.hpp>
-#endif
-#if XERCES_USE_MUTEXMGR_STD
-#	include <xercesc/util/MutexManagers/StdMutexMgr.hpp>
-#endif
-#if XERCES_USE_MUTEXMGR_POSIX
-#	include <xercesc/util/MutexManagers/PosixMutexMgr.hpp>
-#endif
-#if XERCES_USE_MUTEXMGR_WINDOWS
-#	include <xercesc/util/MutexManagers/WindowsMutexMgr.hpp>
-#endif
+#include <xercesc/util/MutexManagers/StdMutexMgr.hpp>
 
 #include <xercesc/util/XMLNetAccessor.hpp>
 #if XERCES_USE_NETACCESSOR_CURL
@@ -722,17 +711,7 @@ XMLMutexMgr* XMLPlatformUtils::makeMutexMgr(MemoryManager* const memmgr)
 {
 	XMLMutexMgr* mgr = NULL;
 
-	#if XERCES_USE_MUTEXMGR_NOTHREAD
-		mgr = new (memmgr) NoThreadMutexMgr;
-	#elif XERCES_USE_MUTEXMGR_STD
-		mgr = new (memmgr) StdMutexMgr;
-	#elif XERCES_USE_MUTEXMGR_POSIX
-		mgr = new (memmgr) PosixMutexMgr;
-	#elif XERCES_USE_MUTEXMGR_WINDOWS
-		mgr = new (memmgr) WindowsMutexMgr;
-	#else
-		#error No Mutex Manager configured for platform! You must configure it.
-	#endif
+	mgr = new (memmgr) StdMutexMgr;
 
 	return mgr;
 }

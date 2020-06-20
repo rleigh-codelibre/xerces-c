@@ -15,9 +15,6 @@
 #include <inttypes.h>
 #endif
 
-/* Define to specify no threading is used */
-#cmakedefine APP_NO_THREADS 1
-
 /* Define to 1 if you have the <arpa/inet.h> header file. */
 #cmakedefine HAVE_ARPA_INET_H 1
 
@@ -155,9 +152,6 @@
 
 /* Define to 1 if you have the PATH_MAX macro. */
 #cmakedefine HAVE_PATH_MAX 1
-
-/* Define if you have POSIX threads libraries and header files. */
-#cmakedefine HAVE_PTHREAD 1
 
 /* Define to 1 if you have the `realpath' function. */
 #cmakedefine HAVE_REALPATH 1
@@ -401,18 +395,6 @@
 
 /* Define to use the InMemory MsgLoader */
 #cmakedefine XERCES_USE_MSGLOADER_INMEMORY 1
-
-/* Define to use the NoThread mutex mgr */
-#cmakedefine XERCES_USE_MUTEXMGR_NOTHREAD 1
-
-/* Define to use the C++11 standard mutex mgr */
-#cmakedefine XERCES_USE_MUTEXMGR_STD 1
-
-/* Define to use the POSIX mutex mgr */
-#cmakedefine XERCES_USE_MUTEXMGR_POSIX 1
-
-/* Define to use the Windows mutex mgr */
-#cmakedefine XERCES_USE_MUTEXMGR_WINDOWS 1
 
 /* Define to use the Mac OS X CFURL NetAccessor */
 #cmakedefine XERCES_USE_NETACCESSOR_CFURL 1

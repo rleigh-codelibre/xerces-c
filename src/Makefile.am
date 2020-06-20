@@ -168,29 +168,6 @@ iconv_msg_DATA = $(RESFILE)
 endif
 
 
-# Mutex Managers, conditionally built based on settings from configure
-#
-if XERCES_USE_MUTEXMGR_NOTHREAD
-libxerces_c_la_SOURCES += ${nothreadmmgr_sources}
-nobase_libxerces_c_la_HEADERS += ${nothreadmmgr_headers}
-endif
-
-if XERCES_USE_MUTEXMGR_STD
-libxerces_c_la_SOURCES += ${stdmmgr_sources}
-nobase_libxerces_c_la_HEADERS += ${stdmmgr_headers}
-endif
-
-if XERCES_USE_MUTEXMGR_POSIX
-libxerces_c_la_SOURCES += ${posixmmgr_sources}
-nobase_libxerces_c_la_HEADERS += ${posixmmgr_headers}
-endif
-
-if XERCES_USE_MUTEXMGR_WINDOWS
-libxerces_c_la_SOURCES += ${winmmgr_sources}
-nobase_libxerces_c_la_HEADERS += ${winmmgr_headers}
-endif
-
-
 # File Managers, conditionally built based on settings from configure
 #
 if XERCES_USE_FILEMGR_POSIX
@@ -626,8 +603,9 @@ util_headers = \
 	xercesc/util/KeyValuePair.hpp \
 	xercesc/util/KeyValuePair.c \
 	xercesc/util/KVStringPair.hpp \
-	xercesc/util/Mutexes.hpp \
 	xercesc/util/LogicalPath.c \
+	xercesc/util/Mutexes.hpp \
+	xercesc/util/MutexManagers/StdMutexMgr.hpp \
 	xercesc/util/NameIdPool.hpp \
 	xercesc/util/NameIdPool.c \
 	xercesc/util/NoSuchElementException.hpp \
@@ -753,6 +731,7 @@ util_sources = \
         xercesc/util/JanitorExports.cpp \
 	xercesc/util/KVStringPair.cpp \
 	xercesc/util/Mutexes.cpp \
+	xercesc/util/MutexManagers/StdMutexMgr.cpp \
 	xercesc/util/PanicHandler.cpp \
 	xercesc/util/PlatformUtils.cpp \
 	xercesc/util/PSVIUni.cpp \

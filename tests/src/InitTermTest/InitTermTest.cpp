@@ -171,7 +171,6 @@ int TestInit4SAX2(const char* xmlFile, bool gDoNamespaces, bool gDoSchema, bool 
         return 0;
 
 // ---------------------------------------------------------------------------
-//  DOM Parser
 // ---------------------------------------------------------------------------
 int TestInit4DOM(const char* xmlFile, bool gDoNamespaces, bool gDoSchema, bool gSchemaFullChecking, Teststate theState)
 {
