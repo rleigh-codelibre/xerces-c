@@ -43,13 +43,19 @@
 #include <xercesc/util/OutOfMemoryException.hpp>
 #include <xercesc/util/XMLResourceIdentifier.hpp>
 
+#include <mutex>
+
+namespace
+{
+    std::mutex sScannerMutex;
+}
+
 namespace XERCES_CPP_NAMESPACE {
 
 // ---------------------------------------------------------------------------
 //  Local static data
 // ---------------------------------------------------------------------------
 static XMLUInt32       gScannerId = 0;
-static XMLMutex*       sScannerMutex = 0;
 static XMLMsgLoader*   gMsgLoader = 0;
 
 void XMLInitializer::initializeXMLScanner()
@@ -58,17 +64,12 @@ void XMLInitializer::initializeXMLScanner()
 
     if (!gMsgLoader)
       XMLPlatformUtils::panic(PanicHandler::Panic_CantLoadMsgDomain);
-
-    sScannerMutex = new XMLMutex(XMLPlatformUtils::fgMemoryManager);
 }
 
 void XMLInitializer::terminateXMLScanner()
 {
     delete gMsgLoader;
     gMsgLoader = 0;
-
-    delete sScannerMutex;
-    sScannerMutex = 0;
 }
 
 //
@@ -687,7 +688,7 @@ void XMLScanner::commonInit()
     //  We have to do a little init that involves statics, so we have to
     //  use the mutex to protect it.
     {
-        XMLMutexLock lockInit(sScannerMutex);
+        std::lock_guard<std::mutex> lock(sScannerMutex);
 
         // And assign ourselves the next available scanner id
         fScannerId = ++gScannerId;

@@ -29,19 +29,24 @@
 #include "DOMImplementationImpl.hpp"
 #include "DOMImplementationListImpl.hpp"
 
+#include <mutex>
+
+namespace
+{
+    //  Global mutex that is used to synchronize access to the vector.
+    //
+    std::mutex gDOMImplSrcVectorMutex;
+}
+
 namespace XERCES_CPP_NAMESPACE {
 
 // Points to the singleton instance of a registry of DOMImplementationSource.
 //
 static RefVectorOf<DOMImplementationSource>* gDOMImplSrcVector = 0;
 
-//  Global mutex that is used to synchronize access to the vector.
-//
-static XMLMutex* gDOMImplSrcVectorMutex = 0;
 
 void XMLInitializer::initializeDOMImplementationRegistry()
 {
-    gDOMImplSrcVectorMutex = new XMLMutex(XMLPlatformUtils::fgMemoryManager);
     gDOMImplSrcVector = new RefVectorOf<DOMImplementationSource>(3, false);
 }
 
@@ -49,9 +54,6 @@ void XMLInitializer::terminateDOMImplementationRegistry()
 {
     delete gDOMImplSrcVector;
     gDOMImplSrcVector = 0;
-
-    delete gDOMImplSrcVectorMutex;
-    gDOMImplSrcVectorMutex = 0;
 }
 
 // -----------------------------------------------------------------------
@@ -59,7 +61,7 @@ void XMLInitializer::terminateDOMImplementationRegistry()
 // -----------------------------------------------------------------------
 DOMImplementation *DOMImplementationRegistry::getDOMImplementation(const XMLCh* features) {
 
-    XMLMutexLock lock(gDOMImplSrcVectorMutex);
+    std::lock_guard<std::mutex> lock(gDOMImplSrcVectorMutex);
 
     XMLSize_t len = gDOMImplSrcVector->size();
 
@@ -84,7 +86,7 @@ DOMImplementationList* DOMImplementationRegistry::getDOMImplementationList(const
 
     DOMImplementationListImpl* list = new DOMImplementationListImpl;
 
-    XMLMutexLock lock(gDOMImplSrcVectorMutex);
+    std::lock_guard<std::mutex> lock(gDOMImplSrcVectorMutex);
 
     XMLSize_t len = gDOMImplSrcVector->size();
 
@@ -108,7 +110,7 @@ DOMImplementationList* DOMImplementationRegistry::getDOMImplementationList(const
 
 void DOMImplementationRegistry::addSource (DOMImplementationSource* source)
 {
-    XMLMutexLock lock(gDOMImplSrcVectorMutex);
+    std::lock_guard<std::mutex> lock(gDOMImplSrcVectorMutex);
     gDOMImplSrcVector->addElement(source);
 }
 

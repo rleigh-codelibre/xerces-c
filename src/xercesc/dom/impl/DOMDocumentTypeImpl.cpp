@@ -34,15 +34,19 @@
 #include "DOMDocumentImpl.hpp"
 #include "DOMCasts.hpp"
 
+#include <mutex>
+
+namespace
+{
+    std::mutex sDocumentMutex;
+}
+
 namespace XERCES_CPP_NAMESPACE {
 
 static DOMDocument* sDocument = 0;
-static XMLMutex*    sDocumentMutex = 0;
 
 void XMLInitializer::initializeDOMDocumentTypeImpl()
 {
-    sDocumentMutex = new XMLMutex(XMLPlatformUtils::fgMemoryManager);
-
     static const XMLCh gCoreStr[] = { chLatin_C, chLatin_o, chLatin_r, chLatin_e, chNull };
     DOMImplementation* impl =  DOMImplementationRegistry::getDOMImplementation(gCoreStr);
     sDocument = impl->createDocument(); // document type object (DTD).
@@ -52,9 +56,6 @@ void XMLInitializer::terminateDOMDocumentTypeImpl()
 {
     sDocument->release();
     sDocument = 0;
-
-    delete sDocumentMutex;
-    sDocumentMutex = 0;
 }
 
 DOMDocumentTypeImpl::DOMDocumentTypeImpl(DOMDocument *ownerDoc,
@@ -81,7 +82,8 @@ DOMDocumentTypeImpl::DOMDocumentTypeImpl(DOMDocument *ownerDoc,
     }
     else
     {
-        XMLMutexLock lock(sDocumentMutex);
+        std::lock_guard<std::mutex> lock(sDocumentMutex);
+
         DOMDocument* doc = sDocument;
         fName = ((DOMDocumentImpl *)doc)->getPooledString(dtName);
         fEntities = new (doc) DOMNamedNodeMapImpl(this);
@@ -156,7 +158,8 @@ DOMDocumentTypeImpl::DOMDocumentTypeImpl(DOMDocument *ownerDoc,
     }
     else
     {
-        XMLMutexLock lock(sDocumentMutex);
+        std::lock_guard<std::mutex> lock(sDocumentMutex);
+
         DOMDocument* doc = sDocument;
         fPublicId = ((DOMDocumentImpl*) doc)->cloneString(pubId);
         fSystemId = ((DOMDocumentImpl*) doc)->cloneString(sysId);
@@ -211,7 +214,8 @@ DOMNode *DOMDocumentTypeImpl::cloneNode(bool deep) const
         newNode = new (doc, DOMMemoryManager::DOCUMENT_TYPE_OBJECT) DOMDocumentTypeImpl(*this, false, deep);
     else
     {
-        XMLMutexLock lock(sDocumentMutex);
+        std::lock_guard<std::mutex> lock(sDocumentMutex);
+
         newNode = new (sDocument, DOMMemoryManager::DOCUMENT_TYPE_OBJECT) DOMDocumentTypeImpl(*this, false, deep);
     }
 
@@ -341,7 +345,8 @@ void DOMDocumentTypeImpl::setPublicId(const XMLCh *value)
     if (doc != 0)
         fPublicId = doc->cloneString(value);
     else {
-        XMLMutexLock lock(sDocumentMutex);
+        std::lock_guard<std::mutex> lock(sDocumentMutex);
+
         fPublicId = ((DOMDocumentImpl *)sDocument)->cloneString(value);
     }
 }
@@ -352,7 +357,8 @@ void DOMDocumentTypeImpl::setSystemId(const XMLCh *value)
     if (doc != 0)
         fSystemId = doc->cloneString(value);
     else {
-        XMLMutexLock lock(sDocumentMutex);
+        std::lock_guard<std::mutex> lock(sDocumentMutex);
+
         fSystemId = ((DOMDocumentImpl *)sDocument)->cloneString(value);
     }
 }
@@ -363,7 +369,8 @@ void DOMDocumentTypeImpl::setInternalSubset(const XMLCh *value)
     if (doc != 0)
         fInternalSubset = doc->cloneString(value);
     else {
-        XMLMutexLock lock(sDocumentMutex);
+        std::lock_guard<std::mutex> lock(sDocumentMutex);
+
         fInternalSubset = ((DOMDocumentImpl *)sDocument)->cloneString(value);
     }
 }
